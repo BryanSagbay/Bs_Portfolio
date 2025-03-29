@@ -1,10 +1,24 @@
-import './App.css'
-import Home from './views/Home'
+import React from 'react';
+import { TabItem } from './types/types';
+import Home from './views/Home';
+import Projects from './views/Projects';
+import Profile from './views/Profile';
+import Research from './views/Research';
+import Layout from './components/Layout/Layout';
 
-function App() {
+
+const App: React.FC = () => {
+  // Definir los elementos del navbar
+  const tabItems: TabItem[] = [
+    { id: 'home', label: 'Inicio', content: <Home /> },
+    { id: 'projects', label: 'Proyectos', content: <Projects /> },
+    { id: 'profile', label: 'Perfil', content: <Profile /> },
+    { id: 'settings', label: 'Configuración', content: <Research /> }
+  ];
+
   return (
-    <Home />
-  )
-}
+    <Layout tabItems={tabItems} defaultActiveTab="home" />
+  );
+};
 
-export default App
+export default App;
