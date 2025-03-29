@@ -1,0 +1,11 @@
+<svg width="200" height="250" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .text {
+      font-family: 'Georgia', serif;
+      font-weight: bold;
+      font-size: 100px;
+      fill: #111;
+    }
+  </style>
+  <text x="50%" y="75" text-anchor="middle" class="text">BS</text>
+</svg>

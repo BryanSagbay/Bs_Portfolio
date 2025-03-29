@@ -1,5 +1,6 @@
 import React from 'react';
 import './NavItem.css';
+import LogoIcon from '../LogoIcon/LogoIcon';
 
 interface NavItemProps {
   id: string;
@@ -14,13 +15,19 @@ const NavItem: React.FC<NavItemProps> = ({
   isActive,
   onClick
 }) => {
+  const isHome = id === 'home';
+
   return (
     <div 
       className={`nav-item ${isActive ? 'active' : ''}`}
       onClick={onClick}
       data-id={id}
     >
-      <span className="rotated-text">{label}</span>
+      {isHome ? (
+        <LogoIcon isActive={isActive} />
+      ) : (
+        <span className="rotated-text">{label}</span>
+      )}
     </div>
   );
 };

@@ -10,10 +10,10 @@ import Layout from './components/Layout/Layout';
 const App: React.FC = () => {
   // Definir los elementos del navbar
   const tabItems: TabItem[] = [
-    { id: 'home', label: 'Inicio', content: <Home /> },
-    { id: 'projects', label: 'Proyectos', content: <Projects /> },
-    { id: 'profile', label: 'Perfil', content: <Profile /> },
-    { id: 'settings', label: 'Configuración', content: <Research /> }
+    { id: 'home', label: 'Home', content: <Home /> },
+    { id: 'projects', label: 'Projects', content: <Projects /> },
+    { id: 'profile', label: 'Research', content: <Profile /> },
+    { id: 'profile', label: 'About Me', content: <Research /> }
   ];
 
   return (
