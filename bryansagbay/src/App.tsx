@@ -1,6 +1,6 @@
 import React from 'react';
 import { TabItem } from './types/types';
-import Home from './views/Home';
+import Home from './views/home/Home';
 import Projects from './views/Projects';
 import Profile from './views/Profile';
 import Research from './views/Research';
@@ -12,8 +12,8 @@ const App: React.FC = () => {
   const tabItems: TabItem[] = [
     { id: 'home', label: 'Home', content: <Home /> },
     { id: 'projects', label: 'Projects', content: <Projects /> },
-    { id: 'profile', label: 'Research', content: <Profile /> },
-    { id: 'profile', label: 'About Me', content: <Research /> }
+    { id: 'research', label: 'Research', content: <Research /> },
+    { id: 'about', label: 'About Me', content: <Profile /> }
   ];
 
   return (
