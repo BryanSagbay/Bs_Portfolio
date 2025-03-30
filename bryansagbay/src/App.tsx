@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { TabItem } from './types/types';
 import Home from './views/home/Home';
 import Projects from './views/Projects';
 import Profile from './views/Profile';
 import Research from './views/Research';
 import Layout from './components/Layout/Layout';
-
+import SplashScreen from './components/SplashScreen/SplashScreen';
 
 const App: React.FC = () => {
-  // Definir los elementos del navbar
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowSplash(false);
+    }, 1500);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
   const tabItems: TabItem[] = [
     { id: 'home', label: 'Home', content: <Home /> },
     { id: 'projects', label: 'Projects', content: <Projects /> },
@@ -17,7 +26,13 @@ const App: React.FC = () => {
   ];
 
   return (
-    <Layout tabItems={tabItems} defaultActiveTab="home" />
+    <>
+      {showSplash ? (
+        <SplashScreen />
+      ) : (
+        <Layout tabItems={tabItems} defaultActiveTab="home" />
+      )}
+    </>
   );
 };
 
