@@ -16,10 +16,6 @@
   width: 100%;
 }
 
-.nav-item:first-child {
-  height: 120px;
-}
-
 .nav-item:hover,
 .nav-item.active {
   color: white;
@@ -108,3 +104,12 @@
   
 }
 
+.nav-item > * {
+  display: block;
+}
+
+@media (min-width: 769px) {
+  .nav-item:first-child {
+    height: 60px;
+  }
+}

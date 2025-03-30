@@ -37,14 +37,6 @@
 
 /* Responsive para pantallas pequeñas */
 @media (max-width: 768px) {
-  .layout {
-    flex-direction: column;
-  }
-
-  .hamburger {
-    display: block;
-  }
-
   .sidebar {
     position: fixed;
     top: 0;
@@ -54,14 +46,22 @@
     background-color: #000;
     z-index: 1000;
     transition: left 0.3s ease-in-out;
+
+    /* ✅ Agregamos esto para que el contenido no quede debajo del botón hamburguesa */
+    padding-top: 60px;
   }
 
   .sidebar.open {
     left: 0;
   }
 
+  .hamburger {
+    display: block;
+  }
+
   .main-content {
-    padding-top: 60px;
+    padding-top: 50px;
     overflow-y: auto;
   }
 }
+
