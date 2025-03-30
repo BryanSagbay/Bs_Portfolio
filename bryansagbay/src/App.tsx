@@ -6,6 +6,7 @@ import Profile from './views/Profile';
 import Research from './views/Research';
 import Layout from './components/Layout/Layout';
 import SplashScreen from './components/SplashScreen/SplashScreen';
+import CursorLineal from './components/Cursor/CursorLineal';
 
 const App: React.FC = () => {
   const [showSplash, setShowSplash] = useState(true);
@@ -30,7 +31,10 @@ const App: React.FC = () => {
       {showSplash ? (
         <SplashScreen />
       ) : (
-        <Layout tabItems={tabItems} defaultActiveTab="home" />
+        <>
+          <CursorLineal />
+          <Layout tabItems={tabItems} defaultActiveTab="home" />
+        </>
       )}
     </>
   );

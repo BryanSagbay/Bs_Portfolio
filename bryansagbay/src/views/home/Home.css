@@ -1,20 +1,22 @@
+/* Contenedor principal */
 .home-container {
   min-height: 100vh;
+  height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   padding: 2rem;
   background-color: #000000;
   color: white;
   background: linear-gradient(145deg, #000000, #000000);
-  position: relative;
+  position: fixed;
   overflow: hidden;
 }
 
-/* Añadir elementos decorativos en el fondo */
+/* Fondo decorativo */
 .home-container::before {
   content: '';
-  position: absolute;
+  position: fixed;
   width: 50%;
   height: 50%;
   border-radius: 50%;
@@ -24,21 +26,23 @@
   z-index: 0;
 }
 
+/* Contenido general */
 .content-section {
   width: 100%;
-  max-width: 1150px;
+  max-width: 1200px;
   position: relative;
-  transform: translate(0, -100px);
   display: flex;
   flex-direction: column;
   gap: 1rem;
   z-index: 1;
   animation: fadeIn 1s ease-in-out;
+  margin: 12rem 0 0 14rem;
 }
 
+/* Título y línea decorativa */
 .title-section {
   text-align: left;
-  max-width: 800px;
+  max-width: 1000px;
   position: relative;
 }
 
@@ -48,7 +52,7 @@
   width: 100px;
   height: 4px;
   background: linear-gradient(90deg, #64f2ff, rgba(100, 242, 255, 0));
-  bottom: -2rem;
+  bottom: 0;
   left: 0;
 }
 
@@ -61,6 +65,7 @@
   text-shadow: 0 0 10px rgba(100, 242, 255, 0.3);
 }
 
+/* Palabra destacada */
 .highlight {
   color: #64f2ff;
   position: relative;
@@ -78,6 +83,7 @@
   z-index: -1;
 }
 
+/* Descripción */
 .intro-text {
   font-size: 1.3rem;
   line-height: 1.7;
@@ -87,6 +93,7 @@
   font-weight: 300;
 }
 
+/* Botón "Hire Me" */
 .hire-button {
   background: linear-gradient(90deg, #64f2ff, #4dd8e6);
   color: black;
@@ -95,7 +102,7 @@
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
-  border-radius: 2px;
+  border-radius: 4px;
   box-shadow: 0 4px 20px rgba(100, 242, 255, 0.3);
   position: relative;
   overflow: hidden;
@@ -124,34 +131,34 @@
   left: 100%;
 }
 
+/* Sección de estadísticas */
 .stats-section {
-  position: absolute;
-  bottom: -10rem;
-  right: -10rem;
+  position: fixed;
+  bottom: 4rem;
+  right: 3rem;
+  padding: 0;
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   gap: 2rem;
-  max-width: 620px;
+  max-width: 300px;
   z-index: 1;
+  background: none;
+  backdrop-filter: none;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
 }
 
-
-
 .stats-section::before {
-  content: '';
-  position: absolute;
-  width: 200%;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(100, 242, 255, 0.3), rgba(255, 255, 255, 0.05));
-  top: -2rem;
-  left: 0;
+  display: none;
 }
 
 .stat-item {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: flex-end;
+  text-align: right;
   gap: 0.5rem;
   position: relative;
   transition: transform 0.3s ease;
@@ -165,7 +172,7 @@
   font-size: 3rem;
   font-weight: 800;
   line-height: 1;
-  color: #64f2ff; /* Verde brillante como en la imagen */
+  color: #64f2ff;
   text-shadow: 0 0 15px rgba(60, 255, 60, 0.3);
   margin-bottom: 0.5rem;
 }
@@ -177,26 +184,95 @@
   font-weight: 300;
 }
 
-/* Animaciones */
+/* Animación */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Media queries para responsividad */
-@media (max-width: 768px) {
+/* 📱 Responsivo para tablet */
+@media (max-width: 1024px) {
+  .home-container {
+    padding: 1.5rem;
+    height: auto;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  .content-section {
+    margin: 2rem auto 0 auto;
+    padding: 0 1rem;
+  }
+
   .title-section h1 {
-    font-size: 3.5rem;
-  }
-  
-  .stats-section {
-    margin: 4rem auto 0;
-  }
-  
-  .stat-number {
     font-size: 4rem;
   }
-  
+
+  .intro-text {
+    font-size: 1.1rem;
+  }
+
+  .hire-button {
+    font-size: 1rem;
+    padding: 0.8rem 2rem;
+  }
+
+  .stats-section {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    margin-top: 3rem;
+    flex-direction: row;
+    justify-content: space-around;
+    max-width: 100%;
+  }
+
+  .stat-item {
+    align-items: center;
+    text-align: center;
+  }
+}
+
+/* 📱 Responsivo para mobile */
+@media (max-width: 768px) {
+  .home-container {
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .content-section {
+    align-items: center;
+    margin: 2rem auto 0 auto;
+    padding: 0 1rem;
+  }
+
+  .title-section {
+    text-align: center;
+  }
+
+  .title-section h1 {
+    font-size: 2.8rem;
+  }
+
+  .intro-text {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .hire-button {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .stats-section {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .stat-number {
+    font-size: 2.5rem;
+  }
+
   .stat-label {
     font-size: 1rem;
   }

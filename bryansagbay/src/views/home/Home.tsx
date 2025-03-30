@@ -6,9 +6,9 @@ export default function Home() {
       <div className="content-section">
         <div className="title-section">
           <h1>
-            <span className="highlight">FRONTEND</span>
+            <span className="highlight">SOFTWARE</span>
             <br />
-            DEVELOPER
+            ENGINEER
           </h1>
           <p className="intro-text">
             Hi! I'm <span className="highlight">Bryan</span>. A creative Frontend Developer with 3+ years of
