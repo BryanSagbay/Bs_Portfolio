@@ -82,3 +82,29 @@
   letter-spacing: 3px;
   color: #64f2ff;
 }
+
+@media (max-width: 768px) {
+  .rotated-text {
+    transform: none;
+    font-size: 1rem;
+    letter-spacing: 1px;
+  }
+
+  .nav-item {
+    height: auto;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 1rem 0.5rem;
+    width: 100%;
+  }
+
+  .nav-item {
+    border-bottom: 1px solid #222;
+  }
+  
+  .nav-item:hover {
+    background-color: #111;
+  }
+  
+}
+

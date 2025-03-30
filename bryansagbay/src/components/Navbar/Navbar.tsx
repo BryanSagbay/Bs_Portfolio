@@ -16,16 +16,17 @@ const VerticalNavbar: React.FC<VerticalNavbarProps> = ({
 }) => {
   return (
     <nav className="vertical-navbar">
-      {items.map((item) => (
-        <NavItem
-          key={item.id}
-          id={item.id}
-          label={item.label}
-          isActive={activeTabId === item.id}
-          onClick={() => onTabChange(item.id)}
-        />
-      ))}
-    </nav>
+  {items.map((item) => (
+    <NavItem
+      key={item.id}
+      id={item.id}
+      label={item.label}
+      isActive={activeTabId === item.id}
+      onClick={() => onTabChange(item.id)}
+    />
+  ))}
+</nav>
+
   );
 };
 

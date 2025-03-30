@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TabItem } from '../../types/types';
+import type { TabItem } from '../../types/types';
 import VerticalNavbar from '../Navbar/Navbar';
 import './Layout.css';
 
@@ -10,19 +10,37 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ tabItems, defaultActiveTab }) => {
   const [activeTab, setActiveTab] = useState(defaultActiveTab);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const handleTabChange = (id: string) => {
+    setActiveTab(id);
+    setIsMenuOpen(false); // cerrar menú en mobile
+  };
 
   return (
     <div className="layout">
-      <VerticalNavbar
-        items={tabItems}
-        activeTabId={activeTab}
-        onTabChange={setActiveTab}
-      />
+      {/* Botón de menú solo visible en mobile */}
+      <button className="hamburger" onClick={toggleMenu} aria-label="Toggle menu">
+        ☰
+      </button>
+
+      {/* Navbar (se adapta según pantalla) */}
+      <div className={`sidebar ${isMenuOpen ? 'open' : ''}`}>
+        <VerticalNavbar
+          items={tabItems}
+          activeTabId={activeTab}
+          onTabChange={handleTabChange}
+        />
+      </div>
+
+      {/* Contenido principal */}
       <main className="main-content">
-        {tabItems.find(item => item.id === activeTab)?.content}
+        {tabItems.find((item) => item.id === activeTab)?.content}
       </main>
     </div>
   );
 };
 
-export default Layout; 
+export default Layout;
