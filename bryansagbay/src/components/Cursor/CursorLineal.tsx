@@ -14,7 +14,7 @@ const CursorLineal: React.FC = () => {
         canvas.style.top = '0';
         canvas.style.left = '0';
         canvas.style.pointerEvents = 'none';
-        canvas.style.zIndex = '9999';
+        canvas.style.zIndex = '1';
     
         document.body.appendChild(canvas);
     

@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import './Home.css';
+import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { RiMailFill } from 'react-icons/ri';
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -58,7 +60,24 @@ export default function Home() {
             experience in web development, mobile applications and artificial intelligence integration, 
             offering high performance and scalable solutions.
           </p>
-          <button className="hire-button">HIRE ME</button>
+          <div className="buttons-horizontal">
+  <button className="icon-button">
+    <FaGithub className="button-icon" />
+  </button>
+  <button className="icon-button">
+    <FaLinkedin className="button-icon" />
+ 
+  </button>
+  <button className="icon-button">
+    <RiMailFill className="button-icon" />
+
+  </button>
+  <button className="icon-button">
+    <FaTwitter className="button-icon" />
+
+  </button>
+  <button className="hire-button">HIRE ME</button>
+</div>
         </div>
 
         <div className="stats-section">
