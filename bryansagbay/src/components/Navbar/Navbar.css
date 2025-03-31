@@ -7,7 +7,8 @@
   flex-direction: column;
   padding-top: 45px;
   height: 100vh;
-  justify-content: space-between; /* Distribuye espacio entre .nav-items y .social-icons */
+  justify-content: space-between; 
+  z-index: 2; 
   box-sizing: border-box; /* Asegura que padding no afecte el ancho */
   overflow: hidden; /* Elimina scroll no deseado */
 }

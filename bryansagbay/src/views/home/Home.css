@@ -1,16 +1,18 @@
-/* Contenedor principal */
+/* CONTENEDOR PRINCIPAL */
 .home-container {
-  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
   height: 100vh;
+  overflow: hidden;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   padding: 2rem;
-  background-color: #000000;
+  background: #000;
   color: white;
-  background: linear-gradient(145deg, #000000, #000000);
-  position: fixed;
-  overflow: hidden;
+  z-index: 0;
 }
 
 /* Fondo decorativo */
@@ -26,7 +28,74 @@
   z-index: 0;
 }
 
-/* Contenido general */
+/* CAPA DE FONDO LIMPIA */
+.background-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* PARTICULAS ÚNICAS */
+.particle-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  animation: float 15s infinite linear;
+}
+
+.particle:nth-child(even) {
+  width: 3px;
+  height: 3px;
+  background-color: rgba(100, 242, 255, 0.3);
+}
+
+.particle:nth-child(3n) {
+  width: 1px;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.particle:nth-child(5n) {
+  background-color: rgba(255, 255, 255, 0.1);
+  filter: blur(1px);
+  width: 4px;
+  height: 4px;
+}
+
+/* ANIMACIÓN DE PARTÍCULAS */
+@keyframes float {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--moveX), var(--moveY));
+    opacity: 0;
+  }
+}
+
+/* CONTENIDO */
 .content-section {
   width: 100%;
   max-width: 1200px;
@@ -39,7 +108,6 @@
   margin: 12rem 0 0 14rem;
 }
 
-/* Título y línea decorativa */
 .title-section {
   text-align: left;
   max-width: 1000px;
@@ -65,7 +133,6 @@
   text-shadow: 0 0 10px rgba(100, 242, 255, 0.3);
 }
 
-/* Palabra destacada */
 .highlight {
   color: #64f2ff;
   position: relative;
@@ -83,7 +150,6 @@
   z-index: -1;
 }
 
-/* Descripción */
 .intro-text {
   font-size: 1.3rem;
   line-height: 1.7;
@@ -93,7 +159,6 @@
   font-weight: 300;
 }
 
-/* Botón "Hire Me" */
 .hire-button {
   background: linear-gradient(90deg, #64f2ff, #4dd8e6);
   color: black;
@@ -131,10 +196,9 @@
   left: 100%;
 }
 
-/* Sección de estadísticas */
 .stats-section {
   position: fixed;
-  bottom: 4rem;
+  bottom: 5rem;
   right: 3rem;
   padding: 0;
   display: flex;
@@ -143,15 +207,6 @@
   gap: 2rem;
   max-width: 300px;
   z-index: 1;
-  background: none;
-  backdrop-filter: none;
-  border-radius: 0;
-  border: none;
-  box-shadow: none;
-}
-
-.stats-section::before {
-  display: none;
 }
 
 .stat-item {
@@ -184,95 +239,135 @@
   font-weight: 300;
 }
 
-/* Animación */
+/* ANIMACIÓN DE ENTRADA */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* 📱 Responsivo para tablet */
+/* ANIMACIÓN TYPEWRITER */
+.typewriter {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid #64f2ff;
+  /* Animación completa con duración total de 9 segundos */
+  animation: 
+    typing 9s steps(8, end) infinite,
+    blink 0.75s step-end infinite;
+}
+
+/* Animación de escritura con pausa y borrado */
+@keyframes typing {
+  /* Escritura: 0-20% (1.8s) */
+  0% { 
+    width: 0; 
+  }
+  20% { 
+    width: 8ch; /* "SOFTWARE" tiene 8 letras */ 
+  }
+  
+  /* Pausa: 20-65% (4s de los 9s totales) */
+  75% { 
+    width: 8ch; /* Mantiene el texto completo */ 
+  }
+  
+  /* Borrado: 65-85% (1.8s) */
+  85% { 
+    width: 0; /* Borra el texto */
+  }
+  
+  /* Pausa antes de reiniciar: 85-100% (1.4s) */
+  100% { 
+    width: 0; /* Mantiene vacío antes de reiniciar */
+  }
+}
+
+/* Animación del cursor parpadeante */
+@keyframes blink {
+  50% { 
+    border-color: transparent; 
+  }
+}
+
+/* ========== RESPONSIVE FIX FOR SMALL SCREENS ========== */
+
 @media (max-width: 1024px) {
   .home-container {
-    padding: 1.5rem;
-    height: auto;
+    display: flex;
     min-height: 100vh;
-    position: relative;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 4rem 0rem;
+  }
+
+  .background-layer {
+    position: absolute;
+    height: 100%;
   }
 
   .content-section {
-    margin: 2rem auto 0 auto;
-    padding: 0 1rem;
+    margin: auto;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
   }
 
+  .title-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 0rem 0rem 0rem 0rem;
+  }
+  
+  .title-section::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+
   .title-section h1 {
-    font-size: 4rem;
+    font-size: 3rem;
   }
 
   .intro-text {
-    font-size: 1.1rem;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin: auto;
   }
 
   .hire-button {
-    font-size: 1rem;
-    padding: 0.8rem 2rem;
+    display: block;
+    margin: 1.5rem auto;
   }
 
   .stats-section {
     position: relative;
-    bottom: auto;
-    right: auto;
-    margin-top: 3rem;
-    flex-direction: row;
-    justify-content: space-around;
-    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    margin: 6rem auto 2rem auto;
+    padding: 1rem 6rem;
+    gap: 1.5rem;
   }
 
   .stat-item {
     align-items: center;
     text-align: center;
-  }
-}
-
-/* 📱 Responsivo para mobile */
-@media (max-width: 768px) {
-  .home-container {
-    padding: 1rem;
-    text-align: center;
-  }
-
-  .content-section {
-    align-items: center;
-    margin: 2rem auto 0 auto;
-    padding: 0 1rem;
-  }
-
-  .title-section {
-    text-align: center;
-  }
-
-  .title-section h1 {
-    font-size: 2.8rem;
-  }
-
-  .intro-text {
-    font-size: 1rem;
-    margin-bottom: 2rem;
-  }
-
-  .hire-button {
     width: 100%;
-    font-size: 1rem;
   }
-
-  .stats-section {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
+  
   .stat-number {
     font-size: 2.5rem;
   }
-
+  
   .stat-label {
     font-size: 1rem;
   }
