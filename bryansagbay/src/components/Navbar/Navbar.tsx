@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TabItem } from '../../types/types';
 import './Navbar.css';
 import NavItem from '../NavItem/NavItem';
-import { FaGithub, FaLinkedin, FaDownload } from 'react-icons/fa';
-import { RiMailSendLine } from 'react-icons/ri';
+import { FaGithub, FaLinkedin, FaTwitter, FaInstagram } from 'react-icons/fa';
 
 interface VerticalNavbarProps {
   items: TabItem[];
@@ -40,10 +39,10 @@ const VerticalNavbar: React.FC<VerticalNavbarProps> = ({
 
       {activeTabId !== 'home' && (
         <div className="social-icons">
-          <a className={animationPlayed ? 'bounce-in' : ''} href="https://github.com" target="_blank" rel="noopener noreferrer" title="GitHub"><FaGithub /></a>
-          <a className={animationPlayed ? 'bounce-in' : ''} href="mailto:tuemail@ejemplo.com" title="Enviar mensaje"><RiMailSendLine /></a>
-          <a className={animationPlayed ? 'bounce-in' : ''} href="https://linkedin.com" target="_blank" rel="noopener noreferrer" title="LinkedIn"><FaLinkedin /></a>
-          <a className={animationPlayed ? 'bounce-in' : ''} href="/cv.pdf" download title="Ver CV"><FaDownload /></a>
+          <a className={animationPlayed ? 'bounce-in' : ''} href="https://github.com/BryanSagbay" target="_blank" rel="noopener noreferrer" title="GitHub"><FaGithub /></a>
+          <a className={animationPlayed ? 'bounce-in' : ''} href="https://www.linkedin.com/in/bryan-sagbay-1b9912267/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><FaLinkedin /></a>
+          <a className={animationPlayed ? 'bounce-in' : ''} href="https://www.instagram.com/brian.sagbay" target="_blank" rel="noopener noreferrer" title="Enviar mensaje"><FaInstagram /></a>
+          <a className={animationPlayed ? 'bounce-in' : ''} href="https://x.com/sagbay15130" target="_blank" rel="noopener noreferrer"title="Enviar mensaje"><FaTwitter /></a>
         </div>
       )}
     </nav>

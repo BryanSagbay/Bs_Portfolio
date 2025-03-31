@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { TabItem } from './types/types';
 import Home from './views/home/Home';
-import Projects from './views/Projects';
+import Projects from './views/Projects/Projects';
 import Profile from './views/Profile';
 import Research from './views/Research';
 import Layout from './components/Layout/Layout';
 import SplashScreen from './components/SplashScreen/SplashScreen';
-import CursorLineal from './components/Cursor/CursorLineal';
 
 const App: React.FC = () => {
   const [showSplash, setShowSplash] = useState(true);
@@ -32,7 +31,6 @@ const App: React.FC = () => {
         <SplashScreen />
       ) : (
         <>
-          <CursorLineal />
           <Layout tabItems={tabItems} defaultActiveTab="home" />
         </>
       )}

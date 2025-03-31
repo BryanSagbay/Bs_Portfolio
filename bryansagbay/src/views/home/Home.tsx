@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import './Home.css';
-import { FaGithub, FaLinkedin, FaTwitter,FaInstagram, FaDownload } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaDownload } from 'react-icons/fa';
+import CursorLineal from '../../components/Cursor/CursorLineal';
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -43,7 +44,9 @@ export default function Home() {
   }, []);
 
   return (
+    
     <div className="home-container" ref={containerRef}>
+      <CursorLineal />
       <div className="background-layer"></div>
 
       <div className="content-section">
@@ -84,14 +87,24 @@ export default function Home() {
   </button>
 
   <button className="icon-button">
-    <a href="#" target="_blank" rel="noopener noreferrer">
-      <FaDownload className="button-icon" />
-    </a>
+  <a 
+    href="src/template/cv.pdf" 
+    target="_blank" 
+    rel="noopener noreferrer" 
+    download="Bryan_Sagbay_CV.pdf"
+  >
+    <FaDownload className="button-icon" />
+  </a>
   </button>
 
-  <button className="hire-button">
-    HIRE ME
-  </button>
+  <button 
+  className="hire-button"
+  onClick={() => {
+    window.location.href = "mailto:bryansagbay2001@gmail.com?subject=I want to hire you&body=Hi Bryan, I saw your portfolio and I'd like to connect.";
+  }}
+>
+  HIRE ME
+</button>
 
 </div>
         </div>
