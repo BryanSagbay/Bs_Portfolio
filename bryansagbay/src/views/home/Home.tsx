@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import './Home.css';
-import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
-import { RiMailFill } from 'react-icons/ri';
+import { FaGithub, FaLinkedin, FaTwitter,FaInstagram, FaDownload } from 'react-icons/fa';
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -54,7 +53,6 @@ export default function Home() {
   <br />
   ENGINEER
 </h1>
-
           <p className="intro-text">
             Hi! I'm <span className="highlight">Bryan Sagbay</span>. Software Engineer with +1 year of 
             experience in web development, mobile applications and artificial intelligence integration, 
@@ -62,21 +60,39 @@ export default function Home() {
           </p>
           <div className="buttons-horizontal">
   <button className="icon-button">
+    <a href="https://github.com/BryanSagbay" target="_blank" rel="noopener noreferrer">
     <FaGithub className="button-icon" />
+    </a>
   </button>
-  <button className="icon-button">
-    <FaLinkedin className="button-icon" />
- 
-  </button>
-  <button className="icon-button">
-    <RiMailFill className="button-icon" />
 
-  </button>
   <button className="icon-button">
-    <FaTwitter className="button-icon" />
-
+    <a href="https://www.linkedin.com/in/bryan-sagbay-1b9912267/" target="_blank" rel="noopener noreferrer">
+      <FaLinkedin className="button-icon" />
+    </a> 
   </button>
-  <button className="hire-button">HIRE ME</button>
+
+  <button className="icon-button">
+    <a href="https://www.instagram.com/brian.sagbay" target="_blank" rel="noopener noreferrer">
+      <FaInstagram className="button-icon" />
+    </a>
+  </button>
+
+  <button className="icon-button">
+    <a href="https://x.com/sagbay15130" target="_blank" rel="noopener noreferrer">
+      <FaTwitter className="button-icon" />
+    </a>
+  </button>
+
+  <button className="icon-button">
+    <a href="#" target="_blank" rel="noopener noreferrer">
+      <FaDownload className="button-icon" />
+    </a>
+  </button>
+
+  <button className="hire-button">
+    HIRE ME
+  </button>
+
 </div>
         </div>
 
