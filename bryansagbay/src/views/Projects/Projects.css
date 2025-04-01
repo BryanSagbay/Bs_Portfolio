@@ -1,179 +1,179 @@
 /* Contenedor principal */
 .proyectos-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-  
-  /* Barra superior con iconos */
-  .navbar-iconos {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 20px;
-    padding: 10px 20px;
-    border-radius: 50px;
-    z-index: 1000;
-  }
-  
-  .icono {
-    font-size: 24px;
-    opacity: 0.5;
-    transition: all 0.3s ease;
-    cursor: pointer;
-  }
-  
-  .icono.activo {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-  
-  /* Barra de progreso vertical - REDISEÑADA */
-  .barra-progreso-container {
-    position: fixed;
-    right: 30px;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 40%; /* Reducido del 60% original */
-    width: 4px; /* Reducido de 8px */
-    z-index: 1000;
-  }
-  
-  .barra-progreso-fondo {
-    height: 100%;
-    width: 100%;
-    background-color: rgba(200, 200, 200, 0.3);
-    border-radius: 4px; /* Reducido para coincidir con el ancho */
-    position: relative;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-  }
-  
-  .barra-progreso-relleno {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: linear-gradient(to top, #2980b9, #3498db);
-    border-radius: 4px;
-    transition: height 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-    height: 0%;
-    z-index: 1;
-    box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
-  }
-  
-  
-  /* Contenido de proyectos */
-  .proyectos-contenido {
-    width: 100%;
-  }
-  
-  .proyecto-seccion {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    scroll-snap-align: start;
-    padding: 40px;
-  }
-  
+  position: relative;
+  width: 100%;
+}
+
+/* Barra superior con iconos */
+.navbar-iconos {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  padding: 10px 20px;
+  border-radius: 50px;
+  z-index: 1000;
+}
+
+.icono {
+  font-size: 25px;
+  opacity: 2;
+  transition: none;
+  cursor: default;
+}
+
+.icono.activo {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* Barra de progreso vertical - REDISEÑADA */
+.barra-progreso-container {
+  position: fixed;
+  right: 30px;
+  top: 0;
+  bottom: 0;
+  height: auto;
+  width: 4px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+}
+
+
+.barra-progreso-fondo {
+  height: 60vh; 
+  width: 100%;
+  margin: auto 0; /* Centra verticalmente */
+}
+
+
+.barra-progreso-relleno {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to top, #2980b9, #3498db);
+  border-radius: 4px;
+  transition: height 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  height: 0%;
+  z-index: 1;
+  box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
+}
+
+
+/* Contenido de proyectos */
+.proyectos-contenido {
+  width: 100%;
+}
+
+.proyecto-seccion {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: start;
+  padding: 40px;
+}
+
+.proyecto-card {
+  width: 80%;
+  max-width: 800px;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.proyecto-card:hover {
+  transform: translateY(-10px);
+}
+
+.proyecto-imagen {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.proyecto-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.proyecto-tipo {
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
   .proyecto-card {
-    width: 80%;
-    max-width: 800px;
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    text-align: center;
-    transition: transform 0.3s ease;
+    width: 90%;
+    padding: 20px;
   }
-  
-  .proyecto-card:hover {
-    transform: translateY(-10px);
-  }
-  
+
   .proyecto-imagen {
-    width: 100%;
-    height: 300px;
-    overflow: hidden;
-    border-radius: 10px;
-    margin: 20px 0;
+    height: 200px;
   }
-  
-  .proyecto-imagen img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+
+  .barra-progreso-container {
+    right: 15px;
+    width: 3px; /* Más pequeño en móvil */
+    height: 30%; /* Más corto en móvil */
   }
-  
-  .proyecto-tipo {
-    margin-top: 20px;
-    font-weight: bold;
-    font-size: 18px;
+
+  .navbar-iconos {
+    gap: 15px;
+    padding: 8px 15px;
   }
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .proyecto-card {
-      width: 90%;
-      padding: 20px;
-    }
-  
-    .proyecto-imagen {
-      height: 200px;
-    }
-  
-    .barra-progreso-container {
-      right: 15px;
-      width: 3px; /* Más pequeño en móvil */
-      height: 30%; /* Más corto en móvil */
-    }
-  
-    .navbar-iconos {
-      gap: 15px;
-      padding: 8px 15px;
-    }
-  
-    .icono {
-      font-size: 20px;
-    }
+
+  .icono {
+    font-size: 20px;
   }
-  
-  /* Scroll global y ocultar scrollbar */
-  html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-    scroll-snap-type: y mandatory;
-  }
-  
-  /* Chrome, Safari, Edge */
-  body::-webkit-scrollbar {
-    width: 0 !important;
-    height: 0 !important;
-    display: none !important;
-    background: transparent !important;
-  }
-  
-  /* Firefox */
-  html {
-    scrollbar-width: none !important;
-  }
-  
-  /* IE y Edge antiguos */
-  body {
-    -ms-overflow-style: none !important;
-  }
-  
-  /* Oculta scrollbar en todo (por si acaso) */
-  *::-webkit-scrollbar {
-    display: none !important;
-  }
-  * {
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
-  }
+}
+
+/* Scroll global y ocultar scrollbar */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
+
+/* Chrome, Safari, Edge */
+body::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+  background: transparent !important;
+}
+
+/* Firefox */
+html {
+  scrollbar-width: none !important;
+}
+
+/* IE y Edge antiguos */
+body {
+  -ms-overflow-style: none !important;
+}
+
+/* Oculta scrollbar en todo (por si acaso) */
+*::-webkit-scrollbar {
+  display: none !important;
+}
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
