@@ -8,7 +8,9 @@
   flex-wrap: wrap;
   margin: 100px;
   margin-top: 2%;
+  will-change: transform, opacity;
 }
+
 
 .texto {
   max-width: 800px;
@@ -112,8 +114,6 @@
   background-position: center;
   background-repeat: no-repeat;
 }
-
-
 
 /* This is the key new element - a proper screen container */
 .mockup-screen {

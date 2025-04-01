@@ -1,5 +1,6 @@
 import React from 'react';
 import Tilt from 'react-parallax-tilt';
+import { motion } from 'framer-motion';
 import './CardModern.css';
 
 interface ProyectoCardModernProps {
@@ -21,8 +22,19 @@ const ProyectoCardModern: React.FC<ProyectoCardModernProps> = ({
 }) => {
   const layoutClass = tipo === 'movil' ? 'fila-invertida' : '';
 
+  // Dirección de entrada: izquierda para 'pc', derecha para 'movil'
+  const initialX = tipo === 'pc' ? -100 : 100;
+
   return (
-    <div className={`moderno-container ${layoutClass}`}>
+    <motion.div
+      className={`moderno-container ${layoutClass}`}
+      initial={{ opacity: 0, x: initialX }}
+      whileInView={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: initialX }} 
+      transition={{ duration: 0.5, ease: 'easeOut', delay: indice * 0.1 }}
+      viewport={{ once: false, amount: 0.2 }}
+    >
+
       <div className="texto">
         <span className="contador">{String(indice + 1).padStart(2, '0')}</span>
         <h2>{titulo}</h2>
@@ -45,17 +57,16 @@ const ProyectoCardModern: React.FC<ProyectoCardModernProps> = ({
         className="tilt-mockup"
       >
         <div className={`mockup ${tipo}`}>
-          {/* The key change is here - we create a proper container for the mockup screen */}
           <div className="mockup-screen">
-            <img 
-              src={imagenProyecto} 
-              alt={titulo} 
-              className="contenido-mockup" 
+            <img
+              src={imagenProyecto}
+              alt={titulo}
+              className="contenido-mockup"
             />
           </div>
         </div>
       </Tilt>
-    </div>
+    </motion.div>
   );
 };
 
