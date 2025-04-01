@@ -31,7 +31,7 @@ const ProyectoCardModern: React.FC<ProyectoCardModernProps> = ({
       initial={{ opacity: 0, x: initialX }}
       whileInView={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: initialX }} 
-      transition={{ duration: 0.5, ease: 'easeOut', delay: indice * 0.1 }}
+      transition={{ duration: 1, ease: 'easeOut', delay: indice * 0.1 }}
       viewport={{ once: false, amount: 0.2 }}
     >
 
