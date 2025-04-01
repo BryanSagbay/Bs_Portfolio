@@ -54,17 +54,18 @@
 /* Contenido de proyectos */
 .proyectos-contenido {
   width: 100%;
-  /* Añadir padding superior para compensar la altura de la barra de navegación */
-  padding-top: 80px;
+  padding-top: 0;
 }
 
+
 .proyecto-seccion {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  scroll-snap-align: start;
-  padding: 40px;
+  scroll-snap-align: center;
+  padding: 60px 40px;
+  box-sizing: border-box;
 }
 
 .proyecto-card {

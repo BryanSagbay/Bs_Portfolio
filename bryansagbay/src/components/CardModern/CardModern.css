@@ -1,39 +1,39 @@
 .moderno-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    padding: 100px 10%;
-    flex-wrap: wrap;
-    gap: 60px;
-    color: white;
-  }
-  
-  .texto {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  flex-wrap: wrap;
+  margin: auto;
+}
+
+.texto {
     max-width: 500px;
     flex: 1;
-  }
-  
-  .contador {
+}
+
+.contador {
     color: #00f0ff;
     font-weight: bold;
     font-size: 18px;
     display: block;
     margin-bottom: 10px;
-  }
-  
-  .texto h2 {
+}
+
+.texto h2 {
     font-size: 36px;
     margin-bottom: 20px;
-  }
-  
-  .texto p {
+}
+
+.texto p {
     font-size: 18px;
     color: #ccc;
     margin-bottom: 30px;
-  }
-  
-  .boton-proyecto {
+}
+
+.boton-proyecto {
     background-color: #00f0ff;
     color: black;
     padding: 12px 24px;
@@ -41,37 +41,41 @@
     font-weight: bold;
     text-decoration: none;
     transition: background 0.3s;
-  }
-  
-  .boton-proyecto:hover {
+}
+
+.boton-proyecto:hover {
     background-color: #00c7d3;
-  }
-  
-  .tilt-mockup {
+}
+
+.tilt-mockup {
     flex: 1;
     max-width: 500px;
-  }
-  
-  .mockup {
-    position: relative;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+}
+
+.mockup {
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.mockup.pc {
+  background-image: url('src/assets/laptop.png');
+  aspect-ratio: 16 / 10;
+}
+
+.mockup.movil {
+    background-image: url('src/assets/mobil.png');
+    aspect-ratio: 9 / 19; 
+    max-height: 450px;    
     width: 100%;
-    padding-top: 65%;
-    border-radius: 20px;
-    overflow: hidden;
   }
   
-  .mockup.pc {
-    background-image: url('/laptop.png');
-  }
-  
-  .mockup.movil {
-    background-image: url('/mobil.png');
-    padding-top: 100%;
-  }
-  
+
   .contenido-mockup {
     position: absolute;
     top: 11%;
@@ -82,3 +86,26 @@
     border-radius: 8px;
   }
   
+
+
+.fila-invertida {
+    flex-direction: row-reverse;
+}
+
+@media (max-height: 800px) {
+    .mockup.movil {
+      max-height: 350px;
+    }
+  }
+
+@media (max-width: 768px) {
+    .moderno-container {
+        flex-direction: column !important;
+        text-align: center;
+    }
+
+    .texto,
+    .tilt-mockup {
+        max-width: 100%;
+    }
+}
