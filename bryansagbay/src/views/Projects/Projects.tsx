@@ -28,7 +28,7 @@ const ProyectosScroll: React.FC = () => {
       tipo: "movil",
       titulo: "Video game progress tracking",
       descripcion: "A mobile app to track game time and achievements with a modern UI.",
-      imagenProyecto: "/gamestats-preview.jpg",
+      imagenProyecto: "src/assets/movil.png",
       link: "#"
     },
     {
@@ -36,7 +36,7 @@ const ProyectosScroll: React.FC = () => {
       tipo: "pc",
       titulo: "AI Dashboard",
       descripcion: "Analytics and visualizations for AI models in a modern desktop UI.",
-      imagenProyecto: "/dashboard-preview.jpg",
+      imagenProyecto: "src/assets/ai.gif",
       link: "#"
     },
     {
@@ -44,10 +44,9 @@ const ProyectosScroll: React.FC = () => {
       tipo: "movil",
       titulo: "Finance Tracker",
       descripcion: "Track your daily expenses and savings easily from your phone.",
-      imagenProyecto: "/finance-preview.jpg",
+      imagenProyecto: "src/assets/example.png",
       link: "#"
     }
-    // Puedes seguir agregando más...
   ];
 
   const [progreso, setProgreso] = useState<number>(0);
@@ -72,7 +71,7 @@ const ProyectosScroll: React.FC = () => {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Progreso inicial
+    handleScroll();
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -82,14 +81,12 @@ const ProyectosScroll: React.FC = () => {
   };
 
   return (
-    <div className="proyectos-container" ref={containerRef}>
-      {/* Iconos arriba */}
+    <div className="proyectos-container" ref={containerRef} style={{ scrollSnapType: 'y mandatory' }}>
       <div className="navbar-iconos">
         <div className="icono"><SlScreenDesktop /></div>
         <div className="icono"><CiMobile3 /></div>
       </div>
 
-      {/* Barra de progreso */}
       <div className="barra-progreso-container">
         <div className="barra-progreso-fondo">
           <div
@@ -99,7 +96,6 @@ const ProyectosScroll: React.FC = () => {
         </div>
       </div>
 
-      {/* Contenido de proyectos */}
       <div className="proyectos-contenido">
         {proyectos.map((proyecto, index) => (
           <div

@@ -50,7 +50,7 @@
 
 .tilt-mockup {
   flex: 1;
-  max-width: 500px;
+  max-width: 900px;
   transform-style: preserve-3d;
 }
 
@@ -87,11 +87,10 @@
 /* This is the key new element - a proper screen container */
 .mockup-screen {
   position: absolute;
-  /* These percentages must match the visible screen area in your laptop image */
-  top: 6.2%;
-  left: 11.5%;
-  width: 76.9%;
-  height: 76%;
+  top: 16%;
+  left: 24.4%;
+  width: 51.3%;
+  height: 48.5%;
   overflow: hidden;
   border-radius: 2px;
   transform: translateZ(2px); /* Slight 3D effect */
@@ -112,11 +111,11 @@
 
 /* Adjusted mobile mockup screen positioning */
 .mockup.movil .mockup-screen {
-  top: 6%;
-  left: 6%;
-  width: 88%;
-  height: 86%;
-  border-radius: 8px;
+  top: 18.3%;
+  left:38.4%;
+  width: 23.2%;
+  height: 63.5%;
+  border-radius: 17px;
 }
 
 @media (max-height: 800px) {
