@@ -8,7 +8,7 @@
 .navbar-iconos {
   position: fixed;
   top: 20px;
-  left: 50%;
+  left: 52%;
   transform: translateX(-50%);
   display: flex;
   gap: 20px;
@@ -28,41 +28,6 @@
   opacity: 1;
   transform: scale(1.2);
 }
-
-/* Barra de progreso vertical - REDISEÑADA */
-.barra-progreso-container {
-  position: fixed;
-  right: 30px;
-  top: 0;
-  bottom: 0;
-  height: auto;
-  width: 4px;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-}
-
-
-.barra-progreso-fondo {
-  height: 60vh; 
-  width: 100%;
-  margin: auto 0; /* Centra verticalmente */
-}
-
-
-.barra-progreso-relleno {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: linear-gradient(to top, #2980b9, #3498db);
-  border-radius: 4px;
-  transition: height 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-  height: 0%;
-  z-index: 1;
-  box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
-}
-
 
 /* Contenido de proyectos */
 .proyectos-contenido {
@@ -122,12 +87,6 @@
 
   .proyecto-imagen {
     height: 200px;
-  }
-
-  .barra-progreso-container {
-    right: 15px;
-    width: 3px; /* Más pequeño en móvil */
-    height: 30%; /* Más corto en móvil */
   }
 
   .navbar-iconos {
