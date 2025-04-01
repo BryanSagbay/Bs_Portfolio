@@ -44,69 +44,69 @@ export default function Home() {
   }, []);
 
   return (
-    
+
     <div className="home-container" ref={containerRef}>
       <CursorLineal />
       <div className="background-layer"></div>
 
       <div className="content-section">
         <div className="title-section">
-        <h1>
-  <span className="highlight typewriter">SOFTWARE</span>
-  <br />
-  ENGINEER
-</h1>
+          <h1>
+            <span className="highlight typewriter">SOFTWARE</span>
+            <br />
+            ENGINEER
+          </h1>
           <p className="intro-text">
-            Hi! I'm <span className="highlight">Bryan Sagbay</span>. Software Engineer with +1 year of 
-            experience in web development, mobile applications and artificial intelligence integration, 
+            Hi! I'm <span className="highlight">Bryan Sagbay</span>. Software Engineer with +1 year of
+            experience in web development, mobile applications and artificial intelligence integration,
             offering high performance and scalable solutions.
           </p>
           <div className="buttons-horizontal">
-  <button className="icon-button">
-    <a href="https://github.com/BryanSagbay" target="_blank" rel="noopener noreferrer">
-    <FaGithub className="button-icon" />
-    </a>
-  </button>
+            <button className="icon-button">
+              <a href="https://github.com/BryanSagbay" target="_blank" rel="noopener noreferrer">
+                <FaGithub className="button-icon" />
+              </a>
+            </button>
 
-  <button className="icon-button">
-    <a href="https://www.linkedin.com/in/bryan-sagbay-1b9912267/" target="_blank" rel="noopener noreferrer">
-      <FaLinkedin className="button-icon" />
-    </a> 
-  </button>
+            <button className="icon-button">
+              <a href="https://www.linkedin.com/in/bryan-sagbay-1b9912267/" target="_blank" rel="noopener noreferrer">
+                <FaLinkedin className="button-icon" />
+              </a>
+            </button>
 
-  <button className="icon-button">
-    <a href="https://www.instagram.com/brian.sagbay" target="_blank" rel="noopener noreferrer">
-      <FaInstagram className="button-icon" />
-    </a>
-  </button>
+            <button className="icon-button">
+              <a href="https://www.instagram.com/brian.sagbay" target="_blank" rel="noopener noreferrer">
+                <FaInstagram className="button-icon" />
+              </a>
+            </button>
 
-  <button className="icon-button">
-    <a href="https://x.com/sagbay15130" target="_blank" rel="noopener noreferrer">
-      <FaTwitter className="button-icon" />
-    </a>
-  </button>
+            <button className="icon-button">
+              <a href="https://x.com/sagbay15130" target="_blank" rel="noopener noreferrer">
+                <FaTwitter className="button-icon" />
+              </a>
+            </button>
 
-  <button className="icon-button">
-  <a 
-    href="src/template/cv.pdf" 
-    target="_blank" 
-    rel="noopener noreferrer" 
-    download="Bryan_Sagbay_CV.pdf"
-  >
-    <FaDownload className="button-icon" />
-  </a>
-  </button>
+            <button className="icon-button">
+              <a
+                href="src/template/cv.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                download="Bryan_Sagbay_CV.pdf"
+              >
+                <FaDownload className="button-icon" />
+              </a>
+            </button>
 
-  <button 
-  className="hire-button"
-  onClick={() => {
-    window.location.href = "mailto:bryansagbay2001@gmail.com?subject=I want to hire you&body=Hi Bryan, I saw your portfolio and I'd like to connect.";
-  }}
->
-  HIRE ME
-</button>
+            <button
+              className="hire-button"
+              onClick={() => {
+                window.location.href = "mailto:bryansagbay2001@gmail.com?subject=I want to hire you&body=Hi Bryan, I saw your portfolio and I'd like to connect.";
+              }}
+            >
+              HIRE ME
+            </button>
 
-</div>
+          </div>
         </div>
 
         <div className="stats-section">
