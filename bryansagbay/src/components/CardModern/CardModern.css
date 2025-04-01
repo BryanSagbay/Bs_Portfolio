@@ -6,7 +6,7 @@
   justify-content: space-between;
   gap: 50px;
   flex-wrap: wrap;
-  margin: auto;
+  margin: 0;
   will-change: transform, opacity;
 }
 
@@ -187,6 +187,7 @@
   .moderno-container {
     flex-direction: column !important;
     text-align: center;
+    gap: 20px;
   }
 
   .texto,
@@ -216,3 +217,4 @@
     max-width: 100%;
   }
 }
+

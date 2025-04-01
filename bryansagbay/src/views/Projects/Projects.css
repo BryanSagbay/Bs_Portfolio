@@ -1,8 +1,13 @@
 /* Contenedor principal */
 .proyectos-container {
-  position: relative;
   width: 100%;
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  position: relative;
 }
+
 
 /* Barra superior con iconos a todo ancho */
 .navbar-iconos {
@@ -53,18 +58,17 @@
 
 /* Contenido de proyectos */
 .proyectos-contenido {
-  width: 100%;
-  padding-top: 0;
+  display: flex;
+  flex-direction: column;
 }
 
-
 .proyecto-seccion {
-  min-height: 100vh;
+  scroll-snap-align: start;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  scroll-snap-align: center;
-  padding: 60px 40px;
+  padding: 0 20px;
   box-sizing: border-box;
 }
 
