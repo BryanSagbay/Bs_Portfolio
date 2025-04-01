@@ -40,8 +40,8 @@
   opacity: 2;
   transition: none;
   cursor: default;
-  color: white; /* Para asegurar contraste con el fondo oscuro */
-  display: flex; /* Ayuda a centrar el contenido del icono */
+  color: white;
+  display: flex; 
   align-items: center;
   justify-content: center;
 }
