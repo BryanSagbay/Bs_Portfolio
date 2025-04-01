@@ -8,13 +8,13 @@
 .navbar-iconos {
   position: fixed;
   top: 0;
-  left: 0;
+  left: 41px;
   width: 100%;
   display: flex;
   justify-content: center; 
   align-items: center; 
   gap: 20px;
-  padding: 20px 0;
+  padding: 15px 0px;
   z-index: 1000;
   background-color: rgba(0, 0, 0); 
   box-shadow: 0 4px 12px rgba(0, 0, 0);

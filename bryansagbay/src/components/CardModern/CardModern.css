@@ -1,0 +1,84 @@
+.moderno-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: 100px 10%;
+    flex-wrap: wrap;
+    gap: 60px;
+    color: white;
+  }
+  
+  .texto {
+    max-width: 500px;
+    flex: 1;
+  }
+  
+  .contador {
+    color: #00f0ff;
+    font-weight: bold;
+    font-size: 18px;
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .texto h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+  
+  .texto p {
+    font-size: 18px;
+    color: #ccc;
+    margin-bottom: 30px;
+  }
+  
+  .boton-proyecto {
+    background-color: #00f0ff;
+    color: black;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+  
+  .boton-proyecto:hover {
+    background-color: #00c7d3;
+  }
+  
+  .tilt-mockup {
+    flex: 1;
+    max-width: 500px;
+  }
+  
+  .mockup {
+    position: relative;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+    padding-top: 65%;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  
+  .mockup.pc {
+    background-image: url('/laptop.png');
+  }
+  
+  .mockup.movil {
+    background-image: url('/mobil.png');
+    padding-top: 100%;
+  }
+  
+  .contenido-mockup {
+    position: absolute;
+    top: 11%;
+    left: 7.5%;
+    width: 85%;
+    height: 77%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
