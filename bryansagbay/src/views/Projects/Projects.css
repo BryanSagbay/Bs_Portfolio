@@ -8,7 +8,7 @@
 .navbar-iconos {
   position: fixed;
   top: 0;
-  left: 41px;
+  left: 71px;
   width: 100%;
   display: flex;
   justify-content: center; 
@@ -18,7 +18,7 @@
   z-index: 1000;
   background-color: rgba(0, 0, 0); 
   box-shadow: 0 4px 12px rgba(0, 0, 0);
-  height: 60px; 
+  height: 40px; 
 }
 
 /* Para el efecto de desvanecimiento en la parte inferior de la barra */
