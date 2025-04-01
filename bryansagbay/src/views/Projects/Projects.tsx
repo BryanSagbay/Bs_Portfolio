@@ -2,24 +2,52 @@ import React, { useState, useEffect, useRef } from 'react';
 import './Projects.css';
 import { CiMobile3 } from "react-icons/ci";
 import { SlScreenDesktop } from "react-icons/sl";
+import ProyectoCardModern from '../../components/CardModern/CardModern';
 
 interface Proyecto {
   id: number;
   tipo: 'pc' | 'movil';
+  titulo: string;
+  descripcion: string;
+  imagenProyecto: string;
+  link: string;
 }
 
 const ProyectosScroll: React.FC = () => {
   const proyectos: Proyecto[] = [
-    { id: 1, tipo: "pc" },
-    { id: 2, tipo: "movil" },
-    { id: 3, tipo: "pc" },
-    { id: 4, tipo: "movil" },
-    { id: 5, tipo: "pc" },
-    { id: 6, tipo: "movil" },
-    { id: 7, tipo: "pc" },
-    { id: 8, tipo: "movil" },
-    { id: 9, tipo: "pc" },
-    { id: 10, tipo: "movil" },
+    {
+      id: 1,
+      tipo: "pc",
+      titulo: "Designing the future of education",
+      descripcion: "Designing a platform to help educators build better online courseware.",
+      imagenProyecto: "/educacion-preview.jpg",
+      link: "#"
+    },
+    {
+      id: 2,
+      tipo: "movil",
+      titulo: "Video game progress tracking",
+      descripcion: "A mobile app to track game time and achievements with a modern UI.",
+      imagenProyecto: "/gamestats-preview.jpg",
+      link: "#"
+    },
+    {
+      id: 3,
+      tipo: "pc",
+      titulo: "AI Dashboard",
+      descripcion: "Analytics and visualizations for AI models in a modern desktop UI.",
+      imagenProyecto: "/dashboard-preview.jpg",
+      link: "#"
+    },
+    {
+      id: 4,
+      tipo: "movil",
+      titulo: "Finance Tracker",
+      descripcion: "Track your daily expenses and savings easily from your phone.",
+      imagenProyecto: "/finance-preview.jpg",
+      link: "#"
+    }
+    // Puedes seguir agregando más...
   ];
 
   const [progreso, setProgreso] = useState<number>(0);
@@ -79,13 +107,14 @@ const ProyectosScroll: React.FC = () => {
             ref={(el) => setRef(el, index)}
             className="proyecto-seccion"
           >
-            <div className="proyecto-card">
-              <h2>Proyecto #{proyecto.id}</h2>
-              <div className="proyecto-imagen">Imagen {proyecto.tipo}</div>
-              <div className="proyecto-tipo">
-                Tipo: {proyecto.tipo === 'pc' ? 'Desktop' : 'Móvil'}
-              </div>
-            </div>
+            <ProyectoCardModern
+              tipo={proyecto.tipo}
+              titulo={proyecto.titulo}
+              descripcion={proyecto.descripcion}
+              imagenProyecto={proyecto.imagenProyecto}
+              indice={index}
+              link={proyecto.link}
+            />
           </div>
         ))}
       </div>
