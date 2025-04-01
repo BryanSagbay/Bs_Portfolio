@@ -7,105 +7,132 @@
   gap: 60px;
   flex-wrap: wrap;
   margin: auto;
+  padding: 20px;
 }
 
 .texto {
-    max-width: 500px;
-    flex: 1;
+  max-width: 500px;
+  flex: 1;
 }
 
 .contador {
-    color: #00f0ff;
-    font-weight: bold;
-    font-size: 18px;
-    display: block;
-    margin-bottom: 10px;
+  color: #00f0ff;
+  font-weight: bold;
+  font-size: 18px;
+  display: block;
+  margin-bottom: 10px;
 }
 
 .texto h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
+  font-size: 36px;
+  margin-bottom: 20px;
 }
 
 .texto p {
-    font-size: 18px;
-    color: #ccc;
-    margin-bottom: 30px;
+  font-size: 18px;
+  color: #ccc;
+  margin-bottom: 30px;
 }
 
 .boton-proyecto {
-    background-color: #00f0ff;
-    color: black;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: bold;
-    text-decoration: none;
-    transition: background 0.3s;
+  background-color: #00f0ff;
+  color: black;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background 0.3s;
 }
 
 .boton-proyecto:hover {
-    background-color: #00c7d3;
+  background-color: #00c7d3;
 }
 
 .tilt-mockup {
-    flex: 1;
-    max-width: 500px;
+  flex: 1;
+  max-width: 500px;
+  transform-style: preserve-3d;
 }
 
+/* Main mockup container */
 .mockup {
   position: relative;
-  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  transform-style: preserve-3d;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Laptop mockup */
+.mockup.pc {
+  aspect-ratio: 16 / 10;
+  background-image: url('/src/assets/laptop.png');
   background-size: contain;
   background-position: center;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  border-radius: 20px;
-  overflow: hidden;
+  background-repeat: no-repeat;
 }
 
-.mockup.pc {
-  background-image: url('src/assets/laptop.png');
-  aspect-ratio: 16 / 10;
-}
-
+/* Mobile mockup */
 .mockup.movil {
-    background-image: url('src/assets/mobil.png');
-    aspect-ratio: 9 / 19; 
-    max-height: 450px;    
-    width: 100%;
-  }
-  
+  aspect-ratio: 9 / 19;
+  max-height: 450px;
+  width: 100%;
+  background-image: url('/src/assets/mobil.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
-  .contenido-mockup {
-    position: absolute;
-    top: 11%;
-    left: 7.5%;
-    width: 85%;
-    height: 77%;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-  
+/* This is the key new element - a proper screen container */
+.mockup-screen {
+  position: absolute;
+  /* These percentages must match the visible screen area in your laptop image */
+  top: 6.2%;
+  left: 11.5%;
+  width: 76.9%;
+  height: 76%;
+  overflow: hidden;
+  border-radius: 2px;
+  transform: translateZ(2px); /* Slight 3D effect */
+  background-color: white; /* Background for the screen */
+}
 
+/* The actual content (your dashboard) */
+.contenido-mockup {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
 .fila-invertida {
-    flex-direction: row-reverse;
+  flex-direction: row-reverse;
+}
+
+/* Adjusted mobile mockup screen positioning */
+.mockup.movil .mockup-screen {
+  top: 6%;
+  left: 6%;
+  width: 88%;
+  height: 86%;
+  border-radius: 8px;
 }
 
 @media (max-height: 800px) {
-    .mockup.movil {
-      max-height: 350px;
-    }
+  .mockup.movil {
+    max-height: 350px;
   }
+}
 
 @media (max-width: 768px) {
-    .moderno-container {
-        flex-direction: column !important;
-        text-align: center;
-    }
+  .moderno-container {
+    flex-direction: column !important;
+    text-align: center;
+  }
 
-    .texto,
-    .tilt-mockup {
-        max-width: 100%;
-    }
+  .texto,
+  .tilt-mockup {
+    max-width: 100%;
+  }
 }

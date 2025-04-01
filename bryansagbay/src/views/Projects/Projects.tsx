@@ -20,7 +20,7 @@ const ProyectosScroll: React.FC = () => {
       tipo: "pc",
       titulo: "Designing the future of education",
       descripcion: "Designing a platform to help educators build better online courseware.",
-      imagenProyecto: "/educacion-preview.jpg",
+      imagenProyecto: "src/assets/dashboard.png",
       link: "#"
     },
     {
