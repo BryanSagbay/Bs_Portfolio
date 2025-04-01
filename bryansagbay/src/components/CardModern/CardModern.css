@@ -12,7 +12,7 @@
 
 .texto {
   max-width: 800px;
-  margin-top: 8%;
+  margin-top: 10%;
   flex: 1;
 }
 
@@ -105,13 +105,15 @@
 /* Mobile mockup */
 .mockup.movil {
   aspect-ratio: 8 / 15;
-  max-height: 750px;
+  max-height: 700px;
   width: 100%;
-  background-image: url('/src/assets/mobil.png');
+  background-image: url('/src/assets/appmovil.png');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
 }
+
+
 
 /* This is the key new element - a proper screen container */
 .mockup-screen {
