@@ -1,47 +1,69 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './Projects.css';
 import { CiMobile3 } from 'react-icons/ci';
 import { SlScreenDesktop } from 'react-icons/sl';
+import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
 import ProyectoCardModern from '../../components/CardModern/CardModern';
 import { proyectos } from '../../data/Proyectos';
 import ListProjects from '../../components/ListProjects/ListProjects';
+import { useScrollToRedirect } from '../../hooks/useScrollToDirect';
 
 const ProyectosScroll: React.FC = () => {
   const [tipoActivo, setTipoActivo] = useState<'pc' | 'movil' | null>(null);
   const [fadeOut, setFadeOut] = useState(false);
   const [showList, setShowList] = useState(false);
 
-  const handleBackToFeatured = () => {
-    setFadeOut(true);
-    setTimeout(() => {
-      setShowList(false);
-      setFadeOut(false);
-    }, 800);
-  };
-
-  
   const sectionRefs = useRef<Array<HTMLDivElement | null>>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const lastSectionRef = useRef<HTMLDivElement | null>(null);
 
-  // Inicializa refs
-  useEffect(() => {
-    sectionRefs.current = sectionRefs.current.slice(0, proyectos.length);
-    while (sectionRefs.current.length < proyectos.length) {
-      sectionRefs.current.push(null);
-    }
+  // Optimizar la redirección usando useCallback para memorizar la función
+  const startRedirect = useCallback(() => {
+    setFadeOut(true);
+    // Reducir el tiempo de espera de 800ms a 400ms
+    setTimeout(() => {
+      setShowList(true);
+      setFadeOut(false);
+    }, 400);
   }, []);
 
-  // Detecta tipo de proyecto visible
+  // Optimizar el manejador del evento de retorno
+  const handleReturnToProjects = useCallback(() => {
+    setFadeOut(true);
+    // Reducir el tiempo de espera de 800ms a 400ms
+    setTimeout(() => {
+      setShowList(false);
+      setFadeOut(false);
+    }, 400);
+  }, []);
+
+  // Escuchar el evento de retorno con el callback optimizado
   useEffect(() => {
+    window.addEventListener('returnToProjects', handleReturnToProjects);
+    return () => {
+      window.removeEventListener('returnToProjects', handleReturnToProjects);
+    };
+  }, [handleReturnToProjects]);
+
+  // Inicializar los refs con mejor rendimiento
+  useEffect(() => {
+    // Preasignar el array con la longitud correcta
+    sectionRefs.current = Array(proyectos.length).fill(null);
+  }, []);
+
+  // Observador de intersección optimizado
+  useEffect(() => {
+    // Crear una sola instancia del observador
     const observer = new IntersectionObserver(
       (entries) => {
-        const visibleEntry = entries.find((entry) => entry.isIntersecting);
-        if (visibleEntry) {
-          const index = Number((visibleEntry.target as HTMLDivElement).dataset.index);
-          const tipo = proyectos[index]?.tipo;
-          if (tipo) {
-            setTipoActivo(tipo);
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const index = Number((entry.target as HTMLDivElement).dataset.index);
+            const tipo = proyectos[index]?.tipo;
+            if (tipo) {
+              setTipoActivo(tipo);
+              break; // Salir una vez que encontramos la entrada visible
+            }
           }
         }
       },
@@ -52,6 +74,7 @@ const ProyectosScroll: React.FC = () => {
       }
     );
 
+    // Observar elementos existentes
     sectionRefs.current.forEach((ref) => {
       if (ref) observer.observe(ref);
     });
@@ -59,70 +82,34 @@ const ProyectosScroll: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Redirección visual con animación
-  const startRedirect = () => {
-    setFadeOut(true);
-    setTimeout(() => {
-      setShowList(true);
-      setFadeOut(false);
-    }, 800);
-  };
-
-  // Scroll en último proyecto → cambiar vista
-  useEffect(() => {
-    const section = lastSectionRef.current;
-    if (!section) return;
-
-    let hasScrolled = false;
-
-    const handleWheel = (event: WheelEvent) => {
-      if (event.deltaY > 0 && !hasScrolled) {
-        hasScrolled = true;
-        startRedirect();
-      }
-    };
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          window.addEventListener('wheel', handleWheel, { passive: true });
-        } else {
-          window.removeEventListener('wheel', handleWheel);
-          hasScrolled = false;
-        }
-      },
-      {
-        root: null,
-        threshold: 0.8,
-      }
-    );
-
-    observer.observe(section);
-
-    return () => {
-      window.removeEventListener('wheel', handleWheel);
-      observer.disconnect();
-    };
-  }, []);
+  // Hook para activar redirección al hacer scroll
+  useScrollToRedirect({
+    elementRef: lastSectionRef as React.RefObject<HTMLElement>,
+    onTrigger: startRedirect,
+    enabled: !showList,
+  });
 
   return (
-    <div
-      className={`proyectos-container ${fadeOut ? 'fade-out' : ''}`}
-      ref={containerRef}
-    >
+    <div className={`proyectos-container ${fadeOut ? 'fade-out' : ''}`} ref={containerRef}>
       {!showList ? (
         <>
-          {/* Íconos activos */}
+          {/* Iconos de tipo de proyecto */}
           <div className="iconos-dispositivo">
-            <span className={`icono-pc ${tipoActivo === 'pc' ? 'activo' : ''}`} title="Proyectos de escritorio">
+            <span
+              className={`icono-pc ${tipoActivo === 'pc' ? 'activo' : ''}`}
+              title="Proyectos de escritorio"
+            >
               <SlScreenDesktop />
             </span>
-            <span className={`icono-movil ${tipoActivo === 'movil' ? 'activo' : ''}`} title="Proyectos móviles">
+            <span
+              className={`icono-movil ${tipoActivo === 'movil' ? 'activo' : ''}`}
+              title="Proyectos móviles"
+            >
               <CiMobile3 />
             </span>
           </div>
 
-          {/* Lista de proyectos modernos */}
+          {/* Lista de proyectos */}
           <div className="proyectos-contenido">
             {proyectos.map((proyecto, index) => (
               <div
@@ -146,11 +133,10 @@ const ProyectosScroll: React.FC = () => {
                   link={proyecto.link}
                 />
 
-                {/* Botón final */}
                 {index === proyectos.length - 1 && (
                   <div className="footer-more-projects">
                     <button className="boton-more" onClick={startRedirect}>
-                      More Projects ↓
+                      <MdOutlineKeyboardDoubleArrowDown />
                     </button>
                   </div>
                 )}
@@ -159,10 +145,10 @@ const ProyectosScroll: React.FC = () => {
           </div>
         </>
       ) : (
-        <ListProjects onBackToFeatured={handleBackToFeatured} />
+        <ListProjects />
       )}
     </div>
   );
 };
 
-export default ProyectosScroll;
+export default React.memo(ProyectosScroll);
