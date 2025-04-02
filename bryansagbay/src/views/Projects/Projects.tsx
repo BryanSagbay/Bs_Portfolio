@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import './Projects.css';
 import { CiMobile3 } from "react-icons/ci";
 import { SlScreenDesktop } from "react-icons/sl";
@@ -14,7 +14,7 @@ interface Proyecto {
 }
 
 const ProyectosScroll: React.FC = () => {
-  const proyectos: Proyecto[] = [
+  const proyectos = useMemo<Proyecto[]>(() => [
     {
       id: 1,
       tipo: "pc",
@@ -47,7 +47,7 @@ const ProyectosScroll: React.FC = () => {
       imagenProyecto: "src/assets/example.png",
       link: "#"
     }
-  ];
+  ], []);
 
   const [progreso, setProgreso] = useState<number>(0);
   const [tipoActivo, setTipoActivo] = useState<'pc' | 'movil' | null>(null);
