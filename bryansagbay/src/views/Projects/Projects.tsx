@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import './Projects.css';
 import { CiMobile3 } from 'react-icons/ci';
 import { SlScreenDesktop } from 'react-icons/sl';
-import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
 import ProyectoCardModern from '../../components/CardModern/CardModern';
 import { proyectos } from '../../data/Proyectos';
 import ListProjects from '../../components/ListProjects/ListProjects';
@@ -12,6 +11,15 @@ const ProyectosScroll: React.FC = () => {
   const [fadeOut, setFadeOut] = useState(false);
   const [showList, setShowList] = useState(false);
 
+  const handleBackToFeatured = () => {
+    setFadeOut(true);
+    setTimeout(() => {
+      setShowList(false);
+      setFadeOut(false);
+    }, 800);
+  };
+
+  
   const sectionRefs = useRef<Array<HTMLDivElement | null>>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const lastSectionRef = useRef<HTMLDivElement | null>(null);
@@ -142,7 +150,7 @@ const ProyectosScroll: React.FC = () => {
                 {index === proyectos.length - 1 && (
                   <div className="footer-more-projects">
                     <button className="boton-more" onClick={startRedirect}>
-                      <MdOutlineKeyboardDoubleArrowDown />
+                      More Projects ↓
                     </button>
                   </div>
                 )}
@@ -151,7 +159,7 @@ const ProyectosScroll: React.FC = () => {
           </div>
         </>
       ) : (
-        <ListProjects onBack={() => setShowList(false)} />
+        <ListProjects onBackToFeatured={handleBackToFeatured} />
       )}
     </div>
   );

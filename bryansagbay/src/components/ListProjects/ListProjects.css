@@ -1,23 +1,42 @@
-.top-return-button {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    margin-bottom: 40px;
+.proyectos-container.fade-out {
+    animation: fadeOut 0.8s ease forwards;
   }
   
-  .boton-volver {
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+  }
+  
+  .footer-more-projects {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .boton-more {
     background: none;
     border: none;
     color: #00f0ff;
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
-    text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
-    transition: color 0.3s ease;
     animation: bounce 2s infinite;
+    transition: color 0.3s ease;
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
   }
   
-  .boton-volver:hover {
+  .boton-more:hover {
     color: #00c7d3;
     text-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
   }
@@ -27,7 +46,7 @@
       transform: translateY(0);
     }
     50% {
-      transform: translateY(-8px);
+      transform: translateY(-10px);
     }
   }
   

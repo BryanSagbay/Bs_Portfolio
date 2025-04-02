@@ -1,25 +1,46 @@
+import React, { useEffect, useRef } from 'react';
+import './ListProjects.css'; 
+
+
 interface ListProjectsProps {
-    onBack: () => void;
+    onBackToFeatured: () => void;
   }
-  
-  const ListProjects: React.FC<ListProjectsProps> = ({ onBack }) => {
-    return (
-      <div className="list-projects">
-        <div className="top-return-button">
-          <button className="boton-volver" onClick={onBack}>
-            ← Featured Projects
-          </button>
-        </div>
-  
-        <h1>Todos los proyectos</h1>
-  
-        {/* Aquí tu listado resumido */}
-        <div className="projects-grid">
-          {/* Por ejemplo: */}
-          {/* proyectos.map(p => (...) */}
-        </div>
+
+const ListProjects: React.FC<ListProjectsProps> = ({ onBackToFeatured }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    let lastScroll = 0;
+
+    const handleScroll = () => {
+      const current = el.scrollTop;
+      if (current < 10 && lastScroll > current) {
+        onBackToFeatured();
+      }
+      lastScroll = current;
+    };
+
+    el.addEventListener('scroll', handleScroll);
+    return () => el.removeEventListener('scroll', handleScroll);
+  }, [onBackToFeatured]);
+
+  return (
+    <div className="list-projects-container" ref={containerRef}>
+      <div className="back-button-wrapper">
+        <button className="back-button" onClick={onBackToFeatured}>
+          ← Back to featured projects
+        </button>
       </div>
-    );
-  };
-  
-  export default ListProjects;
+
+      <div className="projects-grid">
+        {/* Aquí renderiza tus proyectos en grid */}
+        <p>Listado de proyectos resumidos...</p>
+      </div>
+    </div>
+  );
+};
+
+export default ListProjects;
