@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import './ListProjects.css';
+import { MdKeyboardDoubleArrowUp } from "react-icons/md";
 
 const ListProjects: React.FC = () => {
     // Referencia al contenedor para animaciones
@@ -62,12 +63,12 @@ const ListProjects: React.FC = () => {
     
     return (
         <div ref={containerRef} className="list-projects-container">
-            <div className="back-to-projects">
+            <div className="footer-back-projects">
                 <button 
                     className="button-back" 
                     onClick={redirectToProjects}
                 >
-                    ↑ Back to Projects
+                    <MdKeyboardDoubleArrowUp />
                 </button>
             </div>
             
@@ -78,6 +79,10 @@ const ListProjects: React.FC = () => {
                 </div>
                 
                 {/* Tu contenido aquí */}
+
+
+
+                
             </div>
         </div>
     );

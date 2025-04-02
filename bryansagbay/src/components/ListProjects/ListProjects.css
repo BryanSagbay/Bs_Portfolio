@@ -2,18 +2,17 @@
     min-height: 100vh;
     position: relative;
     opacity: 1;
-    transition: opacity 0.4s ease, transform 0.4s ease; /* Reducir de 0.8s a 0.4s */
-    animation: fadeIn 0.4s ease forwards; /* Reducir de 0.8s a 0.4s */
+    transition: opacity 0.4s ease, transform 0.4s ease; 
+    animation: fadeIn 0.4s ease forwards;
     width: 100%;
     box-sizing: border-box;
-    padding-top: 80px;
-    will-change: opacity, transform; /* Optimizar la renderización */
+    will-change: opacity, transform;
   }
   
   @keyframes fadeIn {
     0% {
       opacity: 0;
-      transform: translateY(10px); /* Reducir de 20px a 10px */
+      transform: translateY(10px);
     }
     100% {
       opacity: 1;
@@ -23,15 +22,40 @@
   
   .list-projects-container.fade-out {
     opacity: 0;
-    transform: translateY(10px); /* Reducir de 20px a 10px */
+    transform: translateY(10px);
   }
   
   /* Optimizar el botón para hacer el rendering más fluido */
+  .footer-back-projects {
+    position: relative;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
   .button-back {
-    will-change: transform; /* Notificar al navegador que este elemento cambiará */
-    transform: translateZ(0); /* Forzar aceleración de GPU */
+    will-change: transform;
+    transform: translateZ(0);
+    background: none;
+    border: none;
+    color: #00f0ff;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    animation: bounce 2s infinite;
+    transition: color 0.3s ease;
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
   }
   
+  .boton-back:hover {
+    color: #00c7d3;
+    text-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+  }
+
   /* Simplificar animación del botón */
   @keyframes float {
     0%, 100% { transform: translateY(0); }
@@ -49,3 +73,5 @@
     0%, 100% { opacity: 0.7; }
     50% { opacity: 1; }
   }
+  
+ 
