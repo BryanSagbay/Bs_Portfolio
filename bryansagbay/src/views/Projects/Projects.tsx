@@ -1,19 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Projects.css';
-import { CiMobile3 } from "react-icons/ci";
-import { SlScreenDesktop } from "react-icons/sl";
+import { CiMobile3 } from 'react-icons/ci';
+import { SlScreenDesktop } from 'react-icons/sl';
 import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
 import ProyectoCardModern from '../../components/CardModern/CardModern';
 import { proyectos } from '../../data/Proyectos';
+import ListProjects from '../../components/ListProjects/ListProjects';
 
 const ProyectosScroll: React.FC = () => {
   const [tipoActivo, setTipoActivo] = useState<'pc' | 'movil' | null>(null);
   const [fadeOut, setFadeOut] = useState(false);
+  const [showList, setShowList] = useState(false);
+
   const sectionRefs = useRef<Array<HTMLDivElement | null>>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const lastSectionRef = useRef<HTMLDivElement | null>(null);
 
-  // Asigna refs a cada sección
+  // Inicializa refs
   useEffect(() => {
     sectionRefs.current = sectionRefs.current.slice(0, proyectos.length);
     while (sectionRefs.current.length < proyectos.length) {
@@ -21,7 +24,7 @@ const ProyectosScroll: React.FC = () => {
     }
   }, []);
 
-  // Detección de sección visible
+  // Detecta tipo de proyecto visible
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -37,7 +40,7 @@ const ProyectosScroll: React.FC = () => {
       {
         root: containerRef.current,
         rootMargin: '0px',
-        threshold: 0.6
+        threshold: 0.6,
       }
     );
 
@@ -48,15 +51,16 @@ const ProyectosScroll: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Redirección con animación
+  // Redirección visual con animación
   const startRedirect = () => {
     setFadeOut(true);
     setTimeout(() => {
-      window.location.href = '/all-projects';
+      setShowList(true);
+      setFadeOut(false);
     }, 800);
   };
 
-  // Detecta scroll hacia abajo en el último proyecto
+  // Scroll en último proyecto → cambiar vista
   useEffect(() => {
     const section = lastSectionRef.current;
     if (!section) return;
@@ -93,59 +97,62 @@ const ProyectosScroll: React.FC = () => {
     };
   }, []);
 
-  const setRef = (el: HTMLDivElement | null, index: number) => {
-    sectionRefs.current[index] = el;
-    if (index === proyectos.length - 1) {
-      lastSectionRef.current = el;
-    }
-  };
-
   return (
     <div
       className={`proyectos-container ${fadeOut ? 'fade-out' : ''}`}
       ref={containerRef}
-      style={{ scrollSnapType: 'y mandatory' }}
     >
-      {/* Íconos tipo de proyecto */}
-      <div className="iconos-dispositivo">
-        <span className={`icono-pc ${tipoActivo === 'pc' ? 'activo' : ''}`} title="Proyectos de escritorio">
-          <SlScreenDesktop />
-        </span>
-        <span className={`icono-movil ${tipoActivo === 'movil' ? 'activo' : ''}`} title="Proyectos móviles">
-          <CiMobile3 />
-        </span>
-      </div>
-
-      {/* Lista de proyectos */}
-      <div className="proyectos-contenido">
-        {proyectos.map((proyecto, index) => (
-          <div
-            key={index}
-            ref={(el) => setRef(el, index)}
-            className="proyecto-seccion"
-            data-index={index}
-            style={{ position: 'relative' }}
-          >
-            <ProyectoCardModern
-              tipo={proyecto.tipo}
-              titulo={proyecto.titulo}
-              descripcion={proyecto.descripcion}
-              imagenProyecto={proyecto.imagenProyecto}
-              indice={index}
-              link={proyecto.link}
-            />
-
-            {/* Botón solo en el último proyecto */}
-            {index === proyectos.length - 1 && (
-              <div className="footer-more-projects">
-                <button className="boton-more" onClick={startRedirect}>
-                    <MdOutlineKeyboardDoubleArrowDown />
-                </button>
-              </div>
-            )}
+      {!showList ? (
+        <>
+          {/* Íconos activos */}
+          <div className="iconos-dispositivo">
+            <span className={`icono-pc ${tipoActivo === 'pc' ? 'activo' : ''}`} title="Proyectos de escritorio">
+              <SlScreenDesktop />
+            </span>
+            <span className={`icono-movil ${tipoActivo === 'movil' ? 'activo' : ''}`} title="Proyectos móviles">
+              <CiMobile3 />
+            </span>
           </div>
-        ))}
-      </div>
+
+          {/* Lista de proyectos modernos */}
+          <div className="proyectos-contenido">
+            {proyectos.map((proyecto, index) => (
+              <div
+                key={index}
+                ref={(el) => {
+                  sectionRefs.current[index] = el;
+                  if (index === proyectos.length - 1) {
+                    lastSectionRef.current = el;
+                  }
+                }}
+                className="proyecto-seccion"
+                data-index={index}
+                style={{ position: 'relative' }}
+              >
+                <ProyectoCardModern
+                  tipo={proyecto.tipo}
+                  titulo={proyecto.titulo}
+                  descripcion={proyecto.descripcion}
+                  imagenProyecto={proyecto.imagenProyecto}
+                  indice={index}
+                  link={proyecto.link}
+                />
+
+                {/* Botón final */}
+                {index === proyectos.length - 1 && (
+                  <div className="footer-more-projects">
+                    <button className="boton-more" onClick={startRedirect}>
+                      <MdOutlineKeyboardDoubleArrowDown />
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </>
+      ) : (
+        <ListProjects onBack={() => setShowList(false)} />
+      )}
     </div>
   );
 };

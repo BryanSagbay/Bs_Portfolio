@@ -1,0 +1,33 @@
+.top-return-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+  }
+  
+  .boton-volver {
+    background: none;
+    border: none;
+    color: #00f0ff;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+    transition: color 0.3s ease;
+    animation: bounce 2s infinite;
+  }
+  
+  .boton-volver:hover {
+    color: #00c7d3;
+    text-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  
