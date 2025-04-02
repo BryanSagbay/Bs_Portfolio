@@ -2,16 +2,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import './Projects.css';
 import { CiMobile3 } from "react-icons/ci";
 import { SlScreenDesktop } from "react-icons/sl";
+import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
 import ProyectoCardModern from '../../components/CardModern/CardModern';
-import { proyectos} from '../../data/proyectos';
+import { proyectos } from '../../data/Proyectos';
 
 const ProyectosScroll: React.FC = () => {
-  const [progreso, setProgreso] = useState<number>(0);
   const [tipoActivo, setTipoActivo] = useState<'pc' | 'movil' | null>(null);
+  const [fadeOut, setFadeOut] = useState(false);
   const sectionRefs = useRef<Array<HTMLDivElement | null>>([]);
   const containerRef = useRef<HTMLDivElement>(null);
+  const lastSectionRef = useRef<HTMLDivElement | null>(null);
 
-  // Inicializa refs por cada sección
+  // Asigna refs a cada sección
   useEffect(() => {
     sectionRefs.current = sectionRefs.current.slice(0, proyectos.length);
     while (sectionRefs.current.length < proyectos.length) {
@@ -19,24 +21,7 @@ const ProyectosScroll: React.FC = () => {
     }
   }, []);
 
-  // Barra de progreso
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-
-      const totalHeight = document.body.scrollHeight - window.innerHeight;
-      const scrollPosition = window.scrollY;
-      const newProgress = (scrollPosition / totalHeight) * 100;
-      setProgreso(Math.min(100, Math.max(0, newProgress)));
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Detección del proyecto visible usando IntersectionObserver
+  // Detección de sección visible
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -50,9 +35,9 @@ const ProyectosScroll: React.FC = () => {
         }
       },
       {
-        root: null,
+        root: containerRef.current,
         rootMargin: '0px',
-        threshold: 0.6 // 60% visible
+        threshold: 0.6
       }
     );
 
@@ -63,36 +48,75 @@ const ProyectosScroll: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
+  // Redirección con animación
+  const startRedirect = () => {
+    setFadeOut(true);
+    setTimeout(() => {
+      window.location.href = '/all-projects';
+    }, 800);
+  };
+
+  // Detecta scroll hacia abajo en el último proyecto
+  useEffect(() => {
+    const section = lastSectionRef.current;
+    if (!section) return;
+
+    let hasScrolled = false;
+
+    const handleWheel = (event: WheelEvent) => {
+      if (event.deltaY > 0 && !hasScrolled) {
+        hasScrolled = true;
+        startRedirect();
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          window.addEventListener('wheel', handleWheel, { passive: true });
+        } else {
+          window.removeEventListener('wheel', handleWheel);
+          hasScrolled = false;
+        }
+      },
+      {
+        root: null,
+        threshold: 0.8,
+      }
+    );
+
+    observer.observe(section);
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      observer.disconnect();
+    };
+  }, []);
+
   const setRef = (el: HTMLDivElement | null, index: number) => {
     sectionRefs.current[index] = el;
+    if (index === proyectos.length - 1) {
+      lastSectionRef.current = el;
+    }
   };
 
   return (
-    <div className="proyectos-container" ref={containerRef} style={{ scrollSnapType: 'y mandatory' }}>
+    <div
+      className={`proyectos-container ${fadeOut ? 'fade-out' : ''}`}
+      ref={containerRef}
+      style={{ scrollSnapType: 'y mandatory' }}
+    >
+      {/* Íconos tipo de proyecto */}
       <div className="iconos-dispositivo">
-        <span
-          className={`icono-pc ${tipoActivo === 'pc' ? 'activo' : ''}`}
-          title="Proyectos de escritorio"
-        >
+        <span className={`icono-pc ${tipoActivo === 'pc' ? 'activo' : ''}`} title="Proyectos de escritorio">
           <SlScreenDesktop />
         </span>
-        <span
-          className={`icono-movil ${tipoActivo === 'movil' ? 'activo' : ''}`}
-          title="Proyectos móviles"
-        >
+        <span className={`icono-movil ${tipoActivo === 'movil' ? 'activo' : ''}`} title="Proyectos móviles">
           <CiMobile3 />
         </span>
       </div>
 
-      <div className="barra-progreso-container">
-        <div className="barra-progreso-fondo">
-          <div
-            className="barra-progreso-relleno"
-            style={{ height: `${progreso}%` }}
-          ></div>
-        </div>
-      </div>
-
+      {/* Lista de proyectos */}
       <div className="proyectos-contenido">
         {proyectos.map((proyecto, index) => (
           <div
@@ -100,6 +124,7 @@ const ProyectosScroll: React.FC = () => {
             ref={(el) => setRef(el, index)}
             className="proyecto-seccion"
             data-index={index}
+            style={{ position: 'relative' }}
           >
             <ProyectoCardModern
               tipo={proyecto.tipo}
@@ -109,6 +134,15 @@ const ProyectosScroll: React.FC = () => {
               indice={index}
               link={proyecto.link}
             />
+
+            {/* Botón solo en el último proyecto */}
+            {index === proyectos.length - 1 && (
+              <div className="footer-more-projects">
+                <button className="boton-more" onClick={startRedirect}>
+                    <MdOutlineKeyboardDoubleArrowDown />
+                </button>
+              </div>
+            )}
           </div>
         ))}
       </div>
