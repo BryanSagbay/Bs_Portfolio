@@ -50,9 +50,11 @@ const ProyectosScroll: React.FC = () => {
   ];
 
   const [progreso, setProgreso] = useState<number>(0);
+  const [tipoActivo, setTipoActivo] = useState<'pc' | 'movil' | null>(null);
   const sectionRefs = useRef<Array<HTMLDivElement | null>>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Inicializa las refs de cada sección
   useEffect(() => {
     sectionRefs.current = sectionRefs.current.slice(0, proyectos.length);
     while (sectionRefs.current.length < proyectos.length) {
@@ -60,6 +62,7 @@ const ProyectosScroll: React.FC = () => {
     }
   }, [proyectos.length]);
 
+  // Barra de progreso
   useEffect(() => {
     const handleScroll = () => {
       if (!containerRef.current) return;
@@ -76,6 +79,33 @@ const ProyectosScroll: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Detectar cuál sección está visible
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries.find((entry) => entry.isIntersecting);
+        if (visibleEntry) {
+          const index = Number((visibleEntry.target as HTMLDivElement).dataset.index);
+          const tipo = proyectos[index]?.tipo;
+          if (tipo) {
+            setTipoActivo(tipo);
+          }
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.6 // 60% visible
+      }
+    );
+
+    sectionRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => observer.disconnect();
+  }, [proyectos]);
+
   const setRef = (el: HTMLDivElement | null, index: number) => {
     sectionRefs.current[index] = el;
   };
@@ -83,13 +113,20 @@ const ProyectosScroll: React.FC = () => {
   return (
     <div className="proyectos-container" ref={containerRef} style={{ scrollSnapType: 'y mandatory' }}>
       <div className="iconos-dispositivo">
-        <span className="icono-pc" title="Proyectos de escritorio">
+        <span
+          className={`icono-pc ${tipoActivo === 'pc' ? 'activo' : ''}`}
+          title="Proyectos de escritorio"
+        >
           <SlScreenDesktop />
         </span>
-        <span className="icono-movil" title="Proyectos móviles">
+        <span
+          className={`icono-movil ${tipoActivo === 'movil' ? 'activo' : ''}`}
+          title="Proyectos móviles"
+        >
           <CiMobile3 />
         </span>
       </div>
+
       <div className="barra-progreso-container">
         <div className="barra-progreso-fondo">
           <div
@@ -105,6 +142,7 @@ const ProyectosScroll: React.FC = () => {
             key={index}
             ref={(el) => setRef(el, index)}
             className="proyecto-seccion"
+            data-index={index}
           >
             <ProyectoCardModern
               tipo={proyecto.tipo}

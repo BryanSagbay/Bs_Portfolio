@@ -146,3 +146,13 @@ body {
   backdrop-filter: blur(10px);
 }
 
+.iconos-dispositivo span {
+  transition: all 0.4s ease;
+  color: #ccc;
+}
+
+.iconos-dispositivo span.activo {
+  transform: scale(1.3);
+  color: #00fff7;
+  text-shadow: 0 0 10px #00fff7;
+}
