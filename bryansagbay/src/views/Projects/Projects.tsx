@@ -50,41 +50,64 @@ const ProyectosScroll: React.FC = () => {
   ];
 
   const [progreso, setProgreso] = useState<number>(0);
-  const sectionRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const [tipoVisible, setTipoVisible] = useState<'pc' | 'movil' | null>(null);
+  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    sectionRefs.current = sectionRefs.current.slice(0, proyectos.length);
-    while (sectionRefs.current.length < proyectos.length) {
-      sectionRefs.current.push(null);
-    }
-  }, [proyectos.length]);
-
-  useEffect(() => {
     const handleScroll = () => {
-      if (!containerRef.current) return;
-
       const totalHeight = document.body.scrollHeight - window.innerHeight;
       const scrollPosition = window.scrollY;
-      const newProgress = (scrollPosition / totalHeight) * 100;
-      setProgreso(Math.min(100, Math.max(0, newProgress)));
+      const progress = (scrollPosition / totalHeight) * 100;
+      setProgreso(Math.min(100, Math.max(0, progress)));
+
+      const viewportCenter = window.innerHeight / 2;
+      let closestIndex = -1;
+      let closestDistance = Infinity;
+
+      sectionRefs.current.forEach((ref, index) => {
+        if (!ref) return;
+        const rect = ref.getBoundingClientRect();
+        const sectionCenter = rect.top + rect.height / 2;
+        const distance = Math.abs(sectionCenter - viewportCenter);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      if (closestIndex !== -1) {
+        const tipo = proyectos[closestIndex].tipo;
+        setTipoVisible((prevTipo) => (prevTipo !== tipo ? tipo : prevTipo));
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    handleScroll(); // Ejecuta una vez al montar
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [proyectos]);
 
   const setRef = (el: HTMLDivElement | null, index: number) => {
     sectionRefs.current[index] = el;
   };
 
   return (
-    <div className="proyectos-container" ref={containerRef} style={{ scrollSnapType: 'y mandatory' }}>
-      <div className="navbar-iconos">
-        <div className="icono"><SlScreenDesktop /></div>
-        <div className="icono"><CiMobile3 /></div>
+    <div className="proyectos-container" ref={containerRef}>
+      <div className="iconos-dispositivo">
+        <span
+          className={`icono-pc ${tipoVisible === 'pc' ? 'activo' : ''}`}
+          title="Proyectos de escritorio"
+        >
+          <SlScreenDesktop />
+        </span>
+        <span
+          className={`icono-movil ${tipoVisible === 'movil' ? 'activo' : ''}`}
+          title="Proyectos móviles"
+        >
+          <CiMobile3 />
+        </span>
       </div>
 
       <div className="barra-progreso-container">
@@ -99,7 +122,7 @@ const ProyectosScroll: React.FC = () => {
       <div className="proyectos-contenido">
         {proyectos.map((proyecto, index) => (
           <div
-            key={index}
+            key={proyecto.id}
             ref={(el) => setRef(el, index)}
             className="proyecto-seccion"
           >
