@@ -1,66 +1,23 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Projects.css';
 import { CiMobile3 } from "react-icons/ci";
 import { SlScreenDesktop } from "react-icons/sl";
 import ProyectoCardModern from '../../components/CardModern/CardModern';
-
-interface Proyecto {
-  id: number;
-  tipo: 'pc' | 'movil';
-  titulo: string;
-  descripcion: string;
-  imagenProyecto: string;
-  link: string;
-}
+import { proyectos} from '../../data/proyectos';
 
 const ProyectosScroll: React.FC = () => {
-  const proyectos = useMemo<Proyecto[]>(() => [
-    {
-      id: 1,
-      tipo: "pc",
-      titulo: "Designing the future of education",
-      descripcion: "Designing a platform to help educators build better online courseware.",
-      imagenProyecto: "src/assets/dashboard.png",
-      link: "#"
-    },
-    {
-      id: 2,
-      tipo: "movil",
-      titulo: "Video game progress tracking",
-      descripcion: "A mobile app to track game time and achievements with a modern UI.",
-      imagenProyecto: "src/assets/movil.png",
-      link: "#"
-    },
-    {
-      id: 3,
-      tipo: "pc",
-      titulo: "AI Dashboard",
-      descripcion: "Analytics and visualizations for AI models in a modern desktop UI.",
-      imagenProyecto: "src/assets/ai.gif",
-      link: "#"
-    },
-    {
-      id: 4,
-      tipo: "movil",
-      titulo: "Finance Tracker",
-      descripcion: "Track your daily expenses and savings easily from your phone.",
-      imagenProyecto: "src/assets/example.png",
-      link: "#"
-    }
-  ], []);
-
   const [progreso, setProgreso] = useState<number>(0);
   const [tipoActivo, setTipoActivo] = useState<'pc' | 'movil' | null>(null);
   const sectionRefs = useRef<Array<HTMLDivElement | null>>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Inicializa las refs de cada sección
+  // Inicializa refs por cada sección
   useEffect(() => {
     sectionRefs.current = sectionRefs.current.slice(0, proyectos.length);
     while (sectionRefs.current.length < proyectos.length) {
       sectionRefs.current.push(null);
     }
-  }, [proyectos.length]);
+  }, []);
 
   // Barra de progreso
   useEffect(() => {
@@ -79,7 +36,7 @@ const ProyectosScroll: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Detectar cuál sección está visible
+  // Detección del proyecto visible usando IntersectionObserver
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -104,7 +61,7 @@ const ProyectosScroll: React.FC = () => {
     });
 
     return () => observer.disconnect();
-  }, [proyectos]);
+  }, []);
 
   const setRef = (el: HTMLDivElement | null, index: number) => {
     sectionRefs.current[index] = el;
