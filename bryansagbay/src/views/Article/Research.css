@@ -1,22 +1,22 @@
 .research-container {
-  max-width: auto;
   margin: 0 auto;
   padding: 0 1rem;
 }
 
 .grid-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.3fr 1fr;
   gap: 3rem;
 }
 
 .articles-column {
   padding-right: 1rem;
+  padding-left: 1rem;
 }
 
 .featured-column {
   display: flex;
-  margin-top: 10%;
+  margin-top: 54px;
   height: 100%;
 }
 
