@@ -1,0 +1,32 @@
+.research-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+    padding: 60px;
+    background-color: #000;
+    min-height: 100vh;
+    color: #fff;
+  }
+  
+  .lista-articulos h3 {
+    color: #fff;
+    margin-bottom: 20px;
+  }
+  
+  .preview-articulo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  @media (max-width: 768px) {
+    .research-grid {
+      grid-template-columns: 1fr;
+      padding: 20px;
+    }
+  
+    .preview-articulo {
+      margin-top: 40px;
+    }
+  }
+  

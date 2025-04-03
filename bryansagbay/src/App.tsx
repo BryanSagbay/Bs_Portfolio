@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { TabItem } from './types/types';
-import Home from './views/home/Home';
+import Home from './views/Home/Home';
 import Projects from './views/Projects/Projects';
 import Profile from './views/Profile';
-import Research from './views/Research';
+import Research from './views/Article/Research';
 import Layout from './components/Layout/Layout';
 import SplashScreen from './components/SplashScreen/SplashScreen';
 
