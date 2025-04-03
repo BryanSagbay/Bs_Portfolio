@@ -1,28 +1,44 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import './LatestArticles.css';
-import { Article } from '../../data/Articulos';
 import ArticleCard from '../ArticleCard/ArticleCard';
+import { useArticles } from '../ArticleContext/ArticleContext';
 
-interface LatestArticlesProps {
-  articles: Article[];
-  onArticleSelect: (article: Article) => void;
-}
+const LatestArticles: React.FC = () => {
+  const { articles, selectedArticle, selectArticle } = useArticles();
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  
+  useEffect(() => {
+    // Efecto de animación para el título
+    const title = titleRef.current;
+    if (title) {
+      const letters = title.textContent?.split('') || [];
+      title.textContent = '';
+      
+      letters.forEach((letter, i) => {
+        const span = document.createElement('span');
+        span.textContent = letter;
+        span.style.animationDelay = `${i * 0.05}s`;
+        span.className = 'animate-letter';
+        title.appendChild(span);
+      });
+    }
+  }, []);
 
-const LatestArticles: React.FC<LatestArticlesProps> = ({ articles, onArticleSelect }) => {
   return (
     <div className="latest-articles">
-      <h1 className="section-title">Latest articles</h1>
-      <div className="articles-container">
-        {articles.map((article) => (
-          <div 
-            key={article.id} 
-            onClick={() => onArticleSelect(article)} 
-            className={`article-wrapper ${article.isComingSoon ? 'disabled' : ''}`}
-          >
-            <ArticleCard article={article} />
-          </div>
-        ))}
+      <h1 ref={titleRef} className="section-title">Latest articles</h1>
+      <div className="articles-scrollable">
+        <div className="articles-container">
+          {articles.map((article) => (
+            <ArticleCard 
+              key={article.id} 
+              article={article} 
+              isSelected={selectedArticle?.id === article.id}
+              onClick={() => selectArticle(article.id)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

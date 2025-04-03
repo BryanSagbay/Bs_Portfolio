@@ -1,27 +1,27 @@
 import React from 'react';
 import { Article } from '../../data/Articulos';
 import './ArticleCard.css';
-import { motion } from 'framer-motion';
+
 interface ArticleCardProps {
   article: Article;
+  isSelected: boolean;
+  onClick: () => void;
 }
 
-const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
+const ArticleCard: React.FC<ArticleCardProps> = ({ article, isSelected, onClick }) => {
   const { title, description, date, readTime, isComingSoon } = article;
 
   return (
-    <motion.div
-      className="article-card"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+    <div 
+      className={`article-card ${isSelected ? 'selected' : ''}`} 
+      onClick={onClick}
     >
       <div className="date-container">
         <div className="date-line"></div>
         <span className="date">{isComingSoon ? 'Coming soon...' : date}</span>
       </div>
       
-      <h2 className="title">{title}</h2>
+      <h2 className="title">{title || 'Artículo sin título'}</h2>
       
       {!isComingSoon && description && (
         <p className="description">{description}</p>
@@ -37,7 +37,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
           <span className="read-time">{readTime}</span>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 };
 
