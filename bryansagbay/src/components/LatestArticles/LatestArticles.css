@@ -1,0 +1,15 @@
+.latest-articles {
+    padding: 2rem 0;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 2rem;
+  }
+  
+  .articles-container {
+    display: flex;
+    flex-direction: column;
+  }
