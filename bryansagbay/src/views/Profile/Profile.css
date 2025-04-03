@@ -2,6 +2,7 @@
 .research-container {
   margin: 0 auto;
   padding: 0 1rem;
+  max-width: 1400px;
 }
 
 .grid-layout {
@@ -56,10 +57,10 @@
 /* ===== STICKY EXPERIENCE TITLE ===== */
 .sticky-title {
   position: sticky;
+
   top: 0;
-  background-color: var(--dark-surface);
   z-index: 5;
-  padding: 1rem 1rem 0.5rem;
+  padding-top: 2rem;
   margin: 0;
 }
 
@@ -166,6 +167,7 @@
 
 .scrolling-icons-container {
   overflow: hidden;
+  width: 100%;
 }
 
 .scrolling-row {
@@ -189,14 +191,33 @@
 .experience-item {
   background-color: var(--dark-surface);
   border-radius: var(--border-radius);
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.5rem;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   transition: transform var(--transition-speed);
+  border-left: 3px solid var(--primary-color);
+  position: relative;
 }
 
 .experience-item:hover {
   transform: translateY(-4px);
+}
+
+/* Create the vertical timeline line */
+.experience-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 38px; /* Align with the job icons */
+  bottom: -30px; /* Extend beyond the card to connect to the next one */
+  width: 2px;
+  background-color: var(--primary-color);
+  z-index: 1;
+}
+
+/* Don't show the line after the last item */
+.experience-item:last-child::before {
+  display: none;
 }
 
 .company-header {
@@ -208,12 +229,23 @@
 
 .company-logo {
   font-size: 1.3rem;
-  margin-right: 0.6rem;
+  margin-right: 0.8rem;
+  position: relative;
+  z-index: 2;
+  background-color: var(--dark-surface);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--primary-color);
 }
 
 .company-name {
   font-weight: 500;
   flex-grow: 1;
+  font-size: 0.95rem;
 }
 
 .status-indicator {
@@ -230,6 +262,7 @@
 
 .job-details {
   padding: 1.2rem;
+  position: relative; /* Add this to position the timeline line */
 }
 
 .job-header {
@@ -245,26 +278,44 @@
   color: #fff;
 }
 
+/* Style for the job icons to appear on top of the line */
+.job-header .code-tag {
+  position: relative;
+  z-index: 2;
+  background-color: var(--dark-surface);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--primary-color);
+  margin-right: 0.5rem;
+}
+
 .job-period {
   color: var(--text-secondary);
   font-size: 0.85rem;
   margin-bottom: 1rem;
+  font-weight: 300;
 }
 
 .responsibilities {
   padding-left: 1.2rem;
   margin-bottom: 1.2rem;
+  margin-top: 0;
 }
 
 .responsibilities li {
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
   position: relative;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: #ddd;
+  line-height: 1.4;
 }
 
 .responsibilities li::before {
-  content: \"•\";
+  content: "•";
   color: var(--primary-color);
   font-weight: bold;
   position: absolute;
@@ -274,7 +325,7 @@
 .tech-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.5rem;
 }
 
 .tech-tags span {
@@ -291,6 +342,12 @@
 }
 
 /* ===== RESPONSIVE ===== */
+@media (max-width: 1200px) {
+  .grid-layout {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 @media (max-width: 768px) {
   .grid-layout {
     grid-template-columns: 1fr;
@@ -323,5 +380,51 @@
 
   .sticky-title {
     position: relative;
+  }
+}
+
+/* Mejora para la línea vertical entre íconos */
+.job-header .code-tag::after {
+  content: "";
+  position: absolute;
+  top: 30px; /* Comienza desde la parte inferior del ícono */
+  left: 50%;
+  height: calc(100% + 30px); /* Altura para conectar con el siguiente ícono */
+  width: 2px;
+  background-color: var(--primary-color);
+  z-index: 1;
+  transform: translateX(-50%);
+}
+
+/* Ocultar la línea después del último elemento */
+.experience-item:last-child .job-header .code-tag::after {
+  display: none;
+}
+
+/* Mejorar el indicador de estado activo */
+.status-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #888;
+  transition: all 0.3s ease;
+}
+
+.status-indicator.active {
+  background-color: #2ecc71; /* Color verde */
+  box-shadow: 0 0 8px #2ecc71, 0 0 15px rgba(46, 204, 113, 0.5);
+  animation: pulse 1.5s infinite;
+}
+
+/* Animación de pulso para el indicador activo */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(46, 204, 113, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
   }
 }
