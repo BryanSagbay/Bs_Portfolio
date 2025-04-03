@@ -27,7 +27,7 @@ const LatestArticles: React.FC = () => {
 
   return (
     <div className="latest-articles">
-      <h1 ref={titleRef} className="section-title">Latest articles</h1>
+      <h1 ref={titleRef} className="section-title">Articles</h1>
       <div className="articles-scrollable">
         <div className="articles-container">
           {articles.map((article) => (
