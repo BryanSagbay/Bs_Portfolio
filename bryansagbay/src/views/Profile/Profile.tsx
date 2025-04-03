@@ -15,27 +15,21 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     const animateIcons = () => {
-      if (topRowRef.current) {
-        topRowRef.current.style.transform = 'translateX(0)';
-        topRowRef.current.animate([
+      const animateRow = (row: HTMLDivElement | null, direction: 'left' | 'right') => {
+        if (!row) return;
+        const distance = row.scrollWidth / 2;
+        row.animate([
           { transform: 'translateX(0)' },
-          { transform: 'translateX(-50%)' }
+          { transform: `translateX(${direction === 'left' ? -distance : distance}px)` }
         ], {
-          duration: 15000,
-          iterations: Infinity
+          duration: 20000,
+          iterations: Infinity,
+          easing: 'linear'
         });
-      }
+      };
 
-      if (bottomRowRef.current) {
-        bottomRowRef.current.style.transform = 'translateX(-50%)';
-        bottomRowRef.current.animate([
-          { transform: 'translateX(-50%)' },
-          { transform: 'translateX(0)' }
-        ], {
-          duration: 15000,
-          iterations: Infinity
-        });
-      }
+      animateRow(topRowRef.current, 'left');
+      animateRow(bottomRowRef.current, 'right');
     };
 
     animateIcons();
@@ -115,7 +109,12 @@ const Profile: React.FC = () => {
           </div>
         </motion.div>
 
-        <div className="stack-section">
+        <motion.div
+          className="stack-section"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+        >
           <h2>Stack</h2>
           <div className="scrolling-icons-container">
             <div className="scrolling-row" ref={topRowRef}>
@@ -129,13 +128,13 @@ const Profile: React.FC = () => {
               ))}
             </div>
           </div>
-        </div>
+        </motion.div>
 
         <motion.div
           className="about-section"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 1 }}
+          transition={{ delay: 0.6, duration: 1 }}
         >
           <h2>About</h2>
           <p>Hello, World! I am a Software Developer & UI/UX Designer passionate about creating high-performance, user-centric software solutions with intuitive and engaging designs.</p>
@@ -152,7 +151,7 @@ const Profile: React.FC = () => {
             className="experience-item"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.2 }}
+            transition={{ delay: index * 0.2 + 0.5 }}
           >
             <div className="company-header">
               <div className="company-logo">{item.logo}</div>
@@ -170,20 +169,23 @@ const Profile: React.FC = () => {
               </div>
               <div className="job-period">{item.period}</div>
 
-              {expandedItems[index] && (
-                <>
-                  <ul className="responsibilities">
-                    {item.responsibilities.map((res, i) => (
-                      <li key={i}>{res}</li>
-                    ))}
-                  </ul>
-                  <div className="tech-tags">
-                    {item.tech.map((tech, i) => (
-                      <span key={i}>{tech}</span>
-                    ))}
-                  </div>
-                </>
-              )}
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: expandedItems[index] ? 'auto' : 0, opacity: expandedItems[index] ? 1 : 0 }}
+                transition={{ duration: 0.4 }}
+                style={{ overflow: 'hidden' }}
+              >
+                <ul className="responsibilities">
+                  {item.responsibilities.map((res, i) => (
+                    <li key={i}>{res}</li>
+                  ))}
+                </ul>
+                <div className="tech-tags">
+                  {item.tech.map((tech, i) => (
+                    <span key={i}>{tech}</span>
+                  ))}
+                </div>
+              </motion.div>
             </div>
           </motion.div>
         ))}
