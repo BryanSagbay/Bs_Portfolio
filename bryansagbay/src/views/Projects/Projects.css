@@ -177,7 +177,7 @@ body {
 
 /* Fade out */
 .proyectos-container.fade-out {
-  animation: fadeOut 0.4s ease forwards;
+  animation: fadeOut 0.8s ease forwards;
 }
 
 @keyframes fadeOut {
@@ -187,6 +187,6 @@ body {
   }
   100% {
     opacity: 0;
-    transform: translateY(-10px); 
+    transform: translateY(-20px);
   }
 }
