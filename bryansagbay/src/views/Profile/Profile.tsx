@@ -13,74 +13,41 @@ const Profile: React.FC = () => {
   const bottomRowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const animateInfiniteScroll = (element: HTMLDivElement | null, direction: 'left' | 'right') => {
-      if (!element) return;
-      
-      const originalContent = element.innerHTML;
-      element.innerHTML = originalContent + originalContent;
-      
-      const contentWidth = element.scrollWidth / 2;
-      
-      const keyframes = [
-        { transform: 'translateX(0)' },
-        { transform: `translateX(${direction === 'left' ? -contentWidth : contentWidth}px)` }
-      ];
-      
-      const options = {
-        duration: 20000,
-        iterations: Infinity,
-        easing: 'linear'
-      };
-      
-      const animation = element.animate(keyframes, options);
-      
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-          animation.pause();
-        } else {
-          animation.play();
+    const animateRow = (row: HTMLDivElement | null, direction: 'left' | 'right') => {
+      if (!row) return;
+      const distance = row.scrollWidth / 2;
+      row.animate(
+        [
+          { transform: 'translateX(0)' },
+          { transform: `translateX(${direction === 'left' ? -distance : distance}px)` }
+        ],
+        {
+          duration: 20000,
+          iterations: Infinity,
+          easing: 'linear'
         }
-      });
-      
-      return () => {
-        if (animation) {
-          animation.cancel();
-        }
-      };
+      );
     };
 
-    // Iniciar las animaciones para ambas filas
-    const topRowCleanup = animateInfiniteScroll(topRowRef.current, 'left');
-    const bottomRowCleanup = animateInfiniteScroll(bottomRowRef.current, 'right');
-    
-    // Función de limpieza
-    return () => {
-      if (topRowCleanup) topRowCleanup();
-      if (bottomRowCleanup) bottomRowCleanup();
-    };
+    animateRow(topRowRef.current, 'left');
+    animateRow(bottomRowRef.current, 'right');
   }, []);
 
   const topRowIcons = [
-    <FaReact key="react" color="#61DAFB" size={32} />, 
-    <SiTypescript key="typescript" color="#3178C6" size={32} />,
-    <FaJs key="javascript" color="#F7DF1E" size={32} />, 
-    <FaHtml5 key="html" color="#E34F26" size={32} />,
-    <FaCss3 key="css" color="#1572B6" size={32} />, 
-    <SiNextdotjs key="nextjs" color="#000000" size={32} />,
-    <FaNodeJs key="nodejs" color="#339933" size={32} />, 
-    <FaPython key="python" color="#3776AB" size={32} />
+    <FaReact color="#61DAFB" size={32} />, <SiTypescript color="#3178C6" size={32} />,
+    <FaJs color="#F7DF1E" size={32} />, <FaHtml5 color="#E34F26" size={32} />,
+    <FaCss3 color="#1572B6" size={32} />, <SiNextdotjs color="#000000" size={32} />,
+    <FaNodeJs color="#339933" size={32} />, <FaPython color="#3776AB" size={32} />
   ];
 
   const bottomRowIcons = [
-    <SiMobx key="mobx" color="#FF9955" size={32} />, 
-    <SiTailwindcss key="tailwind" color="#06B6D4" size={32} />,
-    <FaGithub key="github" color="#181717" size={32} />, 
-    <FaDocker key="docker" color="#2496ED" size={32} />,
-    <SiFirebase key="firebase" color="#FFCA28" size={32} />
+    <SiMobx color="#FF9955" size={32} />, <SiTailwindcss color="#06B6D4" size={32} />,
+    <FaGithub color="#181717" size={32} />, <FaDocker color="#2496ED" size={32} />,
+    <SiFirebase color="#FFCA28" size={32} />
   ];
 
   return (
-    <div className="research-container">
+    <div className="profile-container">
       <div className="grid-layout">
         <div className="detail-column">
           <div className="detail-column-inner">
@@ -118,12 +85,12 @@ const Profile: React.FC = () => {
               <h2>Stack</h2>
               <div className="scrolling-icons-container">
                 <div className="scrolling-row" ref={topRowRef}>
-                  {topRowIcons.map((icon, i) => (
+                  {[...topRowIcons, ...topRowIcons].map((icon, i) => (
                     <span key={`top-${i}`}>{icon}</span>
                   ))}
                 </div>
                 <div className="scrolling-row reverse" ref={bottomRowRef}>
-                  {bottomRowIcons.map((icon, i) => (
+                  {[...bottomRowIcons, ...bottomRowIcons, ...bottomRowIcons].map((icon, i) => (
                     <span key={`bottom-${i}`}>{icon}</span>
                   ))}
                 </div>
