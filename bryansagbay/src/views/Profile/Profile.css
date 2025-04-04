@@ -92,6 +92,7 @@ body {
 .verified-badge {
   color: #1D9BF0;
   font-size: 1.2rem;
+  margin-top: 5px;
 }
 
 .profile-tagline {
@@ -431,4 +432,70 @@ body {
 @keyframes slideRight {
   from { transform: translateX(-50%); }
   to { transform: translateX(0); }
+}
+
+/* 🔁 Responsive Design */
+@media (max-width: 1024px) {
+  .portfolio-container {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .left-column,
+  .right-column {
+    position: static;
+    max-height: none;
+    height: auto;
+    padding: 0;
+  }
+
+  .left-column {
+    padding-bottom: 2rem;
+  }
+
+  .tech-stack-row {
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .tech-item {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .profile-name {
+    font-size: 1.5rem;
+  }
+
+  .stack-section h2,
+  .about-section h2,
+  .right-column h2 {
+    font-size: 1.5rem;
+  }
+
+  .company-name {
+    font-size: 1.1rem;
+  }
+
+  .position-title {
+    font-size: 1rem;
+  }
+
+  .project-title {
+    font-size: 0.95rem;
+  }
+
+  .tech-tag {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+  }
 }

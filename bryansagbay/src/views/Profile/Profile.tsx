@@ -1,13 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './Profile.css';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Iconos
-import { FaReact, FaNodeJs, FaPython, FaCode } from 'react-icons/fa';
-import { SiTypescript, SiJavascript, SiNextdotjs, SiTailwindcss } from 'react-icons/si';
+import { FaReact, FaNodeJs, FaPython, FaCode, FaAngular, FaJava, FaDocker, FaBootstrap, FaHtml5, FaLinux, FaGithub } from 'react-icons/fa';
+import { SiTypescript, SiJavascript, SiNextdotjs, SiTailwindcss, SiPhp, SiMongodb } from 'react-icons/si';
 import { MdVerified } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoIosCall, IoMdMail } from "react-icons/io";
+import { BiLogoPostgresql } from "react-icons/bi";
+import { DiRedis } from "react-icons/di";
+import { VscAzure } from "react-icons/vsc";
 
 interface ProjectDetail {
   name: string;
@@ -29,29 +32,56 @@ interface Experience {
   positions: Position[];
 }
 
+const fadeInProps = {
+  initial: { opacity: 0, y: 30 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.2 },
+  transition: { duration: 0.6 }
+};
+
 const PortfolioLayout: React.FC = () => {
   const [pulse, setPulse] = useState<boolean>(true);
   const firstRowRef = useRef<HTMLDivElement>(null);
   const secondRowRef = useRef<HTMLDivElement>(null);
 
+  const taglines = [
+    "Software Engineer.",
+    "Front End Developer.",
+    "Creating with code, driven by passion."
+  ];
+  const [currentTagline, setCurrentTagline] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTagline((prev) => (prev + 1) % taglines.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [taglines.length]);
+
   const techStackRow1 = [
+    { name: 'Java', icon: <FaJava /> },
     { name: 'TypeScript', icon: <SiTypescript /> },
     { name: 'JavaScript', icon: <SiJavascript /> },
     { name: 'Python', icon: <FaPython /> },
-    { name: 'PHP', icon: <span className="tech-icon">PHP</span> },
-    { name: 'Next.js', icon: <SiNextdotjs /> },
     { name: 'Node.js', icon: <FaNodeJs /> },
-    { name: 'React', icon: <FaReact /> },
+    { name: 'PHP', icon: <SiPhp/> },
+    { name: 'Next.js', icon: <SiNextdotjs /> },
+    { name: 'React', icon: <FaReact />},
+    { name: 'Angular', icon: <FaAngular /> }
+  
   ];
 
   const techStackRow2 = [
+    { name: 'Git', icon: <FaGithub /> },
     { name: 'Tailwind CSS', icon: <SiTailwindcss /> },
-    { name: 'Docker', icon: <span className="tech-icon">🐳</span> },
-    { name: 'GraphQL', icon: <span className="tech-icon">▢</span> },
-    { name: 'MongoDB', icon: <span className="tech-icon">🍃</span> },
-    { name: 'PostgreSQL', icon: <span className="tech-icon">🐘</span> },
-    { name: 'Redis', icon: <span className="tech-icon">🔶</span> },
-    { name: 'AWS', icon: <span className="tech-icon">☁️</span> },
+    { name: 'Bootstrap', icon: <FaBootstrap /> },
+    { name: 'HTML5', icon: <FaHtml5 /> },
+    { name: 'Docker', icon: <FaDocker /> },
+    { name: 'MongoDB', icon: <SiMongodb /> },
+    { name: 'PostgreSQL', icon: <BiLogoPostgresql /> },
+    { name: 'Redis', icon: <DiRedis /> },
+    { name: 'Linux', icon: <FaLinux /> },
+    { name: 'Azure', icon: <VscAzure/> },
   ];
 
   const experiences: Experience[] = [
@@ -132,25 +162,32 @@ const PortfolioLayout: React.FC = () => {
     }
   }, []);
 
+
   return (
-    <motion.div
-      className="portfolio-container"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <motion.div className="left-column" initial={{ x: -50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.6, delay: 0.2 }}>
-        <motion.div className="profile-section" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
+    <motion.div className="portfolio-container" {...fadeInProps}>
+      <motion.div className="left-column" {...fadeInProps}>
+        <motion.div className="profile-section" {...fadeInProps}>
           <div className="profile-image">
-            <img src="src/assets/perfil.jpeg" alt="Chánh Đại" />
+            <img src="src/assets/perfil.jpeg" alt="Bryan Sagbay" />
           </div>
           <div className="profile-info">
-            <h1 className="profile-name">Bryan Sagbay <span className="verified-badge"><MdVerified /></span></h1>
-            <p className="profile-tagline">Creating with code, driven by passion.</p>
+            <h1 className="profile-name">Bryan Sagbay <span className="verified-badge"><MdVerified size={30}/></span></h1>
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={currentTagline}
+                className="profile-tagline"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -20, opacity: 0 }}
+                transition={{ duration: 1.5 }}
+              >
+                {taglines[currentTagline]}
+              </motion.p>
+            </AnimatePresence>
           </div>
         </motion.div>
 
-        <motion.div className="profile-section" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }}>
+        <motion.div className="profile-section" {...fadeInProps}>
           <div className="profile-details">
             <div className="detail-item"><span className="detail-icon"><FaCode /></span><span>Software Engineer, Front Developer & UI Design</span></div>
             <div className="detail-item"><span className="detail-icon"><FaLocationDot /></span><span>Cuenca, Ecuador</span></div>
@@ -159,7 +196,7 @@ const PortfolioLayout: React.FC = () => {
           </div>
         </motion.div>
 
-        <motion.div className="about-section" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 }}>
+        <motion.div className="about-section" {...fadeInProps}>
           <h2>About</h2>
           <div className="about-content">
             <p>Hello, World! I am Chánh Đại, a Software Developer & UI/UX Designer passionate about creating high-performance, user-centric software solutions with intuitive and engaging designs.</p>
@@ -168,7 +205,7 @@ const PortfolioLayout: React.FC = () => {
           </div>
         </motion.div>
 
-        <motion.div className="stack-section" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.6 }}>
+        <motion.div className="stack-section" {...fadeInProps}>
           <h2>Stack</h2>
           <div className="tech-stack-container">
             <div className="tech-stack-row" ref={firstRowRef}>
@@ -185,17 +222,11 @@ const PortfolioLayout: React.FC = () => {
         </motion.div>
       </motion.div>
 
-      <motion.div className="right-column" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.6, delay: 0.7 }}>
+      <motion.div className="right-column" {...fadeInProps}>
         <h2>Experience</h2>
         <div className="experience-timeline">
           {experiences.map((exp, expIndex) => (
-            <motion.div
-              className="experience-item"
-              key={`exp-${expIndex}`}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.8 + expIndex * 0.2 }}
-            >
+            <motion.div className="experience-item" key={`exp-${expIndex}`} {...fadeInProps}>
               <div className="company-header">
                 <div className="company-logo">🏢</div>
                 <h3 className="company-name">{exp.company}</h3>
