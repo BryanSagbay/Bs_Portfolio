@@ -2,11 +2,15 @@ import './Profile.css';
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import {
-  FaReact, FaJs, FaHtml5, FaCss3, FaNodeJs, FaPython, FaGithub, FaDocker
+  FaCode, FaReact, FaJs, FaHtml5, FaCss3, FaNodeJs, FaPython, FaGithub, FaDocker
 } from 'react-icons/fa';
+import { HiMiniCheckBadge } from "react-icons/hi2";
 import {
   SiTypescript, SiNextdotjs, SiMobx, SiTailwindcss, SiFirebase
 } from 'react-icons/si';
+import { TfiLocationPin } from "react-icons/tfi";
+import { IoCallOutline } from "react-icons/io5";
+import { CiMail } from "react-icons/ci";
 
 const Profile: React.FC = () => {
   const topRowRef = useRef<HTMLDivElement>(null);
@@ -36,7 +40,7 @@ const Profile: React.FC = () => {
   const topRowIcons = [
     <FaReact color="#61DAFB" size={32} />, <SiTypescript color="#3178C6" size={32} />,
     <FaJs color="#F7DF1E" size={32} />, <FaHtml5 color="#E34F26" size={32} />,
-    <FaCss3 color="#1572B6" size={32} />, <SiNextdotjs color="#000000" size={32} />,
+    <FaCss3 color="#1572B6" size={32} />, <SiNextdotjs color="#FFFFFF" size={32} />,
     <FaNodeJs color="#339933" size={32} />, <FaPython color="#3776AB" size={32} />
   ];
 
@@ -53,24 +57,33 @@ const Profile: React.FC = () => {
           <div className="detail-column-inner">
             <motion.div className="profile-header" initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
               <div className="profile-image">
-                <img src="/path-to-your-profile-image.jpg" alt="Profile" />
+                <img src="src/assets/perfil.jpeg" alt="Profile" />
               </div>
               <div className="profile-title">
-                <h1>Tu Nombre</h1>
+                <h1>Bryan Sagbay <HiMiniCheckBadge color="#2496ED" size={35} /></h1>
                 <div className="subtitle">Creating with code, driven by passion.</div>
-                <div className="job-title">
-                  <span className="code-tag">&lt;/&gt;</span> Senior Frontend Developer & UI Design Lead
-                </div>
-                <div className="location">Ho Chi Minh City, Viet Nam</div>
-                <div className="contact">
-                  <div>email@example.com</div>
-                  <div>www.yourdomain.com</div>
-                </div>
+                <hr />
+              </div>
+            </motion.div>
+
+            <motion.div className='profile-title'>
+              <div className="job-title">
+                <span className="code-tag"><FaCode /></span> Software Engineer & UI Design
+              </div>
+              <div className="job-title">
+                <span className="code-tag"><TfiLocationPin /></span> Cuenca, Ecuador
+              </div>
+              <div className="job-title">
+                <span className="code-tag"><IoCallOutline /></span> 099999999
+              </div>
+              <div className="job-title">
+                <span className="code-tag"><CiMail /></span> bryansagbay2001@hotmail,.com
               </div>
             </motion.div>
 
             <motion.div className="about-section" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, duration: 1 }}>
               <h2>About</h2>
+
               <p>Hello, World! I am a Software Developer & UI/UX Designer passionate about creating high-performance, user-centric software solutions with intuitive and engaging designs.</p>
               <p>With 5+ years of experience, I specialize in building high-quality web and mobile applications using Next.js, React, TypeScript, and modern front-end technologies. Beyond work, I love exploring new technologies and turning ideas into reality through personal projects.</p>
               <p>Let's connect and collaborate!</p>
@@ -120,8 +133,6 @@ const Profile: React.FC = () => {
                   <li>Build and maintain the Zalo Mini App for seamless integration.</li>
                   <li>Develop and maintain core features to enhance functionality and user experience.</li>
                   <li>Ensure UI/UX consistency and adherence to standards.</li>
-                  <li>Implement robust frontend solutions for web and mobile platforms.</li>
-                  <li>Analyze technical capabilities and provide optimal solutions.</li>
                 </ul>
                 <div className="tech-tags">
                   <span>TypeScript</span>

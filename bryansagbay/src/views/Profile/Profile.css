@@ -2,16 +2,16 @@
 .profile-container {
   margin: 0 auto;
   padding: 0 1rem;
-  max-width: 1400px;
+  max-width: 1100px;
 }
 
 .grid-layout {
   display: grid;
-  grid-template-columns: 3fr 1.2fr;
-  gap: 2rem;
+  grid-template-columns: 0.7fr 1.3fr; /* Give more space to the right column */
+  gap: 1.5rem; /* Increase gap slightly */
   width: 100%;
-  height: 80vh;
 }
+
 
 .detail-column {
   height: 100%;
@@ -27,19 +27,23 @@
 
 .articles-column {
   height: 100%;
-  overflow: hidden;
-  position: relative;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
+  position: relative;
+  padding-left: 0.5rem;
+  width: 100%;
+  max-width: 100%;
 }
 
 .articles-scrollable {
   height: 100%;
   overflow-y: auto;
-  padding-right: 1rem;
+  padding-right: 0.5rem; /* Reduce padding */
   position: relative;
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 200, 255, 0.5) rgba(255, 255, 255, 0.1);
+  width: 100%;
 }
 
 .articles-scrollable::-webkit-scrollbar {
@@ -57,11 +61,13 @@
 /* ===== STICKY EXPERIENCE TITLE ===== */
 .sticky-title {
   position: sticky;
-
   top: 0;
   z-index: 5;
   padding-top: 2rem;
   margin: 0;
+  width: 100%;
+  background-color: var(--dark-surface, #121212);
+  padding-bottom: 1rem;
 }
 
 /* ===== PERFIL ===== */
@@ -72,13 +78,14 @@
 }
 
 .profile-image {
-  width: 100px;
-  height: 100px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
   overflow: hidden;
   border: 3px solid var(--primary-color);
   margin-right: 1rem;
   box-shadow: 0 0 20px var(--primary-light);
+  flex-shrink: 0;
 }
 
 .profile-image img {
@@ -111,7 +118,7 @@
 }
 
 .job-title {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
   margin-bottom: 0.3rem;
 }
@@ -122,19 +129,15 @@
   margin-right: 0.5rem;
 }
 
-.location, .contact {
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-  margin-top: 0.3rem;
-}
-
 /* ===== ABOUT ===== */
 .about-section {
   background-color: var(--dark-surface);
   border-radius: var(--border-radius);
-  padding: 1.5rem;
+  padding: 1rem;
   margin-bottom: 1.5rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 90%;
 }
 
 .about-section h2 {
@@ -153,8 +156,10 @@
 .stack-section {
   background-color: var(--dark-surface);
   border-radius: var(--border-radius);
-  padding: 1.5rem;
+  padding: 1.5rem 1rem 1rem 1rem;
   margin-bottom: 2rem;
+  width: 100%;
+  max-width: 90%;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
@@ -186,6 +191,7 @@
 .experience-title {
   font-size: 2rem;
   color: var(--primary-color);
+  width: 100%;
 }
 
 .experience-item {
@@ -197,34 +203,24 @@
   transition: transform var(--transition-speed);
   border-left: 3px solid var(--primary-color);
   position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  box-sizing: border-box; /* Add this to include padding in width calculation */
 }
 
 .experience-item:hover {
   transform: translateY(-4px);
 }
 
-/* Create the vertical timeline line */
-.experience-item::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 38px; /* Align with the job icons */
-  bottom: -30px; /* Extend beyond the card to connect to the next one */
-  width: 2px;
-  background-color: var(--primary-color);
-  z-index: 1;
-}
-
-/* Don't show the line after the last item */
-.experience-item:last-child::before {
-  display: none;
-}
+/* Líneas verticales removidas (antes aquí estaba ::before y ::after) */
 
 .company-header {
   display: flex;
   align-items: center;
   padding: 0.8rem 1.2rem;
   background-color: rgba(0, 0, 0, 0.2);
+  width: 100%;
 }
 
 .company-logo {
@@ -240,35 +236,48 @@
   align-items: center;
   justify-content: center;
   border: 2px solid var(--primary-color);
+  flex-shrink: 0;
 }
 
 .company-name {
   font-weight: 500;
   flex-grow: 1;
   font-size: 0.95rem;
+  white-space: normal;
 }
 
 .status-indicator {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background-color: #888;
+  transition: all 0.3s ease;
 }
 
 .status-indicator.active {
-  background-color: var(--primary-color);
-  box-shadow: 0 0 8px var(--primary-light);
+  background-color: #2ecc71;
+  box-shadow: 0 0 8px #2ecc71, 0 0 15px rgba(46, 204, 113, 0.5);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(46, 204, 113, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
 }
 
 .job-details {
   padding: 1.2rem;
-  position: relative; /* Add this to position the timeline line */
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .job-header {
   display: flex;
   align-items: center;
   margin-bottom: 0.6rem;
+  width: 100%;
 }
 
 .job-header h3 {
@@ -276,9 +285,9 @@
   flex-grow: 1;
   font-size: 1.2rem;
   color: #fff;
+  white-space: normal;
 }
 
-/* Style for the job icons to appear on top of the line */
 .job-header .code-tag {
   position: relative;
   z-index: 2;
@@ -291,6 +300,7 @@
   justify-content: center;
   border: 2px solid var(--primary-color);
   margin-right: 0.5rem;
+  flex-shrink: 0;
 }
 
 .job-period {
@@ -298,20 +308,22 @@
   font-size: 0.85rem;
   margin-bottom: 1rem;
   font-weight: 300;
+  width: 100%;
+  white-space: normal;
 }
 
 .responsibilities {
   padding-left: 1.2rem;
   margin-bottom: 1.2rem;
   margin-top: 0;
+  width: 100%;
+  max-width: 100%;
 }
 
 .responsibilities li {
-  margin-bottom: 0.5rem;
-  position: relative;
-  font-size: 0.9rem;
-  color: #ddd;
-  line-height: 1.4;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word; /* Add this for better cross-browser support */
 }
 
 .responsibilities li::before {
@@ -326,6 +338,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  width: 100%;
 }
 
 .tech-tags span {
@@ -335,6 +348,7 @@
   border-radius: 100px;
   font-size: 0.75rem;
   transition: background-color var(--transition-speed);
+  white-space: nowrap;
 }
 
 .tech-tags span:hover {
@@ -345,6 +359,16 @@
 @media (max-width: 1200px) {
   .grid-layout {
     grid-template-columns: 1fr 1fr;
+  }
+  
+  .about-section, .stack-section {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .about-section, .stack-section {
+    max-width: 100%;
   }
 }
 
@@ -381,50 +405,18 @@
   .sticky-title {
     position: relative;
   }
-}
 
-/* Mejora para la línea vertical entre íconos */
-.job-header .code-tag::after {
-  content: "";
-  position: absolute;
-  top: 30px; /* Comienza desde la parte inferior del ícono */
-  left: 50%;
-  height: calc(100% + 30px); /* Altura para conectar con el siguiente ícono */
-  width: 2px;
-  background-color: var(--primary-color);
-  z-index: 1;
-  transform: translateX(-50%);
-}
-
-/* Ocultar la línea después del último elemento */
-.experience-item:last-child .job-header .code-tag::after {
-  display: none;
-}
-
-/* Mejorar el indicador de estado activo */
-.status-indicator {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: #888;
-  transition: all 0.3s ease;
-}
-
-.status-indicator.active {
-  background-color: #2ecc71; /* Color verde */
-  box-shadow: 0 0 8px #2ecc71, 0 0 15px rgba(46, 204, 113, 0.5);
-  animation: pulse 1.5s infinite;
-}
-
-/* Animación de pulso para el indicador activo */
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+  .about-section, .stack-section {
+    max-width: 100%;
   }
-  70% {
-    box-shadow: 0 0 0 10px rgba(46, 204, 113, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
-  }
+}
+
+/* ===== CUSTOM PROPERTIES ===== */
+:root {
+  --primary-color: #00c8ff;
+  --primary-light: rgba(0, 200, 255, 0.5);
+  --dark-surface: #121212;
+  --text-secondary: #a0a0a0;
+  --border-radius: 8px;
+  --transition-speed: 0.3s ease;
 }
