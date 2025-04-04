@@ -239,7 +239,6 @@ const PortfolioLayout: React.FC = () => {
                   <div className="position-header">
                     <div className="code-icon">{'</>'}</div>
                     <h4 className="position-title">{position.title}</h4>
-                    <button className="expand-button"><span className="expand-icon">▼</span></button>
                   </div>
 
                   <div className="position-details">
