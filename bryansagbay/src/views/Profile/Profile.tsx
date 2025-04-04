@@ -3,14 +3,15 @@ import './Profile.css';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Iconos
-import { FaReact, FaNodeJs, FaPython, FaCode, FaAngular, FaJava, FaDocker, FaBootstrap, FaHtml5, FaLinux, FaGithub } from 'react-icons/fa';
-import { SiTypescript, SiJavascript, SiNextdotjs, SiTailwindcss, SiPhp, SiMongodb } from 'react-icons/si';
+import { FaReact, FaNodeJs, FaPython, FaCode, FaAngular, FaJava, FaDocker, FaBootstrap, FaHtml5, FaGithub } from 'react-icons/fa';
+import { SiTypescript, SiJavascript, SiTailwindcss, SiPhp, SiMongodb } from 'react-icons/si';
 import { MdVerified } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoIosCall, IoMdMail } from "react-icons/io";
 import { BiLogoPostgresql } from "react-icons/bi";
 import { DiRedis } from "react-icons/di";
 import { VscAzure } from "react-icons/vsc";
+import { FcLinux } from "react-icons/fc";
 
 interface ProjectDetail {
   name: string;
@@ -59,30 +60,30 @@ const PortfolioLayout: React.FC = () => {
   }, [taglines.length]);
 
   const techStackRow1 = [
-    { name: 'Java', icon: <FaJava /> },
-    { name: 'TypeScript', icon: <SiTypescript /> },
-    { name: 'JavaScript', icon: <SiJavascript /> },
-    { name: 'Python', icon: <FaPython /> },
-    { name: 'Node.js', icon: <FaNodeJs /> },
-    { name: 'PHP', icon: <SiPhp/> },
-    { name: 'Next.js', icon: <SiNextdotjs /> },
-    { name: 'React', icon: <FaReact />},
-    { name: 'Angular', icon: <FaAngular /> }
-  
+    { name: 'Java', icon: <FaJava size={32} color="#007396" /> },
+    { name: 'TypeScript', icon: <SiTypescript size={32} color="#3178C6" /> },
+    { name: 'JavaScript', icon: <SiJavascript size={32} color="#F7DF1E" /> },
+    { name: 'Python', icon: <FaPython size={32} color="#3776AB" /> },
+    { name: 'Node.js', icon: <FaNodeJs size={32} color="#339933" /> },
+    { name: 'PHP', icon: <SiPhp size={32} color="#777BB4" /> },
+    { name: 'React', icon: <FaReact size={32} color="#61DAFB" /> },
+    { name: 'Angular', icon: <FaAngular size={32} color="#DD0031" /> }
   ];
+  
 
   const techStackRow2 = [
-    { name: 'Git', icon: <FaGithub /> },
-    { name: 'Tailwind CSS', icon: <SiTailwindcss /> },
-    { name: 'Bootstrap', icon: <FaBootstrap /> },
-    { name: 'HTML5', icon: <FaHtml5 /> },
-    { name: 'Docker', icon: <FaDocker /> },
-    { name: 'MongoDB', icon: <SiMongodb /> },
-    { name: 'PostgreSQL', icon: <BiLogoPostgresql /> },
-    { name: 'Redis', icon: <DiRedis /> },
-    { name: 'Linux', icon: <FaLinux /> },
-    { name: 'Azure', icon: <VscAzure/> },
+    { name: 'Git', icon: <FaGithub size={32} color="#F05032" /> },
+    { name: 'Tailwind CSS', icon: <SiTailwindcss size={32} color="#38BDF8" /> },
+    { name: 'Bootstrap', icon: <FaBootstrap size={32} color="#7952B3" /> },
+    { name: 'HTML5', icon: <FaHtml5 size={32} color="#E34F26" /> },
+    { name: 'Docker', icon: <FaDocker size={32} color="#2496ED" /> },
+    { name: 'MongoDB', icon: <SiMongodb size={32} color="#47A248" /> },
+    { name: 'PostgreSQL', icon: <BiLogoPostgresql size={32} color="#336791" /> },
+    { name: 'Redis', icon: <DiRedis size={32} color="#DC382D" /> },
+    { name: 'Linux', icon: <FcLinux size={32} /> },
+    { name: 'Azure', icon: <VscAzure size={32} color="#2496ED" /> }
   ];
+  
 
   const experiences: Experience[] = [
     {
