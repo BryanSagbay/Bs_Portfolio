@@ -113,8 +113,9 @@
 
 .title-section {
   text-align: left;
-  max-width: 1000px;
-  position: relative;
+  max-width: 1100px;
+  position: fixed;
+  margin-top: 5rem;
 }
 
 .title-section::after {

@@ -30,8 +30,7 @@ const ArticleDetail: React.FC = () => {
   
     return (
       <div className={`article-detail ${isFeatured ? 'featured' : ''} ${animating ? 'fade-out' : 'fade-in'}`}>
-        {isFeatured && <div className="detail-badge">Featured</div>}
-        
+                
         <div className="detail-content">
           <div className="date-container">
             <div className="date-line"></div>
