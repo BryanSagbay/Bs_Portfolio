@@ -13,35 +13,7 @@ import { DiRedis } from "react-icons/di";
 import { VscAzure } from "react-icons/vsc";
 import { FcLinux } from "react-icons/fc";
 
-interface ProjectDetail {
-  name: string;
-  details: string[];
-}
-
-interface Position {
-  title: string;
-  period: string;
-  fullTime: boolean;
-  responsibilities?: string[];
-  projects?: ProjectDetail[];
-  technologies: string[];
-}
-
-interface Experience {
-  company: string;
-  isActive: boolean;
-  positions: Position[];
-}
-
-const fadeInProps = {
-  initial: { opacity: 0, y: 30 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.2 },
-  transition: { duration: 0.6 }
-};
-
 const PortfolioLayout: React.FC = () => {
-  const [pulse, setPulse] = useState<boolean>(true);
   const firstRowRef = useRef<HTMLDivElement>(null);
   const secondRowRef = useRef<HTMLDivElement>(null);
 
@@ -60,94 +32,28 @@ const PortfolioLayout: React.FC = () => {
   }, [taglines.length]);
 
   const techStackRow1 = [
-    { name: 'Java', icon: <FaJava size={32} color="#007396" /> },
-    { name: 'TypeScript', icon: <SiTypescript size={32} color="#3178C6" /> },
-    { name: 'JavaScript', icon: <SiJavascript size={32} color="#F7DF1E" /> },
-    { name: 'Python', icon: <FaPython size={32} color="#3776AB" /> },
-    { name: 'Node.js', icon: <FaNodeJs size={32} color="#339933" /> },
-    { name: 'PHP', icon: <SiPhp size={32} color="#777BB4" /> },
-    { name: 'React', icon: <FaReact size={32} color="#61DAFB" /> },
-    { name: 'Angular', icon: <FaAngular size={32} color="#DD0031" /> }
+    { name: 'Java', icon: <FaJava size={28} color="#007396" /> },
+    { name: 'TypeScript', icon: <SiTypescript size={28} color="#3178C6" /> },
+    { name: 'JavaScript', icon: <SiJavascript size={28} color="#F7DF1E" /> },
+    { name: 'Python', icon: <FaPython size={28} color="#3776AB" /> },
+    { name: 'Node.js', icon: <FaNodeJs size={28} color="#339933" /> },
+    { name: 'PHP', icon: <SiPhp size={28} color="#777BB4" /> },
+    { name: 'React', icon: <FaReact size={28} color="#61DAFB" /> },
+    { name: 'Angular', icon: <FaAngular size={28} color="#DD0031" /> }
   ];
-  
 
   const techStackRow2 = [
-    { name: 'Git', icon: <FaGithub size={32} color="#F05032" /> },
-    { name: 'Tailwind CSS', icon: <SiTailwindcss size={32} color="#38BDF8" /> },
-    { name: 'Bootstrap', icon: <FaBootstrap size={32} color="#7952B3" /> },
-    { name: 'HTML5', icon: <FaHtml5 size={32} color="#E34F26" /> },
-    { name: 'Docker', icon: <FaDocker size={32} color="#2496ED" /> },
-    { name: 'MongoDB', icon: <SiMongodb size={32} color="#47A248" /> },
-    { name: 'PostgreSQL', icon: <BiLogoPostgresql size={32} color="#336791" /> },
-    { name: 'Redis', icon: <DiRedis size={32} color="#DC382D" /> },
-    { name: 'Linux', icon: <FcLinux size={32} /> },
-    { name: 'Azure', icon: <VscAzure size={32} color="#2496ED" /> }
+    { name: 'Git', icon: <FaGithub size={28} color="#F05032" /> },
+    { name: 'Tailwind CSS', icon: <SiTailwindcss size={28} color="#38BDF8" /> },
+    { name: 'Bootstrap', icon: <FaBootstrap size={28} color="#7952B3" /> },
+    { name: 'HTML5', icon: <FaHtml5 size={28} color="#E34F26" /> },
+    { name: 'Docker', icon: <FaDocker size={28} color="#2496ED" /> },
+    { name: 'MongoDB', icon: <SiMongodb size={28} color="#47A248" /> },
+    { name: 'PostgreSQL', icon: <BiLogoPostgresql size={28} color="#336791" /> },
+    { name: 'Redis', icon: <DiRedis size={28} color="#DC382D" /> },
+    { name: 'Linux', icon: <FcLinux size={28} /> },
+    { name: 'Azure', icon: <VscAzure size={28} color="#2496ED" /> }
   ];
-  
-
-  const experiences: Experience[] = [
-    {
-      company: "Simplamo Enterprise JSC",
-      isActive: true,
-      positions: [
-        {
-          title: "Senior Frontend Developer",
-          period: "10.2022 - presente",
-          fullTime: true,
-          responsibilities: [
-            "Develop AI Chat and AI Assistant features.",
-            "Develop Whiteboards with real-time collaboration.",
-            "Build and maintain the Zalo Mini App for Simplamo with seamless integration.",
-            "Develop and maintain core features to enhance functionality and user experience.",
-            "Ensure UI/UX consistency and adherence to standards.",
-            "Implement robust frontend solutions for web and mobile platforms.",
-            "Analyze technical capabilities and provide optimal solutions."
-          ],
-          technologies: ["TypeScript", "Next.js", "React Native", "MobX", "MobX-State-Tree", "Tailwind CSS", "Dify"]
-        },
-        {
-          title: "UI Design Lead",
-          period: "10.2022 - presente",
-          fullTime: true,
-          technologies: ["Zalo Mini App", "Agile", "Teamwork", "Research", "Problem-solving"]
-        }
-      ]
-    },
-    {
-      company: "Quaric Co., Ltd.",
-      isActive: true,
-      positions: [
-        {
-          title: "Software Engineer",
-          period: "03.2024 - presente",
-          fullTime: false,
-          projects: [
-            {
-              name: "Quaric Website",
-              details: [
-                "Integrated VNPAY-QR for secure transactions.",
-                "Registered the e-commerce site with online.gov.vn for compliance.",
-                "Developed online ordering to streamline purchases."
-              ]
-            },
-            {
-              name: "ZaDark",
-              details: [
-                "Build and maintain ZaDark.com with Docusaurus, integrating AdSense.",
-                "Develop and maintain the ZaDark extension for Zalo Web on Chrome, Safari, Edge, and Firefox."
-              ]
-            }
-          ],
-          technologies: ["Next.js", "Strapi", "Auth0", "VNPAY-QR", "Docker", "NGINX", "Google Cloud", "Docusaurus", "Extension", "UX/UI Design", "UX Writing", "Research", "Project Management"]
-        }
-      ]
-    }
-  ];
-
-  useEffect(() => {
-    const pulseInterval = setInterval(() => setPulse(prev => !prev), 1500);
-    return () => clearInterval(pulseInterval);
-  }, []);
 
   useEffect(() => {
     if (firstRowRef.current && secondRowRef.current) {
@@ -163,24 +69,77 @@ const PortfolioLayout: React.FC = () => {
     }
   }, []);
 
+  // Nuevas variantes de animación para framer-motion
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delayChildren: 0.1,
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 10
+      }
+    }
+  };
 
   return (
-    <motion.div className="portfolio-container" {...fadeInProps}>
-      <motion.div className="left-column" {...fadeInProps}>
-        <motion.div className="profile-section" {...fadeInProps}>
-          <div className="profile-image">
+    <motion.div
+      className="portfolio-container"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <motion.div
+        className="left-column"
+        initial={{ x: -50, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+      >
+        <motion.div
+          className="profile-section"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <motion.div
+            className="profile-image"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
             <img src="src/assets/perfil.jpeg" alt="Bryan Sagbay" />
-          </div>
+          </motion.div>
           <div className="profile-info">
-            <h1 className="profile-name">Bryan Sagbay <span className="verified-badge"><MdVerified size={30}/></span></h1>
+            <h1 className="profile-name">
+              Bryan Sagbay
+              <motion.span
+                className="verified-badge"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 500, delay: 0.8 }}
+              >
+                <MdVerified size={24} />
+              </motion.span>
+            </h1>
             <AnimatePresence mode="wait">
               <motion.p
                 key={currentTagline}
                 className="profile-tagline"
-                initial={{ y: 20, opacity: 0 }}
+                initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -20, opacity: 0 }}
-                transition={{ duration: 1.5 }}
+                exit={{ y: -10, opacity: 0 }}
+                transition={{ duration: 0.5 }}
               >
                 {taglines[currentTagline]}
               </motion.p>
@@ -188,98 +147,107 @@ const PortfolioLayout: React.FC = () => {
           </div>
         </motion.div>
 
-        <motion.div className="profile-section" {...fadeInProps}>
-          <div className="profile-details">
-            <div className="detail-item"><span className="detail-icon"><FaCode /></span><span>Software Engineer, Front Developer & UI Design</span></div>
-            <div className="detail-item"><span className="detail-icon"><FaLocationDot /></span><span>Cuenca, Ecuador</span></div>
-            <div className="detail-item"><span className="detail-icon"><IoIosCall /></span><span>+593 995154703</span></div>
-            <div className="detail-item"><span className="detail-icon"><IoMdMail /></span><span>bryansagbay2001@hotmail.com</span></div>
-          </div>
+        <motion.div
+          className="profile-section"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <motion.div
+            className="profile-details"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.div className="detail-item" variants={itemVariants} whileHover={{ x: 5 }}>
+              <span className="detail-icon"><FaCode /></span>
+              <span>Software Engineer, Front Developer & UI Design</span>
+            </motion.div>
+            <motion.div className="detail-item" variants={itemVariants} whileHover={{ x: 5 }}>
+              <span className="detail-icon"><FaLocationDot /></span>
+              <span>Cuenca, Ecuador</span>
+            </motion.div>
+            <motion.div className="detail-item" variants={itemVariants} whileHover={{ x: 5 }}>
+              <span className="detail-icon"><IoIosCall /></span>
+              <span>+593 995154703</span>
+            </motion.div>
+            <motion.div className="detail-item" variants={itemVariants} whileHover={{ x: 5 }}>
+              <span className="detail-icon"><IoMdMail /></span>
+              <span>bryansagbay2001@hotmail.com</span>
+            </motion.div>
+          </motion.div>
         </motion.div>
 
-        <motion.div className="about-section" {...fadeInProps}>
+        <motion.div
+          className="about-section"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
           <h2>About</h2>
-          <div className="about-content">
-            <p>Hello, World! I am Chánh Đại, a Software Developer & UI/UX Designer passionate about creating high-performance, user-centric software solutions with intuitive and engaging designs.</p>
-            <p>With 5+ years of experience, I specialize in building high-quality web and mobile applications using Next.js, React, TypeScript, and modern front-end technologies. Beyond work, I love exploring new technologies and through personal projects.</p>
-            <p>One of my key projects, <a href="https://zadark.com" target="_blank" rel="noopener noreferrer">ZaDark</a>, enhances the Zalo experience on PC and Web, surpassing 80,000 downloads on <a href="https://sourceforge.net/projects/zadark/" target="_blank" rel="noopener noreferrer">SourceForge</a> and 10,000 active users on the <a href="https://chrome.google.com/webstore/detail/zadark/zadppenmkkihbhjgcmgdpnkmnkbkoafk" target="_blank" rel="noopener noreferrer">Chrome Web Store</a> since 2022.</p>
-          </div>
+          <motion.div
+            className="about-content"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.p variants={itemVariants}>
+              Hello, World! I am Chánh Đại, a Software Developer & UI/UX Designer passionate about creating high-performance, user-centric software solutions with intuitive and engaging designs.
+            </motion.p>
+            <motion.p variants={itemVariants}>
+              With 5+ years of experience, I specialize in building high-quality web and mobile applications using Next.js, React, TypeScript, and modern front-end technologies. Beyond work, I love exploring new technologies and through personal projects.
+            </motion.p>
+            <motion.p variants={itemVariants}>
+              One of my key projects, <a href="https://zadark.com" target="_blank" rel="noopener noreferrer">ZaDark</a>, enhances the Zalo experience on PC and Web, surpassing 80,000 downloads on <a href="https://sourceforge.net/projects/zadark/" target="_blank" rel="noopener noreferrer">SourceForge</a> and 10,000 active users on the <a href="https://chrome.google.com/webstore/detail/zadark/zadppenmkkihbhjgcmgdpnkmnkbkoafk" target="_blank" rel="noopener noreferrer">Chrome Web Store</a> since 2022.
+            </motion.p>
+          </motion.div>
         </motion.div>
 
-        <motion.div className="stack-section" {...fadeInProps}>
+        <motion.div
+          className="stack-section"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
           <h2>Stack</h2>
           <div className="tech-stack-container">
             <div className="tech-stack-row" ref={firstRowRef}>
               {[...techStackRow1, ...techStackRow1].map((tech, index) => (
-                <div className="tech-item" key={`tech1-${index}`}>{tech.icon}</div>
+                <motion.div
+                  className="tech-item"
+                  key={`tech1-${index}`}
+                  whileHover={{
+                    y: -8,
+                    scale: 1.1,
+                    boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)"
+                  }}
+                  transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                >
+                  {tech.icon}
+                </motion.div>
               ))}
             </div>
             <div className="tech-stack-row reverse" ref={secondRowRef}>
               {[...techStackRow2, ...techStackRow2].map((tech, index) => (
-                <div className="tech-item" key={`tech2-${index}`}>{tech.icon}</div>
+                <motion.div
+                  className="tech-item"
+                  key={`tech2-${index}`}
+                  whileHover={{
+                    y: -8,
+                    scale: 1.1,
+                    boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)"
+                  }}
+                  transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                >
+                  {tech.icon}
+                </motion.div>
               ))}
             </div>
           </div>
         </motion.div>
       </motion.div>
 
-      <motion.div className="right-column" {...fadeInProps}>
-        <h2>Experience</h2>
-        <div className="experience-timeline">
-          {experiences.map((exp, expIndex) => (
-            <motion.div className="experience-item" key={`exp-${expIndex}`} {...fadeInProps}>
-              <div className="company-header">
-                <div className="company-logo">🏢</div>
-                <h3 className="company-name">{exp.company}</h3>
-                {exp.isActive && <div className={`status-indicator active ${pulse ? 'pulse' : ''}`}><div className="sonar-wave"></div></div>}
-              </div>
-
-              {exp.positions.map((position, posIndex) => (
-                <div className="position-container" key={`pos-${expIndex}-${posIndex}`}>
-                  <div className="position-header">
-                    <div className="code-icon">{'</>'}</div>
-                    <h4 className="position-title">{position.title}</h4>
-                  </div>
-
-                  <div className="position-details">
-                    <div className="position-period">
-                      <span className={position.fullTime ? "full-time" : "part-time"}>{position.fullTime ? "Full-time" : "Part-time"}</span>
-                      <span className="period-dates">{position.period}</span>
-                    </div>
-
-                    {position.responsibilities && (
-                      <ul className="responsibilities-list">
-                        {position.responsibilities.map((resp, respIndex) => (
-                          <li key={`resp-${posIndex}-${respIndex}`}><span className="bullet">•</span><span dangerouslySetInnerHTML={{ __html: resp }}></span></li>
-                        ))}
-                      </ul>
-                    )}
-
-                    {position.projects && position.projects.map((project, projIndex) => (
-                      <div className="project-container" key={`proj-${posIndex}-${projIndex}`}>
-                        <h5 className="project-title">In-house Project: <span className="project-name">{project.name}</span></h5>
-                        <ul className="project-details-list">
-                          {project.details.map((detail, detailIndex) => (
-                            <li key={`detail-${projIndex}-${detailIndex}`}><span className="bullet">•</span><span dangerouslySetInnerHTML={{ __html: detail }}></span></li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-
-                    {position.technologies && (
-                      <div className="technologies-tags">
-                        {position.technologies.map((tech, techIndex) => (
-                          <span className="tech-tag" key={`tech-${posIndex}-${techIndex}`}>{tech}</span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
+      
     </motion.div>
   );
 };
