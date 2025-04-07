@@ -269,6 +269,7 @@ body {
   width: 100%;
   overflow: visible;
   margin-bottom: 2rem;
+  padding: 0 50px; /* Added padding to make room for the buttons */
 }
 
 /* IMPROVED EXPERIENCE ITEM */
@@ -477,51 +478,55 @@ body {
 }
 
 /* Floating buttons */
-/* Botones flotantes del carrusel */
 /* =============== */
-/* BOTONES FLOTANTES CARRUSEL */
+/* CAROUSEL BUTTONS */
 /* =============== */
 
 .carousel-button {
   position: absolute;
   top: 50%;
-  background-color: transparent;
+  background: none;
   border: none;
-  width: 48px;
-  height: 48px;
+  border-radius: 0;
+  width: auto;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   color: var(--primary-color);
-  font-size: 1.4rem;
+  font-size: 1.8rem;
   z-index: 10;
+  padding: 0;
   transition:
     transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     color 0.3s ease;
 }
 
-/* Posición lateral relativa al contenedor */
+.carousel-button:hover {
+  color: white;
+  transform: scale(1.1);
+}
+
+
+/* Position side buttons relative to container */
 .carousel-button.prev {
-  left: 0;
-  transform: translate(-100%, -50%);
+  left: 10px;
+  transform: translateY(-50%); 
 }
 
 .carousel-button.next {
-  right: 0;
-  transform: translate(100%, -50%);
+  right: 10px; 
+  transform: translateY(-50%); 
 }
 
-/* Animaciones direccionales en hover */
-.carousel-button.prev:hover {
-  transform: translate(-110%, -50%) scale(1.1);
+/* Hover effects */
+.carousel-button:hover {
+  transform: translateY(-50%) scale(1.1);
+  color: white; 
 }
 
-.carousel-button.next:hover {
-  transform: translate(110%, -50%) scale(1.1);
-}
-
-/* Sin borde, fondo ni sombra en focus/click */
+/* Focus/active states */
 .carousel-button:focus,
 .carousel-button:active {
   outline: none;
