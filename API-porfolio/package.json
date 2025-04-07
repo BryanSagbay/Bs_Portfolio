@@ -17,6 +17,7 @@
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
+    "eslint": "^8.57.1",
     "standard": "^17.1.0"
   },
   "eslintConfig": {
