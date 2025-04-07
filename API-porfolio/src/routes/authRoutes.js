@@ -1,14 +1,34 @@
 import express from 'express'
-import * as authController from '../controllers/authController.js'
-import { verifyToken } from '../middleware/auth.js'
+import { pool } from '../databases/db.js'
 
 const router = express.Router()
 
-// Rutas públicas
-router.post('/login', authController.login)
-router.post('/register', authController.register)
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body
 
-// Rutas protegidas (si aplica)
-router.post('/logout', verifyToken, authController.logout)
+  try {
+    // Consulta a la base de datos para verificar el usuario
+    const result = await pool.query(
+      'SELECT * FROM users WHERE username = $1 AND password = $2',
+      [username, password]
+    )
+
+    if (result.rows.length > 0) {
+      return res.status(200).json({
+        message: 'Inicio de sesión exitoso',
+        token: process.env.JWT_SECRET
+      })
+    } else {
+      return res.status(401).json({
+        message: 'Credenciales inválidas'
+      })
+    }
+  } catch (error) {
+    console.error('Error al autenticar:', error)
+    return res.status(500).json({
+      message: 'Error interno del servidor'
+    })
+  }
+})
 
 export default router

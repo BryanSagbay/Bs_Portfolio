@@ -5,7 +5,7 @@ import helmet from 'helmet'
 
 import { PORT } from './config.js'
 import authRoutes from './src/routes/authRoutes.js'
-import { testConnection, initDatabase } from './db.js'
+import { testConnection, initDatabase } from './src/databases/db.js'
 
 dotenv.config()
 
