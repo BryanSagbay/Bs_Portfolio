@@ -509,6 +509,16 @@ body {
   transform: scale(1.1);
 }
 
+.carousel-button.floating {
+  padding: 0.6rem;
+  transition: all 0.3s ease;
+}
+
+.carousel-button.floating:hover {
+  color: white;
+  transform: translateY(-50%) scale(1.6) rotate(10deg);
+}
+
 
 /* Position side buttons relative to container */
 .carousel-button.prev {
