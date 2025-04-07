@@ -33,7 +33,7 @@
   display: flex;
   flex-direction: column;
   align-items: center; /* Centra los elementos horizontalmente */
-  gap: 0.5rem; /* Espacio entre pestañas */
+  gap: 1.7rem; /* Espacio entre pestañas */
   padding: 0;
   margin: 0;
   width: 100%;
