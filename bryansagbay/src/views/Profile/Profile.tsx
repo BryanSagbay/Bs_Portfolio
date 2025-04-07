@@ -183,13 +183,13 @@ const PortfolioLayout: React.FC = () => {
 
   // Navegación del carrusel
   const goToPrevExperience = () => {
-    setCurrentExperienceIndex(prev => 
+    setCurrentExperienceIndex(prev =>
       prev === 0 ? experiences.length - 1 : prev - 1
     );
   };
 
   const goToNextExperience = () => {
-    setCurrentExperienceIndex(prev => 
+    setCurrentExperienceIndex(prev =>
       prev === experiences.length - 1 ? 0 : prev + 1
     );
   };
@@ -379,103 +379,103 @@ const PortfolioLayout: React.FC = () => {
       </motion.div>
 
       <div className="right-column">
-  {/* Sección de experiencia con carrusel */}
-  <div className="experience-section">
-    <div className="experience-header">
-      <h2>Experience</h2>
-      <div className="experience-navigation">
-        <span className="experience-counter">
-          {currentExperienceIndex + 1} / {experiences.length}
-        </span>
-      </div>
-    </div>
-
-    <div className="carousel-container">
-      <button
-        className="carousel-button prev"
-        onClick={handlePrevious}
-      >
-        <FaChevronLeft size={32} color='#ffffff'/>
-      </button>
-
-      <div className="carousel-content">
-        <div className="experience-item">
-          {/* Contenido de la experiencia actual */}
-          <div className="company-header">
-            <h3 className="company-name">
-              {experiences[currentExperienceIndex].company}
-              {experiences[currentExperienceIndex].isActive && (
-                <span className="status-indicator active pulse"></span>
-              )}
-            </h3>
+        {/* Sección de experiencia con carrusel */}
+        <div className="experience-section">
+          <div className="experience-header">
+            <h2>Experience</h2>
+            <div className="experience-navigation">
+              <span className="experience-counter">
+                {currentExperienceIndex + 1} / {experiences.length}
+              </span>
+            </div>
           </div>
 
-          {experiences[currentExperienceIndex].positions.map((position, posIndex) => (
-            <div
-              className="position-container"
-              key={`pos-${currentExperienceIndex}-${posIndex}`}
+          <div className="carousel-container">
+            <button
+              className="carousel-button prev floating"
+              onClick={handlePrevious}
             >
-              <div className="position-header">
-                <span className="code-icon">role</span>
-                <h4 className="position-title">{position.title}</h4>
-              </div>
+              <FaChevronLeft size={20} />
+            </button>
 
-              <div className="position-details">
-                <div className="position-period">
-                  <span className={position.fullTime ? "full-time" : "part-time"}>
-                    {position.fullTime ? "Full-time" : "Part-time"}
-                  </span>
-                  <span className="period-dates">{position.period}</span>
+            <div className="carousel-content">
+              <div className="experience-item">
+                {/* Contenido de la experiencia actual */}
+                <div className="company-header">
+                  <h3 className="company-name">
+                    {experiences[currentExperienceIndex].company}
+                    {experiences[currentExperienceIndex].isActive && (
+                      <span className="status-indicator active pulse"></span>
+                    )}
+                  </h3>
                 </div>
 
-                {position.projects?.map((project, projIndex) => (
+                {experiences[currentExperienceIndex].positions.map((position, posIndex) => (
                   <div
-                    className="project-container"
-                    key={`proj-${posIndex}-${projIndex}`}
+                    className="position-container"
+                    key={`pos-${currentExperienceIndex}-${posIndex}`}
                   >
-                    <h5 className="project-title">
-                      Project: <span className="project-name">{project.name}</span>
-                    </h5>
-                    <ul className="project-details-list">
-                      {project.details.map((detail, detailIndex) => (
-                        <li key={`detail-${projIndex}-${detailIndex}`}>
-                          <span className="bullet">•</span>
-                          <span>{detail}</span>
-                        </li>
+                    <div className="position-header">
+                      <span className="code-icon">role</span>
+                      <h4 className="position-title">{position.title}</h4>
+                    </div>
+
+                    <div className="position-details">
+                      <div className="position-period">
+                        <span className={position.fullTime ? "full-time" : "part-time"}>
+                          {position.fullTime ? "Full-time" : "Part-time"}
+                        </span>
+                        <span className="period-dates">{position.period}</span>
+                      </div>
+
+                      {position.projects?.map((project, projIndex) => (
+                        <div
+                          className="project-container"
+                          key={`proj-${posIndex}-${projIndex}`}
+                        >
+                          <h5 className="project-title">
+                            Project: <span className="project-name">{project.name}</span>
+                          </h5>
+                          <ul className="project-details-list">
+                            {project.details.map((detail, detailIndex) => (
+                              <li key={`detail-${projIndex}-${detailIndex}`}>
+                                <span className="bullet">•</span>
+                                <span>{detail}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       ))}
-                    </ul>
+
+                      {position.technologies && (
+                        <div className="technologies-tags">
+                          {position.technologies.map((tech, techIndex) => (
+                            <span
+                              className="tech-tag"
+                              key={`tech-${posIndex}-${techIndex}`}
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 ))}
-
-                {position.technologies && (
-                  <div className="technologies-tags">
-                    {position.technologies.map((tech, techIndex) => (
-                      <span
-                        className="tech-tag"
-                        key={`tech-${posIndex}-${techIndex}`}
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                )}
               </div>
             </div>
-          ))}
+
+            <button
+              className="carousel-button next floating"
+              onClick={handleNext}
+            >
+              <FaChevronRight size={20} />
+            </button>
+          </div>
+
+
         </div>
       </div>
-
-      <button
-        className="carousel-button next"
-        onClick={handleNext}
-      >
-        <FaChevronRight />
-      </button>
-    </div>
-
-    
-  </div>
-</div>
 
     </motion.div>
   );
