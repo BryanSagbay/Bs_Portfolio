@@ -3,7 +3,7 @@ import './Profile.css';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Iconos
-import { FaReact, FaNodeJs, FaPython, FaCode, FaAngular, FaJava, FaDocker, FaBootstrap, FaHtml5, FaGithub } from 'react-icons/fa';
+import { FaReact, FaNodeJs, FaPython, FaCode, FaAngular, FaJava, FaDocker, FaBootstrap, FaHtml5, FaGithub, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { SiTypescript, SiJavascript, SiTailwindcss, SiPhp, SiMongodb } from 'react-icons/si';
 import { MdVerified } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
@@ -36,6 +36,7 @@ interface Experience {
 const PortfolioLayout: React.FC = () => {
   const firstRowRef = useRef<HTMLDivElement>(null);
   const secondRowRef = useRef<HTMLDivElement>(null);
+  const [currentExperienceIndex, setCurrentExperienceIndex] = useState(0);
 
   const taglines = [
     "Software Engineer.",
@@ -75,6 +76,7 @@ const PortfolioLayout: React.FC = () => {
     { name: 'Azure', icon: <VscAzure size={28} color="#2496ED" /> }
   ];
 
+  // Experiencias de ejemplo (ampliadas para el carrusel)
   const experiences: Experience[] = [
     {
       company: "Quaric Co., Ltd.",
@@ -106,8 +108,37 @@ const PortfolioLayout: React.FC = () => {
       ]
     },
     {
-      company: "Quaric Co., Ltd.",
+      company: "DevTech Solutions",
       isActive: true,
+      positions: [
+        {
+          title: "Software Engineer",
+          period: "03.2024 - presente",
+          fullTime: false,
+          projects: [
+            {
+              name: "Quaric Website",
+              details: [
+                "Integrated VNPAY-QR for secure transactions.",
+                "Registered the e-commerce site with online.gov.vn for compliance.",
+                "Developed online ordering to streamline purchases."
+              ]
+            },
+            {
+              name: "ZaDark",
+              details: [
+                "Build and maintain ZaDark.com with Docusaurus, integrating AdSense.",
+                "Develop and maintain the ZaDark extension for Zalo Web on Chrome, Safari, Edge, and Firefox."
+              ]
+            }
+          ],
+          technologies: ["Next.js", "Strapi", "Auth0", "VNPAY-QR", "Docker", "NGINX", "Google Cloud", "Docusaurus", "Extension", "UX/UI Design", "UX Writing", "Research", "Project Management"]
+        }
+      ]
+    },
+    {
+      company: "InnoTech Labs",
+      isActive: false,
       positions: [
         {
           title: "Software Engineer",
@@ -135,6 +166,7 @@ const PortfolioLayout: React.FC = () => {
       ]
     }
   ];
+
   useEffect(() => {
     if (firstRowRef.current && secondRowRef.current) {
       firstRowRef.current.animate([
@@ -149,7 +181,20 @@ const PortfolioLayout: React.FC = () => {
     }
   }, []);
 
-  // Nuevas variantes de animación para framer-motion
+  // Navegación del carrusel
+  const goToPrevExperience = () => {
+    setCurrentExperienceIndex(prev => 
+      prev === 0 ? experiences.length - 1 : prev - 1
+    );
+  };
+
+  const goToNextExperience = () => {
+    setCurrentExperienceIndex(prev => 
+      prev === experiences.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  // Variantes de animación para framer-motion
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -174,17 +219,12 @@ const PortfolioLayout: React.FC = () => {
     }
   };
 
-  const listItemVariants = {
-    hidden: { x: -10, opacity: 0 },
-    visible: {
-      x: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 10
-      }
-    }
+  const handlePrevious = () => {
+    goToPrevExperience();
+  };
+
+  const handleNext = () => {
+    goToNextExperience();
   };
 
   return (
@@ -270,7 +310,30 @@ const PortfolioLayout: React.FC = () => {
             </motion.div>
           </motion.div>
         </motion.div>
-
+        <motion.div
+          className="about-section"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <h2>About</h2>
+          <motion.div
+            className="about-content"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.p variants={itemVariants}>
+              Hello, World! I am Bryan Sagbay, a Software Developer & UI/UX Designer passionate about creating high-performance, user-centric software solutions with intuitive and engaging designs.
+            </motion.p>
+            <motion.p variants={itemVariants}>
+              With 5+ years of experience, I specialize in building high-quality web and mobile applications using Next.js, React, TypeScript, and modern front-end technologies. Beyond work, I love exploring new technologies through personal projects.
+            </motion.p>
+            <motion.p variants={itemVariants}>
+              One of my key projects, <a href="https://zadark.com" target="_blank" rel="noopener noreferrer">ZaDark</a>, enhances the Zalo experience on PC and Web, surpassing 80,000 downloads on <a href="https://sourceforge.net/projects/zadark/" target="_blank" rel="noopener noreferrer">SourceForge</a> and 10,000 active users on the <a href="https://chrome.google.com/webstore/detail/zadark/zadppenmkkihbhjgcmgdpnkmnkbkoafk" target="_blank" rel="noopener noreferrer">Chrome Web Store</a> since 2022.
+            </motion.p>
+          </motion.div>
+        </motion.div>
         <motion.div
           className="stack-section"
           initial={{ opacity: 0 }}
@@ -315,139 +378,105 @@ const PortfolioLayout: React.FC = () => {
         </motion.div>
       </motion.div>
 
-      <motion.div
-        className="right-column"
-        initial={{ x: 50, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.6 }}
+      <div className="right-column">
+  {/* Sección de experiencia con carrusel */}
+  <div className="experience-section">
+    <div className="experience-header">
+      <h2>Experience</h2>
+      <div className="experience-navigation">
+        <span className="experience-counter">
+          {currentExperienceIndex + 1} / {experiences.length}
+        </span>
+      </div>
+    </div>
+
+    <div className="carousel-container">
+      <button
+        className="carousel-button prev"
+        onClick={handlePrevious}
       >
-        <motion.div
-          className="about-section"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
-          <h2>About</h2>
-          <motion.div
-            className="about-content"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <motion.p variants={itemVariants}>
-              Hello, World! I am Chánh Đại, a Software Developer & UI/UX Designer passionate about creating high-performance, user-centric software solutions with intuitive and engaging designs.
-            </motion.p>
-            <motion.p variants={itemVariants}>
-              With 5+ years of experience, I specialize in building high-quality web and mobile applications using Next.js, React, TypeScript, and modern front-end technologies. Beyond work, I love exploring new technologies and through personal projects.
-            </motion.p>
-            <motion.p variants={itemVariants}>
-              One of my key projects, <a href="https://zadark.com" target="_blank" rel="noopener noreferrer">ZaDark</a>, enhances the Zalo experience on PC and Web, surpassing 80,000 downloads on <a href="https://sourceforge.net/projects/zadark/" target="_blank" rel="noopener noreferrer">SourceForge</a> and 10,000 active users on the <a href="https://chrome.google.com/webstore/detail/zadark/zadppenmkkihbhjgcmgdpnkmnkbkoafk" target="_blank" rel="noopener noreferrer">Chrome Web Store</a> since 2022.
-            </motion.p>
-          </motion.div>
-        </motion.div>
-        
-        <h2>Experience</h2>
+        <FaChevronLeft size={32} color='#ffffff'/>
+      </button>
 
-        
+      <div className="carousel-content">
+        <div className="experience-item">
+          {/* Contenido de la experiencia actual */}
+          <div className="company-header">
+            <h3 className="company-name">
+              {experiences[currentExperienceIndex].company}
+              {experiences[currentExperienceIndex].isActive && (
+                <span className="status-indicator active pulse"></span>
+              )}
+            </h3>
+          </div>
 
-        {experiences.map((exp, expIndex) => (
-          <motion.div
-            className="experience-item"
-            key={`exp-${expIndex}`}
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{
-              duration: 0.5,
-              delay: expIndex * 0.2,
-              type: "spring",
-              stiffness: 100
-            }}
-            whileHover={{ y: -5 }}
-          >
-            <h3 className="company-name">{exp.company}</h3>
+          {experiences[currentExperienceIndex].positions.map((position, posIndex) => (
+            <div
+              className="position-container"
+              key={`pos-${currentExperienceIndex}-${posIndex}`}
+            >
+              <div className="position-header">
+                <span className="code-icon">role</span>
+                <h4 className="position-title">{position.title}</h4>
+              </div>
 
-            {exp.positions.map((position, posIndex) => (
-              <motion.div
-                className="position-container"
-                key={`pos-${expIndex}-${posIndex}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.3 + posIndex * 0.15 }}
-              >
-                <div className="position-header">
-                  <h4 className="position-title">{position.title}</h4>
+              <div className="position-details">
+                <div className="position-period">
+                  <span className={position.fullTime ? "full-time" : "part-time"}>
+                    {position.fullTime ? "Full-time" : "Part-time"}
+                  </span>
+                  <span className="period-dates">{position.period}</span>
                 </div>
 
-                <div className="position-details">
-                  <div className="position-period">
-                    <span className={position.fullTime ? "full-time" : "part-time"}>
-                      {position.fullTime ? "Full-time" : "Part-time"}
-                    </span>
-                    <span className="period-dates">{position.period}</span>
-                  </div>
-
-                  {position.projects && position.projects.map((project, projIndex) => (
-                    <motion.div
-                      className="project-container"
-                      key={`proj-${posIndex}-${projIndex}`}
-                      initial={{ x: -10, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 0.2 + projIndex * 0.1 }}
-                      whileHover={{ x: 5, backgroundColor: "#edf2fb" }}
-                    >
-                      <h5 className="project-title">
-                        Project: <span className="project-name">{project.name}</span>
-                      </h5>
-                      <motion.ul
-                        className="project-details-list"
-                        variants={containerVariants}
-                        initial="hidden"
-                        animate="visible"
-                      >
-                        {project.details.map((detail, detailIndex) => (
-                          <motion.li
-                            key={`detail-${projIndex}-${detailIndex}`}
-                            variants={listItemVariants}
-                            whileHover={{ x: 3, color: "#000" }}
-                          >
-                            <span className="bullet">•</span>
-                            <span dangerouslySetInnerHTML={{ __html: detail }}></span>
-                          </motion.li>
-                        ))}
-                      </motion.ul>
-                      {position.technologies && (
-                    <motion.div
-                      className="technologies-tags"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 0.5 }}
-                    >
-                      {position.technologies.map((tech, techIndex) => (
-                        <motion.span
-                          className="tech-tag"
-                          key={`tech-${posIndex}-${techIndex}`}
-                          whileHover={{
-                            y: -5,
-                            backgroundColor: "var(--primary-color)",
-                            color: "white"
-                          }}
-                          transition={{ type: "spring", stiffness: 500 }}
-                        >
-                          {tech}
-                        </motion.span>
+                {position.projects?.map((project, projIndex) => (
+                  <div
+                    className="project-container"
+                    key={`proj-${posIndex}-${projIndex}`}
+                  >
+                    <h5 className="project-title">
+                      Project: <span className="project-name">{project.name}</span>
+                    </h5>
+                    <ul className="project-details-list">
+                      {project.details.map((detail, detailIndex) => (
+                        <li key={`detail-${projIndex}-${detailIndex}`}>
+                          <span className="bullet">•</span>
+                          <span>{detail}</span>
+                        </li>
                       ))}
-                    </motion.div>
-                  )}
-                    </motion.div>
-                  ))}
+                    </ul>
+                  </div>
+                ))}
 
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        ))}
-      </motion.div>
+                {position.technologies && (
+                  <div className="technologies-tags">
+                    {position.technologies.map((tech, techIndex) => (
+                      <span
+                        className="tech-tag"
+                        key={`tech-${posIndex}-${techIndex}`}
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <button
+        className="carousel-button next"
+        onClick={handleNext}
+      >
+        <FaChevronRight />
+      </button>
+    </div>
+
+    
+  </div>
+</div>
+
     </motion.div>
   );
 };
