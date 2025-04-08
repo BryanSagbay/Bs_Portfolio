@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { TabItem } from '../../types/types';
 import './Navbar.css';
 import NavItem from '../NavItem/NavItem';
-import { FaGithub, FaLinkedin, FaTwitter, FaInstagram } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaInstagram } from 'react-icons/fa'
+import { AiOutlineX } from "react-icons/ai";
+;
 
 interface VerticalNavbarProps {
   items: TabItem[];
@@ -42,7 +44,7 @@ const VerticalNavbar: React.FC<VerticalNavbarProps> = ({
           <a className={animationPlayed ? 'bounce-in' : ''} href="https://github.com/BryanSagbay" target="_blank" rel="noopener noreferrer" title="GitHub"><FaGithub /></a>
           <a className={animationPlayed ? 'bounce-in' : ''} href="https://www.linkedin.com/in/bryan-sagbay-1b9912267/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><FaLinkedin /></a>
           <a className={animationPlayed ? 'bounce-in' : ''} href="https://www.instagram.com/brian.sagbay" target="_blank" rel="noopener noreferrer" title="Enviar mensaje"><FaInstagram /></a>
-          <a className={animationPlayed ? 'bounce-in' : ''} href="https://x.com/sagbay15130" target="_blank" rel="noopener noreferrer"title="Enviar mensaje"><FaTwitter /></a>
+          <a className={animationPlayed ? 'bounce-in' : ''} href="https://x.com/sagbay15130" target="_blank" rel="noopener noreferrer"title="Enviar mensaje"><AiOutlineX /></a>
         </div>
       )}
     </nav>

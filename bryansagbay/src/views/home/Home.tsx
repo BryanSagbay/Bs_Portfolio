@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import './Home.css';
-import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaDownload } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaInstagram, FaDownload } from 'react-icons/fa';
+import { AiOutlineX } from "react-icons/ai";
 import CursorLineal from '../../components/Cursor/CursorLineal';
 
 export default function Home() {
@@ -82,7 +83,7 @@ export default function Home() {
 
             <button className="icon-button">
               <a href="https://x.com/sagbay15130" target="_blank" rel="noopener noreferrer">
-                <FaTwitter className="button-icon" />
+                <AiOutlineX className="button-icon" />
               </a>
             </button>
 
