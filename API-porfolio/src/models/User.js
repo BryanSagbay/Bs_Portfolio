@@ -1,4 +1,5 @@
-import { pool } from '../db.js'
+import { pool } from '../databases/db.js'
+import bcrypt from 'bcrypt'
 
 export class User {
   constructor (id, username, password, email) {
@@ -15,6 +16,7 @@ export class User {
 
   static async findByUsername (username) {
     if (!username) throw new Error('Username es requerido')
+
     try {
       const result = await pool.query(
         'SELECT * FROM users WHERE username = $1',
@@ -37,16 +39,28 @@ export class User {
     }
 
     try {
+      const hashedPassword = await bcrypt.hash(password, 10) // 10 salt rounds
+
       const result = await pool.query(
         'INSERT INTO users (username, password, email) VALUES ($1, $2, $3) RETURNING *',
-        [username, password, email]
+        [username, hashedPassword, email]
       )
 
       const user = result.rows[0]
       return new User(user.id, user.username, user.password, user.email)
     } catch (error) {
+      // PostgreSQL error code for unique_violation
+      if (error.code === '23505') {
+        throw new Error('El usuario o email ya está registrado')
+      }
+
       console.error('Error al crear usuario:', error)
       throw new Error('No se pudo crear el usuario')
     }
+  }
+
+  // Método auxiliar para verificar contraseña
+  async checkPassword (inputPassword) {
+    return await bcrypt.compare(inputPassword, this.password)
   }
 }

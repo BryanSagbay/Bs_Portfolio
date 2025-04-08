@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken'
-import bcrypt from 'bcrypt'
 import { User } from '../models/User.js'
 import dotenv from 'dotenv'
 
@@ -26,7 +25,7 @@ export const login = async (req, res) => {
     const user = await User.findByUsername(username)
     if (!user) return res.status(404).json({ message: 'Usuario no encontrado' })
 
-    const isMatch = await bcrypt.compare(password, user.password)
+    const isMatch = await user.checkPassword(password)
     if (!isMatch) return res.status(401).json({ message: 'Credenciales inválidas' })
 
     const token = generateToken(user)
@@ -55,8 +54,7 @@ export const register = async (req, res) => {
       return res.status(409).json({ message: 'El nombre de usuario ya está en uso' })
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10)
-    const newUser = await User.create(username, hashedPassword, email)
+    const newUser = await User.create(username, password, email)
     const token = generateToken(newUser)
 
     res.status(201).json({
@@ -71,6 +69,5 @@ export const register = async (req, res) => {
 }
 
 export const logout = (_req, res) => {
-  // JWT es stateless, así que el cliente simplemente borra el token
   res.status(200).json({ message: 'Logout exitoso' })
 }
