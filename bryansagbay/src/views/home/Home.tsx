@@ -1,18 +1,31 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './Home.css';
 import { FaGithub, FaLinkedin, FaInstagram, FaDownload } from 'react-icons/fa';
 import { AiOutlineX } from "react-icons/ai";
 import CursorLineal from '../../components/Cursor/CursorLineal';
+import { HomeData } from '../../types/Home';
+import api from '../../services/Portfolio';
+import { Typewriter } from 'react-simple-typewriter';
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [data, setData] = useState<HomeData | null>(null);
+
+  useEffect(() => {
+    api.get<HomeData[]>('/home')
+      .then((res) => {
+        if (res.data && res.data.length > 0) {
+          setData(res.data[0]);
+        }
+      })
+      .catch((err) => console.error('Error al obtener datos del backend:', err));
+  }, []);
 
   useEffect(() => {
     if (containerRef.current) {
       const bg = containerRef.current.querySelector('.background-layer');
       if (!bg) return;
 
-      // Orbs
       for (let i = 1; i <= 3; i++) {
         const orb = document.createElement('div');
         orb.className = `orb orb-${i}`;
@@ -21,12 +34,10 @@ export default function Home() {
         bg.appendChild(orb);
       }
 
-      // Grid
       const grid = document.createElement('div');
       grid.className = 'grid-overlay';
       bg.appendChild(grid);
 
-      // Particles
       const particleWrapper = document.createElement('div');
       particleWrapper.className = 'particle-background';
       for (let i = 0; i < 80; i++) {
@@ -44,8 +55,9 @@ export default function Home() {
     }
   }, []);
 
-  return (
+  if (!data) return null; // o un loading spinner
 
+  return (
     <div className="home-container" ref={containerRef}>
       <CursorLineal />
       <div className="background-layer"></div>
@@ -53,43 +65,51 @@ export default function Home() {
       <div className="content-section">
         <div className="title-section">
           <h1>
-            <span className="highlight typewriter">SOFTWARE</span>
+            <span className="highlight">
+              <Typewriter
+                words={[data.title.toUpperCase()]} // puedes agregar más palabras aquí
+                loop={true}
+                cursor
+                cursorStyle="|"
+                typeSpeed={120}
+                deleteSpeed={60}
+                delaySpeed={1500}
+              />
+            </span>
             <br />
             ENGINEER
           </h1>
           <p className="intro-text">
-            Hi! I'm <span className="highlight">Bryan Sagbay.</span> Software Engineer with +1 year of
-            experience in web development, mobile applications and artificial intelligence integration,
-            offering high performance and scalable solutions.
+            Hi! I'm <span className="highlight">{data.name}.</span> {data.description}
           </p>
           <div className="buttons-horizontal">
             <button className="icon-button">
-              <a href="https://github.com/BryanSagbay" target="_blank" rel="noopener noreferrer">
+              <a href={data.github} target="_blank" rel="noopener noreferrer">
                 <FaGithub className="button-icon" />
               </a>
             </button>
 
             <button className="icon-button">
-              <a href="https://www.linkedin.com/in/bryan-sagbay-1b9912267/" target="_blank" rel="noopener noreferrer">
+              <a href={data.linkedin} target="_blank" rel="noopener noreferrer">
                 <FaLinkedin className="button-icon" />
               </a>
             </button>
 
             <button className="icon-button">
-              <a href="https://www.instagram.com/brian.sagbay" target="_blank" rel="noopener noreferrer">
+              <a href={data.instagram} target="_blank" rel="noopener noreferrer">
                 <FaInstagram className="button-icon" />
               </a>
             </button>
 
             <button className="icon-button">
-              <a href="https://x.com/sagbay15130" target="_blank" rel="noopener noreferrer">
+              <a href={data.x} target="_blank" rel="noopener noreferrer">
                 <AiOutlineX className="button-icon" />
               </a>
             </button>
 
             <button className="icon-button">
               <a
-                href="src/template/cv.pdf"
+                href={data.cv}
                 target="_blank"
                 rel="noopener noreferrer"
                 download="Bryan_Sagbay_CV.pdf"
@@ -101,26 +121,25 @@ export default function Home() {
             <button
               className="hire-button"
               onClick={() => {
-                window.location.href = "mailto:bryansagbay2001@gmail.com?subject=I want to hire you&body=Hi Bryan, I saw your portfolio and I'd like to connect.";
+                window.location.href = `mailto:${data.correo}?subject=I want to hire you&body=Hi ${data.name.split(" ")[0]}, I saw your portfolio and I'd like to connect.`;
               }}
             >
               HIRE ME
             </button>
-
           </div>
         </div>
 
         <div className="stats-section">
           <div className="stat-item">
-            <span className="stat-number">1+</span>
+            <span className="stat-number">{data.year_experience}+</span>
             <span className="stat-label">Years of Experience</span>
           </div>
           <div className="stat-item">
-            <span className="stat-number">7+</span>
+            <span className="stat-number">{data.completed_projects}+</span>
             <span className="stat-label">Completed Projects</span>
           </div>
           <div className="stat-item">
-            <span className="stat-number">21+</span>
+            <span className="stat-number">{data.satisfied_clients}+</span>
             <span className="stat-label">Satisfied Clients</span>
           </div>
         </div>
