@@ -58,7 +58,7 @@ export default function Home() {
             ENGINEER
           </h1>
           <p className="intro-text">
-            Hi! I'm <span className="highlight">Bryan Sagbay</span>. Software Engineer with +1 year of
+            Hi! I'm <span className="highlight">Bryan Sagbay.</span> Software Engineer with +1 year of
             experience in web development, mobile applications and artificial intelligence integration,
             offering high performance and scalable solutions.
           </p>
