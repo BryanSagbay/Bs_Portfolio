@@ -256,57 +256,6 @@
   }
 }
 
-/* ANIMACIÓN TYPEWRITER */
-.typewriter {
-  display: inline-block;
-  overflow: hidden;
-  white-space: nowrap;
-  border-right: 2px solid #64f2ff;
-  /* Animación completa con duración total de 9 segundos */
-  animation:
-    typing 9s steps(8, end) infinite,
-    blink 0.75s step-end infinite;
-}
-
-/* Animación de escritura con pausa y borrado */
-@keyframes typing {
-
-  /* Escritura: 0-20% (1.8s) */
-  0% {
-    width: 0;
-  }
-
-  20% {
-    width: 8ch;
-    /* "SOFTWARE" tiene 8 letras */
-  }
-
-  /* Pausa: 20-65% (4s de los 9s totales) */
-  75% {
-    width: 8ch;
-    /* Mantiene el texto completo */
-  }
-
-  /* Borrado: 65-85% (1.8s) */
-  85% {
-    width: 0;
-    /* Borra el texto */
-  }
-
-  /* Pausa antes de reiniciar: 85-100% (1.4s) */
-  100% {
-    width: 0;
-    /* Mantiene vacío antes de reiniciar */
-  }
-}
-
-/* Animación del cursor parpadeante */
-@keyframes blink {
-  50% {
-    border-color: transparent;
-  }
-}
-
 /* ========== RESPONSIVE FIX FOR SMALL SCREENS ========== */
 
 @media (max-width: 1024px) {
