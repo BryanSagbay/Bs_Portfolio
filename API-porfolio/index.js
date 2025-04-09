@@ -8,6 +8,7 @@ import authRoutes from './src/routes/authRoutes.js'
 import researchRoutes from './src/routes/researchRoutes.js'
 import homeRoutes from './src/routes/homeRoutes.js'
 import projectsRoutes from './src/routes/projectsRoutes.js'
+import experienceRoutes from './src/routes/experienceRoutes.js'
 import { testConnection, initDatabase } from './src/databases/db.js'
 
 dotenv.config()
@@ -30,6 +31,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/research', researchRoutes)
 app.use('/api/home', homeRoutes)
 app.use('/api/projects', projectsRoutes)
+app.use('/api/experience', experienceRoutes)
 
 // Arranque del servidor
 const startServer = async () => {
