@@ -9,6 +9,7 @@ import researchRoutes from './src/routes/researchRoutes.js'
 import homeRoutes from './src/routes/homeRoutes.js'
 import projectsRoutes from './src/routes/projectsRoutes.js'
 import experienceRoutes from './src/routes/experienceRoutes.js'
+import aboutRoutes from './src/routes/aboutRoutes.js'
 import { testConnection, initDatabase } from './src/databases/db.js'
 
 dotenv.config()
@@ -20,6 +21,7 @@ app.use(cors())
 app.use(helmet())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use('/api/about', aboutRoutes)
 
 // Ruta base
 app.get('/', (req, res) => {
