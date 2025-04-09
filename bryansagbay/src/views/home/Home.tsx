@@ -21,6 +21,90 @@ export default function Home() {
       .catch((err) => console.error('Error al obtener datos del backend:', err));
   }, []);
 
+  // Función para crear partículas
+  const createParticles = () => {
+    if (!containerRef.current) return;
+    
+    const bg = containerRef.current.querySelector('.background-layer');
+    if (!bg) return;
+    
+    // Crear nuevo contenedor de partículas si no existe
+    let particlesContainer = bg.querySelector('.particles-container');
+    if (!particlesContainer) {
+      particlesContainer = document.createElement('div');
+      particlesContainer.className = 'particles-container';
+      bg.appendChild(particlesContainer);
+    }
+    
+    // Número de partículas a crear en cada ciclo
+    const particlesToCreate = 5;
+    
+    for (let i = 0; i < particlesToCreate; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      
+      // Posicionar aleatoriamente
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.top = `${Math.random() * 100}%`;
+      
+      // Asignar dirección de movimiento aleatoria
+      const moveX = (Math.random() * 200 - 100);
+      const moveY = (Math.random() * 200 - 100);
+      
+      // Inicia con opacidad 0
+      particle.style.opacity = '0';
+      
+      particle.style.setProperty('--moveX', `${moveX}px`);
+      particle.style.setProperty('--moveY', `${moveY}px`);
+      
+      // Duración aleatoria de la animación entre 8 y 15 segundos
+      const duration = 8 + Math.random() * 7;
+      particle.style.animationDuration = `${duration}s`;
+      
+      // Delay aleatorio para que no aparezcan todas a la vez
+      particle.style.animationDelay = `${Math.random() * 1}s`;
+      
+      particlesContainer.appendChild(particle);
+      
+      // Primero hacemos un fade in suave
+      setTimeout(() => {
+        particle.style.transition = 'opacity 1.5s ease-in';
+        particle.style.opacity = '1';
+      }, 50);
+      
+      // Fade out antes de eliminar para un efecto suave
+      setTimeout(() => {
+        if (particlesContainer && particle && particlesContainer.contains(particle)) {
+          particle.style.transition = 'opacity 4s ease-out';
+          particle.style.opacity = '0';
+          
+          // Eliminar después del fade out
+          setTimeout(() => {
+            if (particlesContainer && particle && particlesContainer.contains(particle)) {
+              particlesContainer.removeChild(particle);
+            }
+          }, 2000);
+        }
+      }, duration * 1000 - 2000); // Comenzar el fade out 2 segundos antes de terminar la animación
+    }
+  };
+
+  // Crear partículas periódicamente
+  useEffect(() => {
+    // Crear partículas iniciales
+    createParticles();
+    
+    // Crear nuevas partículas cada cierto tiempo
+    const particleInterval = setInterval(() => {
+      createParticles();
+    }, 1000); 
+    
+    return () => {
+      clearInterval(particleInterval);
+    };
+  }, []); 
+
+  // Configuración base del fondo
   useEffect(() => {
     if (containerRef.current) {
       const bg = containerRef.current.querySelector('.background-layer');
@@ -37,25 +121,10 @@ export default function Home() {
       const grid = document.createElement('div');
       grid.className = 'grid-overlay';
       bg.appendChild(grid);
-
-      const particleWrapper = document.createElement('div');
-      particleWrapper.className = 'particle-background';
-      for (let i = 0; i < 80; i++) {
-        const p = document.createElement('div');
-        p.className = 'particle';
-        p.style.left = `${Math.random() * 100}%`;
-        p.style.top = `${Math.random() * 100}%`;
-        p.style.setProperty('--moveX', `${Math.random() * 200 - 100}px`);
-        p.style.setProperty('--moveY', `${Math.random() * 200 - 100}px`);
-        p.style.animationDuration = `${5 + Math.random() * 15}s`;
-        p.style.animationDelay = `-${Math.random() * 5}s`;
-        particleWrapper.appendChild(p);
-      }
-      bg.appendChild(particleWrapper);
     }
   }, []);
 
-  if (!data) return null; // o un loading spinner
+  if (!data) return null;
 
   return (
     <div className="home-container" ref={containerRef}>

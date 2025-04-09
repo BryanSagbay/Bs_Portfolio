@@ -15,7 +15,6 @@
   z-index: 0;
 }
 
-/* Fondo decorativo */
 .home-container::before {
   content: '';
   position: fixed;
@@ -28,7 +27,7 @@
   z-index: 0;
 }
 
-/* CAPA DE FONDO LIMPIA */
+/* FONDO */
 .background-layer {
   position: absolute;
   top: 0;
@@ -40,65 +39,86 @@
   pointer-events: none;
 }
 
-/* PARTICULAS ÚNICAS */
-.particle-background {
+.particles-container {
   position: absolute;
-  inset: 0;
-  z-index: 0;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
   pointer-events: none;
-  overflow: hidden;
+  z-index: 1;
 }
 
 .particle {
   position: absolute;
-  width: 5px;
-  height: 5px;
-  background-color: rgba(255, 255, 255, 0.3);
   border-radius: 50%;
-  animation: float 15s infinite linear;
-}
-
-.particle:nth-child(even) {
-  width: 5px;
-  height: 5px;
-  background-color: rgba(100, 242, 255, 0.3);
+  pointer-events: none;
+  animation: particleMove var(--duration, 10s) linear infinite;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+  width: 3px;
+  height: 3px;
+  background-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
 .particle:nth-child(3n) {
-  width: 1px;
-  height: 1px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(100, 200, 255, 0.7);
+  box-shadow: 0 0 5px rgba(100, 200, 255, 0.4);
+  width: 2px;
+  height: 2px;
 }
 
 .particle:nth-child(5n) {
-  background-color: rgba(255, 255, 255, 0.1);
-  filter: blur(1px);
+  background-color: rgba(150, 150, 255, 0.5);
+  box-shadow: 0 0 3px rgba(150, 150, 255, 0.3);
   width: 4px;
   height: 4px;
 }
 
-/* ANIMACIÓN DE PARTÍCULAS */
-@keyframes float {
+.particle:nth-child(7n) {
+  width: 1px;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+@keyframes particleMove {
   0% {
-    transform: translate(0, 0);
-    opacity: 0;
+    transform: translate(0, 0) scale(0.6);
   }
-
-  10% {
-    opacity: 1;
+  50% {
+    transform: translate(calc(var(--moveX, 0) / 2), calc(var(--moveY, 0) / 2)) scale(1);
   }
-
-  90% {
-    opacity: 1;
-  }
-
   100% {
-    transform: translate(var(--moveX), var(--moveY));
-    opacity: 0;
+    transform: translate(var(--moveX, 0), var(--moveY, 0)) scale(0.6);
   }
 }
 
-/* CONTENIDO */
+.orb {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(100, 242, 255, 0.15), transparent);
+  border-radius: 50%;
+  animation: floatOrb 10s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes floatOrb {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(var(--moveX), var(--moveY)); }
+}
+
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .content-section {
   width: 100%;
   max-width: 1200px;
@@ -154,6 +174,19 @@
   z-index: -1;
 }
 
+.typewriter::after {
+  content: '|';
+  position: absolute;
+  right: -0.2em;
+  color: #64f2ff;
+  animation: blink 0.8s steps(1) infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 .intro-text {
   font-size: 1.3rem;
   line-height: 1.7;
@@ -161,6 +194,34 @@
   color: #c0c0c0;
   max-width: 600px;
   font-weight: 300;
+}
+
+.buttons-horizontal {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
+
+.icon-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: grid;
+  place-items: center;
+  transition: all 0.3s ease;
+}
+
+.button-icon {
+  color: white;
+  font-size: 1.6rem;
+  transition: all 0.3s ease;
+}
+
+.icon-button:hover .button-icon {
+  color: #64f2ff;
+  transform: scale(1.1);
 }
 
 .hire-button {
@@ -177,6 +238,7 @@
   overflow: hidden;
   font-size: 1.1rem;
   letter-spacing: 1px;
+  margin-left: 12.5rem;
 }
 
 .hire-button:hover {
@@ -204,7 +266,6 @@
   position: fixed;
   bottom: 5rem;
   right: 3rem;
-  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -219,7 +280,6 @@
   align-items: flex-end;
   text-align: right;
   gap: 0.5rem;
-  position: relative;
   transition: transform 0.3s ease;
 }
 
@@ -230,10 +290,8 @@
 .stat-number {
   font-size: 3rem;
   font-weight: 800;
-  line-height: 1;
   color: #64f2ff;
   text-shadow: 0 0 15px rgba(60, 255, 60, 0.3);
-  margin-bottom: 0.5rem;
 }
 
 .stat-label {
@@ -243,50 +301,23 @@
   font-weight: 300;
 }
 
-/* ANIMACIÓN DE ENTRADA */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
-/* ========== RESPONSIVE FIX FOR SMALL SCREENS ========== */
+/* ===================== RESPONSIVE DESIGN ===================== */
 
 @media (max-width: 1024px) {
-  .home-container {
-    display: flex;
-    min-height: 100vh;
-    height: auto;
-    overflow-x: hidden;
-    overflow-y: auto;
-    padding: 4rem 0rem;
-  }
-
-  .background-layer {
-    position: absolute;
-    height: 100%;
-  }
-
   .content-section {
-    margin: auto;
+    margin: 8rem 2rem 0 2rem;
     align-items: center;
-    text-align: center;
-    gap: 2rem;
   }
 
   .title-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    position: relative;
+    margin-top: 0;
     text-align: center;
-    margin: 0rem 0rem 0rem 0rem;
   }
 
   .title-section::after {
@@ -295,113 +326,91 @@
   }
 
   .title-section h1 {
-    font-size: 3rem;
+    font-size: 3.5rem;
   }
 
   .intro-text {
     text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    margin: auto;
+    font-size: 1.1rem;
   }
 
   .hire-button {
+    margin: 1rem auto 0 auto;
     display: block;
-    margin: 1.5rem auto;
   }
 
   .stats-section {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
     justify-content: center;
-    text-align: center;
-    width: 100%;
-    margin: 6rem auto 2rem auto;
-    padding: 1rem 6rem;
-    gap: 1.5rem;
+    align-items: center;
+    bottom: auto;
+    right: auto;
+    gap: 1rem;
+    margin-top: 3rem;
+    max-width: 100%;
   }
 
   .stat-item {
     align-items: center;
     text-align: center;
-    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .title-section h1 {
+    font-size: 2.5rem;
   }
 
   .stat-number {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 
   .stat-label {
     font-size: 1rem;
   }
-}
 
-/* Contenedor horizontal */
-.buttons-horizontal {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  /* Espacio equilibrado */
-  margin-top: 1.5rem;
-}
-
-/* Botones de iconos (sin fondo, sin bordes) */
-.icon-button {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem;
-  display: grid;
-  place-items: center;
-  transition: all 0.3s ease;
-}
-
-/* Iconos en blanco por defecto */
-.button-icon {
-  color: white;
-  /* Color inicial blanco */
-  font-size: 1.6rem;
-  transition: all 0.3s ease;
-}
-
-/* Efecto hover: iconos azules */
-.icon-button:hover .button-icon {
-  color: #64f2ff;
-  transform: scale(1.1);
-}
-
-/* Botón HIRE ME */
-.hire-button {
-  background: linear-gradient(90deg, #64f2ff, #4dd8e6);
-  color: black;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  margin-left: 12.5rem;
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.hire-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(100, 242, 255, 0.4);
-}
-
-/* Responsive: ajustes para móvil */
-@media (max-width: 768px) {
-  .buttons-horizontal {
-    gap: 0.5rem;
+  .hire-button {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
   }
 
-  .button-icon {
-    font-size: 1.4rem;
+  .buttons-horizontal {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .icon-button {
+    padding: 0.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title-section h1 {
+    font-size: 2rem;
+  }
+
+  .intro-text {
+    font-size: 1rem;
+    line-height: 1.5;
   }
 
   .hire-button {
-    padding: 0.6rem 1rem;
-    margin-left: 0.3rem;
+    padding: 0.6rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .stat-number {
+    font-size: 1.6rem;
+  }
+
+  .stat-label {
+    font-size: 0.95rem;
+  }
+
+  .highlight::after {
+    height: 5px;
+    bottom: 5px;
   }
 }
