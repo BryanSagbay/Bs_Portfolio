@@ -67,13 +67,13 @@ export default function Home() {
           <h1>
             <span className="highlight">
               <Typewriter
-                words={[data.title.toUpperCase()]} // puedes agregar más palabras aquí
+                words={[data.title.toUpperCase()]}
                 loop={true}
                 cursor
                 cursorStyle="|"
                 typeSpeed={120}
-                deleteSpeed={60}
-                delaySpeed={1500}
+                deleteSpeed={80}
+                delaySpeed={2500}
               />
             </span>
             <br />
