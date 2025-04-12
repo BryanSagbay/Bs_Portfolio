@@ -1,9 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './Profile.css';
 import { motion, AnimatePresence } from 'framer-motion';
-
-import { FaReact, FaNodeJs, FaPython, FaCode, FaAngular, FaJava, FaDocker, FaBootstrap, FaHtml5, FaGithub, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { SiTypescript, SiJavascript, SiTailwindcss, SiPhp, SiMongodb } from 'react-icons/si';
+import {
+  FaReact, FaNodeJs, FaPython, FaCode, FaAngular, FaJava, FaDocker,
+  FaBootstrap, FaHtml5, FaGithub, FaChevronLeft, FaChevronRight
+} from 'react-icons/fa';
+import {
+  SiTypescript, SiJavascript, SiTailwindcss, SiPhp, SiMongodb
+} from 'react-icons/si';
 import { MdVerified } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoIosCall, IoMdMail } from "react-icons/io";
@@ -11,39 +15,42 @@ import { BiLogoPostgresql } from "react-icons/bi";
 import { DiRedis } from "react-icons/di";
 import { VscAzure } from "react-icons/vsc";
 import { FcLinux } from "react-icons/fc";
-
-interface ProjectDetail {
-  name: string;
-  details: string[];
-}
-
-interface Position {
-  title: string;
-  period: string;
-  fullTime: boolean;
-  responsibilities?: string[];
-  projects?: ProjectDetail[];
-  technologies: string[];
-}
-
-interface Experience {
-  company: string;
-  isActive: boolean;
-  positions: Position[];
-}
+import api from '../../services/Portfolio';
+import { ExperienceData } from '../../types/Experience';
+import { AboutData } from '../../types/About';
 
 const PortfolioLayout: React.FC = () => {
   const firstRowRef = useRef<HTMLDivElement>(null);
   const secondRowRef = useRef<HTMLDivElement>(null);
   const [currentExperienceIndex, setCurrentExperienceIndex] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [aboutData, setAboutData] = useState<AboutData | null>(null);
+  const [experiences, setExperiences] = useState<ExperienceData[]>([]);
+  const [currentTagline, setCurrentTagline] = useState(0);
 
-  const taglines = [
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [aboutRes, expRes] = await Promise.all([
+          api.get<AboutData[]>('/about'),
+          api.get<ExperienceData[]>('/experience')
+        ]);
+
+        if (aboutRes.data.length) setAboutData(aboutRes.data[0]);
+        setExperiences(expRes.data);
+      } catch (err) {
+        console.error("Error al cargar datos desde la API:", err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const taglines = aboutData?.phrases || [
     "Software Engineer.",
     "Front End Developer.",
     "Creating with code, driven by passion."
   ];
-  const [currentTagline, setCurrentTagline] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -76,67 +83,6 @@ const PortfolioLayout: React.FC = () => {
     { name: 'Azure', icon: <VscAzure size={28} color="#2496ED" /> }
   ];
 
-  const experiences: Experience[] = [
-    {
-      company: "Quaric Co., Ltd.",
-      isActive: true,
-      positions: [
-        {
-          title: "Software Engineer",
-          period: "03.2024 - presente",
-          fullTime: false,
-          projects: [
-            {
-              name: "Quaric Website",
-              details: [
-                "Integrated VNPAY-QR for secure transactions.",
-                "Registered the e-commerce site with online.gov.vn for compliance.",
-                "Developed online ordering to streamline purchases."
-              ]
-            },
-            {
-              name: "ZaDark",
-              details: [
-                "Build and maintain ZaDark.com with Docusaurus, integrating AdSense.",
-                "Develop and maintain the ZaDark extension for Zalo Web on Chrome, Safari, Edge, and Firefox."
-              ]
-            }
-          ],
-          technologies: ["Next.js", "Strapi", "Auth0", "VNPAY-QR", "Docker", "NGINX", "Google Cloud", "Docusaurus", "Extension", "UX/UI Design", "UX Writing", "Research", "Project Management"]
-        }
-      ]
-    },
-    {
-      company: "Quaric Co., Ltd.",
-      isActive: true,
-      positions: [
-        {
-          title: "Software Engineer",
-          period: "03.2024 - presente",
-          fullTime: false,
-          projects: [
-            {
-              name: "Quaric Website",
-              details: [
-                "Integrated VNPAY-QR for secure transactions.",
-                "Registered the e-commerce site with online.gov.vn for compliance.",
-                "Developed online ordering to streamline purchases."
-              ]
-            },
-            {
-              name: "ZaDark",
-              details: [
-                "Build and maintain ZaDark.com with Docusaurus, integrating AdSense.",
-                "Develop and maintain the ZaDark extension for Zalo Web on Chrome, Safari, Edge, and Firefox."
-              ]
-            }
-          ],
-          technologies: ["Next.js", "Strapi", "Auth0", "VNPAY-QR", "Docker", "NGINX", "Google Cloud", "Docusaurus", "Extension", "UX/UI Design", "UX Writing", "Research", "Project Management"]
-        }
-      ]
-    }
-  ];
-
   useEffect(() => {
     if (firstRowRef.current && secondRowRef.current) {
       firstRowRef.current.animate([
@@ -151,27 +97,24 @@ const PortfolioLayout: React.FC = () => {
     }
   }, []);
 
-  // Autoplay carousel
   useEffect(() => {
     const autoplay = setInterval(() => {
       setDirection(1);
       setCurrentExperienceIndex(prev => (prev + 1) % experiences.length);
-    }, 8000); // 8 segundos
-
+    }, 8000);
     return () => clearInterval(autoplay);
   }, [experiences.length]);
 
   return (
     <motion.div className="portfolio-container" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-      {/* Columna izquierda completa */}
       <motion.div className="left-column">
         <motion.div className="profile-section">
-          <motion.div className="profile-image" whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 300 }}>
-            <img src="src/assets/perfil.jpeg" alt="Bryan Sagbay" />
+          <motion.div className="profile-image" whileHover={{ scale: 1.05 }}>
+            <img src={aboutData?.photo || 'src/assets/perfil.jpeg'} alt={aboutData?.name || 'Perfil'} />
           </motion.div>
           <div className="profile-info">
             <h1 className="profile-name">
-              Bryan Sagbay
+              {aboutData?.name || 'Nombre'}
               <motion.span className="verified-badge" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 500, delay: 0.8 }}>
                 <MdVerified size={24} />
               </motion.span>
@@ -186,37 +129,18 @@ const PortfolioLayout: React.FC = () => {
 
         <motion.div className="profile-section">
           <motion.div className="profile-details">
-            <motion.div className="detail-item" whileHover={{ x: 5 }}>
-              <span className="detail-icon"><FaCode /></span>
-              <span>Software Engineer, Front Developer & UI Design</span>
-            </motion.div>
-            <motion.div className="detail-item" whileHover={{ x: 5 }}>
-              <span className="detail-icon"><FaLocationDot /></span>
-              <span>Cuenca, Ecuador</span>
-            </motion.div>
-            <motion.div className="detail-item" whileHover={{ x: 5 }}>
-              <span className="detail-icon"><IoIosCall /></span>
-              <span>+593 995154703</span>
-            </motion.div>
-            <motion.div className="detail-item" whileHover={{ x: 5 }}>
-              <span className="detail-icon"><IoMdMail /></span>
-              <span>bryansagbay2001@hotmail.com</span>
-            </motion.div>
+            <motion.div className="detail-item"><FaCode /> <span>{aboutData?.title}</span></motion.div>
+            <motion.div className="detail-item"><FaLocationDot /> <span>{aboutData?.location}</span></motion.div>
+            <motion.div className="detail-item"><IoIosCall /> <span>{aboutData?.phone}</span></motion.div>
+            <motion.div className="detail-item"><IoMdMail /> <span>{aboutData?.mail}</span></motion.div>
           </motion.div>
         </motion.div>
 
         <motion.div className="about-section">
           <h2>About</h2>
           <motion.div className="about-content">
-            <motion.p>
-              Hello, World! I am Bryan Sagbay, a Software Developer & UI/UX Designer passionate about creating high-performance, user-centric software solutions with intuitive and engaging designs.
-            </motion.p>
-            <motion.p>
-              With 5+ years of experience, I specialize in building high-quality web and mobile applications using Next.js, React, TypeScript, and modern front-end technologies. Beyond work, I love exploring new technologies through personal projects.
-            </motion.p>
-            <motion.p>
-              One of my key projects, <a href="https://zadark.com" target="_blank" rel="noopener noreferrer">ZaDark</a>, enhances the Zalo experience on PC and Web, surpassing 80,000 downloads on <a href="https://sourceforge.net/projects/zadark/" target="_blank" rel="noopener noreferrer">SourceForge</a> and 10,000 active users on the <a href="https://chrome.google.com/webstore/detail/zadark/zadppenmkkihbhjgcmgdpnkmnkbkoafk" target="_blank" rel="noopener noreferrer">Chrome Web Store</a> since 2022.
-            </motion.p>
+            <p>{aboutData?.about}</p>
+            <p>{aboutData?.description}</p>
           </motion.div>
         </motion.div>
 
@@ -225,14 +149,14 @@ const PortfolioLayout: React.FC = () => {
           <div className="tech-stack-container">
             <div className="tech-stack-row" ref={firstRowRef}>
               {[...techStackRow1, ...techStackRow1].map((tech, index) => (
-                <motion.div className="tech-item" key={`tech1-${index}`} whileHover={{ y: -8, scale: 1.1, boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)" }} transition={{ type: "spring", stiffness: 300, damping: 15 }}>
+                <motion.div className="tech-item" key={`tech1-${index}`} whileHover={{ y: -8, scale: 1.1 }}>
                   {tech.icon}
                 </motion.div>
               ))}
             </div>
             <div className="tech-stack-row reverse" ref={secondRowRef}>
               {[...techStackRow2, ...techStackRow2].map((tech, index) => (
-                <motion.div className="tech-item" key={`tech2-${index}`} whileHover={{ y: -8, scale: 1.1, boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)" }} transition={{ type: "spring", stiffness: 300, damping: 15 }}>
+                <motion.div className="tech-item" key={`tech2-${index}`} whileHover={{ y: -8, scale: 1.1 }}>
                   {tech.icon}
                 </motion.div>
               ))}
@@ -241,18 +165,9 @@ const PortfolioLayout: React.FC = () => {
         </motion.div>
       </motion.div>
 
-      {/* Columna derecha */}
       <div className="right-column">
         <div className="experience-section">
-          <div className="experience-header">
-            <h2>Experience</h2>
-            <div className="experience-navigation">
-              <span className="experience-counter">
-                {currentExperienceIndex + 1} / {experiences.length}
-              </span>
-            </div>
-          </div>
-
+          <h2>Experience</h2>
           <div className="carousel-container">
             <button className="carousel-button prev floating" onClick={() => {
               setDirection(-1);
@@ -269,53 +184,54 @@ const PortfolioLayout: React.FC = () => {
                   initial={{ x: direction > 0 ? 100 : -100, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   exit={{ x: direction > 0 ? -100 : 100, opacity: 0 }}
-                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                  transition={{ duration: 0.4 }}
                 >
-                  <div className="company-header">
-                    <h3 className="company-name">
-                      {experiences[currentExperienceIndex].company}
-                      {experiences[currentExperienceIndex].isActive && (
-                        <span className="status-indicator active pulse"></span>
-                      )}
-                    </h3>
-                  </div>
-
-                  {experiences[currentExperienceIndex].positions.map((position, posIndex) => (
-                    <div className="position-container" key={`pos-${currentExperienceIndex}-${posIndex}`}>
-                      <div className="position-header">
-                        <span className="code-icon">role</span>
-                        <h4 className="position-title">{position.title}</h4>
+                  {experiences.length > 0 && (
+                    <>
+                      <div className="company-header">
+                        <h3 className="company-name">
+                          {experiences[currentExperienceIndex].company}
+                          {experiences[currentExperienceIndex].active && (
+                            <span className="status-indicator active pulse"></span>
+                          )}
+                        </h3>
+                      </div>
+                      <div className='position-container'>
+                        <div className="position-header">
+                          <span className="code-icon">role</span>
+                          <h4 className="position-title">{experiences[currentExperienceIndex].position}</h4>
+                        </div>
                       </div>
                       <div className="position-details">
                         <div className="position-period">
-                          <span className={position.fullTime ? "full-time" : "part-time"}>
-                            {position.fullTime ? "Full-time" : "Part-time"}
+                          <span className="part-time">{experiences[currentExperienceIndex].schedule}
                           </span>
-                          <span className="period-dates">{position.period}</span>
+                          <span className="period-dates">{experiences[currentExperienceIndex].period}</span>
                         </div>
-                        {position.projects?.map((project, projIndex) => (
-                          <div className="project-container" key={`proj-${posIndex}-${projIndex}`}>
-                            <h5 className="project-title">
-                              Project: <span className="project-name">{project.name}</span>
-                            </h5>
-                            <ul className="project-details-list">
-                              {project.details.map((detail, detailIndex) => (
-                                <li key={`detail-${projIndex}-${detailIndex}`}>
+                      </div>
+
+                      {experiences[currentExperienceIndex].projects?.map((project, i) => (
+                        <div key={i} className="project-container">
+                          <h5 className="project-title">
+                            Project: <span className="project-name">{project.name}</span>
+                          </h5>
+                          <ul className="project-details-list">
+                              {project.details.map((detail, j) => (
+                                <li key={j}>
                                   <span className="bullet">•</span>
                                   <span>{detail}</span>
                                 </li>
                               ))}
                             </ul>
-                          </div>
-                        ))}
-                        <div className="technologies-tags">
-                          {position.technologies.map((tech, techIndex) => (
-                            <span className="tech-tag" key={`tech-${posIndex}-${techIndex}`}>{tech}</span>
-                          ))}
                         </div>
+                      ))}
+                      <div className="technologies-tags">
+                        {experiences[currentExperienceIndex].technologies_used.map((tech, i) => (
+                          <span className="tech-tag" key={i}>{tech}</span>
+                        ))}
                       </div>
-                    </div>
-                  ))}
+                    </>
+                  )}
                 </motion.div>
               </AnimatePresence>
             </div>
