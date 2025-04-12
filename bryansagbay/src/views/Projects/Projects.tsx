@@ -3,9 +3,21 @@ import './Projects.css';
 import { CiMobile3 } from 'react-icons/ci';
 import { SlScreenDesktop } from 'react-icons/sl';
 import ProyectoCardModern from '../../components/CardModern/CardModern';
-import { proyectos } from '../../data/Proyectos';
+import { Proyecto } from '../../data/Proyectos';
+import api from '../../services/Portfolio';
+
+interface ApiProyecto {
+  id: number;
+  type: string;
+  title: string;
+  description: string;
+  imagen: string;
+  indice: number;
+  link: string;
+}
 
 const ProyectosScroll: React.FC = () => {
+  const [proyectos, setProyectos] = useState<Proyecto[]>([]);
   const [tipoActivo, setTipoActivo] = useState<'pc' | 'movil' | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showScrollBar, setShowScrollBar] = useState(true);
@@ -15,15 +27,40 @@ const ProyectosScroll: React.FC = () => {
   const lastSectionRef = useRef<HTMLDivElement | null>(null);
   const hideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Inicializar refs
+  // Fetch desde API
+  useEffect(() => {
+    const fetchProyectos = async () => {
+      try {
+        const response = await api.get<ApiProyecto[]>('/projects/');
+        const data = response.data;
+
+        const adaptados: Proyecto[] = data.map((item) => ({
+          id: item.id,
+          tipo: item.type === 'Backend' ? 'pc' : 'movil', // Ajusta según lógica
+          titulo: item.title,
+          descripcion: item.description,
+          imagenProyecto: item.imagen,
+          link: item.link,
+        }));
+
+        setProyectos(adaptados);
+      } catch (error) {
+        console.error('Error al cargar proyectos:', error);
+      }
+    };
+
+    fetchProyectos();
+  }, []);
+
+  // Actualizar refs dinámicamente según cantidad de proyectos
   useEffect(() => {
     sectionRefs.current = sectionRefs.current.slice(0, proyectos.length);
     while (sectionRefs.current.length < proyectos.length) {
       sectionRefs.current.push(null);
     }
-  }, []);
+  }, [proyectos]);
 
-  // Observa el tipo de proyecto visible
+  // Observar la sección visible
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -46,9 +83,9 @@ const ProyectosScroll: React.FC = () => {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [proyectos]);
 
-  // Manejo de scroll personalizado y visibilidad de la barra
+  // Barra de scroll
   const handleScroll = () => {
     const el = containerRef.current;
     if (!el) return;
@@ -95,7 +132,7 @@ const ProyectosScroll: React.FC = () => {
         <div className="proyectos-contenido">
           {proyectos.map((proyecto, index) => (
             <div
-              key={index}
+              key={proyecto.id}
               ref={(el) => {
                 sectionRefs.current[index] = el;
                 if (index === proyectos.length - 1) {
