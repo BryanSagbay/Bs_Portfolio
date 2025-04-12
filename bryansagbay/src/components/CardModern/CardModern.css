@@ -10,7 +10,6 @@
   will-change: transform, opacity;
 }
 
-
 .texto {
   max-width: 800px;
   margin-top: 10%;
@@ -74,6 +73,52 @@
   background-repeat: no-repeat;
 }
 
+/* Mobile mockup */
+.mockup.movil {
+  aspect-ratio: 9 / 15;
+  max-height: 620px;
+  width: 100%;
+  background-image: url('/src/assets/mobile.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* El contenedor para la pantalla del dispositivo */
+.mockup-screen {
+  position: absolute;
+  top: 16%;
+  left: 24.4%;
+  width: 51.3%;
+  height: 48.5%;
+  overflow: hidden;
+  border-radius: 2px;
+  transform: translateZ(2px); 
+}
+
+/* Las imágenes deben ocupar todo el espacio disponible */
+.contenido-mockup {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Asegura que la imagen se ajuste correctamente */
+  object-position: center;
+  display: block;
+}
+
+/* Para PC */
+.mockup.pc .contenido-mockup {
+  background-image: url('/path/to/image.jpg'); /* Si prefieres usar un fondo */
+  background-size: cover; /* Asegura que la imagen cubra el espacio */
+  background-position: center;
+}
+
+/* Para móvil */
+.mockup.movil .contenido-mockup {
+  background-image: url('/path/to/image.jpg'); /* Si prefieres usar un fondo */
+  background-size: cover; /* Asegura que la imagen cubra el espacio */
+  background-position: center;
+}
+
 /* Efecto de luz para imagen de fondo */
 .mockup.pc::before,
 .mockup.movil::before {
@@ -103,75 +148,6 @@
   }
 }
 
-/* Mobile mockup */
-.mockup.movil {
-  aspect-ratio: 9 / 15;
-  max-height: 620px;
-  width: 100%;
-  background-image: url('/src/assets/mobile.png');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-/* This is the key new element - a proper screen container */
-.mockup-screen {
-  position: absolute;
-  top: 16%;
-  left: 24.4%;
-  width: 51.3%;
-  height: 48.5%;
-  overflow: hidden;
-  border-radius: 2px;
-  transform: translateZ(2px); 
-}
-
-/* The actual content (your dashboard) */
-.contenido-mockup {
-  width: 100%;
-  height: 98%;
-  object-fit: cover; 
-  object-position: center;
-  display: block;
-  max-width: 100%;
-  max-height: 100%;
-}
-
-
-/* Efecto de luz para imagen de fondo en laptop */
-.mockup.pc::before,
-.mockup.movil::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  height: 60px;
-  background: radial-gradient(ellipse at center, rgba(0, 240, 255, 0.4) 0%, transparent 70%);
-  filter: blur(20px);
-  z-index: 1;
-  pointer-events: none;
-  animation: brillo-fondo 4s ease-in-out infinite;
-}
-
-/* Animación opcional */
-@keyframes brillo-fondo {
-  0%, 100% {
-    opacity: 0.6;
-    transform: translateX(-50%) scaleX(1);
-  }
-  50% {
-    opacity: 1;
-    transform: translateX(-50%) scaleX(1.1);
-  }
-}
-
-
-.fila-invertida {
-  flex-direction: row-reverse;
-}
-
 /* Adjusted mobile mockup screen positioning */
 .mockup.movil .mockup-screen {
   top: 16%;
@@ -185,6 +161,9 @@
   position: absolute;
 }
 
+.fila-invertida {
+  flex-direction: row-reverse;
+}
 
 @media (max-height: 800px) {
   .mockup.movil {
@@ -226,4 +205,3 @@
     max-width: 100%;
   }
 }
-

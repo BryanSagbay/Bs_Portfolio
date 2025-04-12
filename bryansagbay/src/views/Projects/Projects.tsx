@@ -147,7 +147,7 @@ const ProyectosScroll: React.FC = () => {
                 tipo={proyecto.tipo}
                 titulo={proyecto.titulo}
                 descripcion={proyecto.descripcion}
-                imagenProyecto={proyecto.imagenProyecto} // Pasamos la URL completa de la imagen
+                imagenProyecto={proyecto.imagenProyecto}
                 indice={index}
                 link={proyecto.link}
               />
