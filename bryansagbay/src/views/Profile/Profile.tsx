@@ -22,11 +22,16 @@ import { AboutData } from '../../types/About';
 const PortfolioLayout: React.FC = () => {
   const firstRowRef = useRef<HTMLDivElement>(null);
   const secondRowRef = useRef<HTMLDivElement>(null);
+  const rightColumnRef = useRef<HTMLDivElement>(null);
   const [currentExperienceIndex, setCurrentExperienceIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [aboutData, setAboutData] = useState<AboutData | null>(null);
   const [experiences, setExperiences] = useState<ExperienceData[]>([]);
   const [currentTagline, setCurrentTagline] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const firstRowAnimationRef = useRef<Animation | null>(null);
+  const secondRowAnimationRef = useRef<Animation | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,27 +88,85 @@ const PortfolioLayout: React.FC = () => {
     { name: 'Azure', icon: <VscAzure size={28} color="#2496ED" /> }
   ];
 
+  // Initialize tech stack animations
   useEffect(() => {
     if (firstRowRef.current && secondRowRef.current) {
-      firstRowRef.current.animate([
+      firstRowAnimationRef.current = firstRowRef.current.animate([
         { transform: 'translateX(0)' },
         { transform: 'translateX(-50%)' }
       ], { duration: 30000, iterations: Infinity });
 
-      secondRowRef.current.animate([
+      secondRowAnimationRef.current = secondRowRef.current.animate([
         { transform: 'translateX(-50%)' },
         { transform: 'translateX(0)' }
       ], { duration: 30000, iterations: Infinity });
     }
   }, []);
 
-  useEffect(() => {
-    const autoplay = setInterval(() => {
-      setDirection(1);
-      setCurrentExperienceIndex(prev => (prev + 1) % experiences.length);
+  // Function to start the autoplay timer
+  const startAutoplayTimer = () => {
+    if (autoplayTimerRef.current) {
+      clearInterval(autoplayTimerRef.current);
+    }
+    
+    autoplayTimerRef.current = setInterval(() => {
+      if (!isPaused) {
+        setDirection(1);
+        setCurrentExperienceIndex(prev => (prev + 1) % experiences.length);
+      }
     }, 8000);
-    return () => clearInterval(autoplay);
-  }, [experiences.length]);
+  };
+
+  // Set up autoplay timer and scroll listener
+  useEffect(() => {
+    startAutoplayTimer();
+
+    const rightCol = rightColumnRef.current;
+    if (rightCol) {
+      const handleScroll = () => {
+        setIsPaused(true);
+        
+        // Pause the tech stack animations
+        if (firstRowAnimationRef.current) firstRowAnimationRef.current.pause();
+        if (secondRowAnimationRef.current) secondRowAnimationRef.current.pause();
+        
+        // If a timer for automatic resume exists, clear it
+        if (autoplayTimerRef.current) {
+          clearInterval(autoplayTimerRef.current);
+          autoplayTimerRef.current = null;
+        }
+      };
+
+      rightCol.addEventListener('scroll', handleScroll);
+      return () => {
+        rightCol.removeEventListener('scroll', handleScroll);
+        if (autoplayTimerRef.current) clearInterval(autoplayTimerRef.current);
+      };
+    }
+    
+    return () => {
+      if (autoplayTimerRef.current) clearInterval(autoplayTimerRef.current);
+    };
+  }, [experiences.length, isPaused]);
+
+  // Function to handle carousel navigation and resume animations
+  const handleCarouselNavigation = (navigateDirection: number) => {
+    // Resume animations
+    setIsPaused(false);
+    if (firstRowAnimationRef.current) firstRowAnimationRef.current.play();
+    if (secondRowAnimationRef.current) secondRowAnimationRef.current.play();
+    
+    // Set direction and update index
+    setDirection(navigateDirection);
+    setCurrentExperienceIndex(prev => 
+      navigateDirection > 0 
+        ? (prev === experiences.length - 1 ? 0 : prev + 1)
+        : (prev === 0 ? experiences.length - 1 : prev - 1)
+    );
+    
+    // Restart autoplay timer
+    startAutoplayTimer();
+  };
 
   return (
     <motion.div className="portfolio-container" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
@@ -165,14 +228,14 @@ const PortfolioLayout: React.FC = () => {
         </motion.div>
       </motion.div>
 
-      <div className="right-column">
+      <div className="right-column" ref={rightColumnRef}>
         <div className="experience-section">
           <h2>Experience</h2>
           <div className="carousel-container">
-            <button className="carousel-button prev floating" onClick={() => {
-              setDirection(-1);
-              setCurrentExperienceIndex(prev => prev === 0 ? experiences.length - 1 : prev - 1);
-            }}>
+            <button 
+              className="carousel-button prev floating" 
+              onClick={() => handleCarouselNavigation(-1)}
+            >
               <FaChevronLeft size={20} />
             </button>
 
@@ -236,10 +299,10 @@ const PortfolioLayout: React.FC = () => {
               </AnimatePresence>
             </div>
 
-            <button className="carousel-button next floating" onClick={() => {
-              setDirection(1);
-              setCurrentExperienceIndex(prev => prev === experiences.length - 1 ? 0 : prev + 1);
-            }}>
+            <button 
+              className="carousel-button next floating" 
+              onClick={() => handleCarouselNavigation(1)}
+            >
               <FaChevronRight size={20} />
             </button>
           </div>
