@@ -12,13 +12,11 @@ export const getAllResearch = async (req, res) => {
 
 export const getResearchById = async (req, res) => {
   const { id } = req.params
-
   try {
     const research = await Research.findById(id)
     if (!research) {
       return res.status(404).json({ message: 'Investigación no encontrada' })
     }
-
     res.status(200).json(research)
   } catch (error) {
     console.error('Error al obtener investigación por ID:', error)

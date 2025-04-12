@@ -7,5 +7,6 @@ export type ResearchArticle = {
   date: string;
   timeread: string;
   article: string;
+  link: string;
   comingsoon: boolean;
 };

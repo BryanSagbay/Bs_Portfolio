@@ -1,16 +1,15 @@
 import { pool } from '../databases/db.js'
 
 export class Experience {
-  constructor (id, company, active, position, period, schedule, projects, description, technologiesused) {
+  constructor (id, company, active, position, period, schedule, projects, technologiesUsed) {
     this.id = id
     this.company = company
     this.active = active
     this.position = position
     this.period = period
     this.schedule = schedule
-    this.projects = projects
-    this.description = description
-    this.technologies_used = technologiesused
+    this.projects = projects // JSONB
+    this.technologies_used = technologiesUsed
   }
 
   static async findAll () {
@@ -23,7 +22,6 @@ export class Experience {
       row.period,
       row.schedule,
       row.projects,
-      row.description,
       row.technologies_used
     ))
   }
@@ -40,26 +38,30 @@ export class Experience {
       row.period,
       row.schedule,
       row.projects,
-      row.description,
       row.technologies_used
     )
   }
 
   static async create (data) {
-    const result = await pool.query(`
-      INSERT INTO experience (company, active, position, period, schedule, projects, description, technologies_used)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    // Ensure projects is a JSON string if it's an object/array
+    const projectsJson = typeof data.projects === 'string'
+      ? data.projects
+      : JSON.stringify(data.projects)
+
+    const result = await pool.query(
+      `INSERT INTO experience (
+        company, active, position, period, schedule, projects, technologies_used
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *`,
-    [
-      data.company,
-      data.active,
-      data.position,
-      data.period,
-      data.schedule,
-      data.projects,
-      data.description,
-      data.technologies_used
-    ]
+      [
+        data.company,
+        data.active,
+        data.position,
+        data.period,
+        data.schedule,
+        projectsJson,
+        data.technologies_used
+      ]
     )
 
     const row = result.rows[0]
@@ -71,38 +73,41 @@ export class Experience {
       row.period,
       row.schedule,
       row.projects,
-      row.description,
       row.technologies_used
     )
   }
 
   static async update (id, data) {
-    const result = await pool.query(`
-      UPDATE experience SET
+    // Ensure projects is a JSON string if it's an object/array
+    const projectsJson = typeof data.projects === 'string'
+      ? data.projects
+      : JSON.stringify(data.projects)
+
+    const result = await pool.query(
+      `UPDATE experience SET
         company = $1,
         active = $2,
         position = $3,
         period = $4,
         schedule = $5,
         projects = $6,
-        description = $7,
-        technologies_used = $8
-      WHERE id = $9
+        technologies_used = $7
+      WHERE id = $8
       RETURNING *`,
-    [
-      data.company,
-      data.active,
-      data.position,
-      data.period,
-      data.schedule,
-      data.projects,
-      data.description,
-      data.technologies_used,
-      id
-    ]
+      [
+        data.company,
+        data.active,
+        data.position,
+        data.period,
+        data.schedule,
+        projectsJson,
+        data.technologies_used,
+        id
+      ]
     )
 
     if (result.rows.length === 0) return null
+
     const row = result.rows[0]
     return new Experience(
       row.id,
@@ -112,7 +117,6 @@ export class Experience {
       row.period,
       row.schedule,
       row.projects,
-      row.description,
       row.technologies_used
     )
   }

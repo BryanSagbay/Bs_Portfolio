@@ -11,10 +11,11 @@ import { verifyToken } from '../middleware/auth.js'
 
 const router = express.Router()
 
+// Públicos
 router.get('/', getAllResearch)
 router.get('/:id', getResearchById)
 
-// Protegidas
+// Protegidos
 router.post('/', verifyToken, createResearch)
 router.put('/:id', verifyToken, updateResearch)
 router.delete('/:id', verifyToken, deleteResearch)
