@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import './Profile.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -28,10 +28,8 @@ const PortfolioLayout: React.FC = () => {
   const [aboutData, setAboutData] = useState<AboutData | null>(null);
   const [experiences, setExperiences] = useState<ExperienceData[]>([]);
   const [currentTagline, setCurrentTagline] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const [isCarouselPaused, setIsCarouselPaused] = useState(false);
   const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const firstRowAnimationRef = useRef<Animation | null>(null);
-  const secondRowAnimationRef = useRef<Animation | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,34 +86,34 @@ const PortfolioLayout: React.FC = () => {
     { name: 'Azure', icon: <VscAzure size={28} color="#2496ED" /> }
   ];
 
-  // Initialize tech stack animations
+  // Initialize tech stack animations - keep these running all the time
   useEffect(() => {
     if (firstRowRef.current && secondRowRef.current) {
-      firstRowAnimationRef.current = firstRowRef.current.animate([
+      firstRowRef.current.animate([
         { transform: 'translateX(0)' },
         { transform: 'translateX(-50%)' }
       ], { duration: 30000, iterations: Infinity });
 
-      secondRowAnimationRef.current = secondRowRef.current.animate([
+      secondRowRef.current.animate([
         { transform: 'translateX(-50%)' },
         { transform: 'translateX(0)' }
       ], { duration: 30000, iterations: Infinity });
     }
   }, []);
 
-  // Function to start the autoplay timer
-  const startAutoplayTimer = () => {
+  // Function to start the autoplay timer for carousel
+  const startAutoplayTimer = useCallback(() => {
     if (autoplayTimerRef.current) {
       clearInterval(autoplayTimerRef.current);
     }
-    
+
     autoplayTimerRef.current = setInterval(() => {
-      if (!isPaused) {
+      if (!isCarouselPaused) {
         setDirection(1);
-        setCurrentExperienceIndex(prev => (prev + 1) % experiences.length);
+        setCurrentExperienceIndex((prev) => (prev + 1) % experiences.length);
       }
     }, 8000);
-  };
+  }, [isCarouselPaused, experiences.length]);
 
   // Set up autoplay timer and scroll listener
   useEffect(() => {
@@ -124,13 +122,9 @@ const PortfolioLayout: React.FC = () => {
     const rightCol = rightColumnRef.current;
     if (rightCol) {
       const handleScroll = () => {
-        setIsPaused(true);
-        
-        // Pause the tech stack animations
-        if (firstRowAnimationRef.current) firstRowAnimationRef.current.pause();
-        if (secondRowAnimationRef.current) secondRowAnimationRef.current.pause();
-        
-        // If a timer for automatic resume exists, clear it
+        setIsCarouselPaused(true);
+
+        // Si existe un temporizador, limpiarlo
         if (autoplayTimerRef.current) {
           clearInterval(autoplayTimerRef.current);
           autoplayTimerRef.current = null;
@@ -143,18 +137,16 @@ const PortfolioLayout: React.FC = () => {
         if (autoplayTimerRef.current) clearInterval(autoplayTimerRef.current);
       };
     }
-    
+
     return () => {
       if (autoplayTimerRef.current) clearInterval(autoplayTimerRef.current);
     };
-  }, [experiences.length, isPaused]);
+  }, [experiences.length, isCarouselPaused, startAutoplayTimer]);
 
   // Function to handle carousel navigation and resume animations
   const handleCarouselNavigation = (navigateDirection: number) => {
-    // Resume animations
-    setIsPaused(false);
-    if (firstRowAnimationRef.current) firstRowAnimationRef.current.play();
-    if (secondRowAnimationRef.current) secondRowAnimationRef.current.play();
+    // Resume carousel animation
+    setIsCarouselPaused(false);
     
     // Set direction and update index
     setDirection(navigateDirection);
