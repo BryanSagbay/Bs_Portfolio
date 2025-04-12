@@ -24,7 +24,18 @@ export const getProjectById = async (req, res) => {
 
 export const createProject = async (req, res) => {
   try {
-    const project = await Projects.create(req.body)
+    const { type, title, description, indice, link } = req.body
+    const imagen = req.file ? `/uploads/${req.file.filename}` : null
+
+    const project = await Projects.create({
+      type,
+      title,
+      description,
+      imagen,
+      indice,
+      link
+    })
+
     res.status(201).json(project)
   } catch (error) {
     console.error('Error al crear proyecto:', error)
@@ -35,7 +46,18 @@ export const createProject = async (req, res) => {
 export const updateProject = async (req, res) => {
   const { id } = req.params
   try {
-    const updated = await Projects.update(id, req.body)
+    const { type, title, description, indice, link } = req.body
+    const imagen = req.file ? `/uploads/${req.file.filename}` : undefined
+
+    const updated = await Projects.update(id, {
+      type,
+      title,
+      description,
+      imagen,
+      indice,
+      link
+    })
+
     if (!updated) return res.status(404).json({ message: 'Proyecto no encontrado' })
     res.status(200).json(updated)
   } catch (error) {

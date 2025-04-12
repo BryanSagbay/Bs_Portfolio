@@ -61,13 +61,29 @@ export class Projects {
   }
 
   static async update (id, data) {
-    const result = await pool.query(`
+    const fields = []
+    const values = []
+    let index = 1
+
+    for (const key in data) {
+      if (data[key] !== undefined) {
+        fields.push(`${key} = $${index}`)
+        values.push(data[key])
+        index++
+      }
+    }
+
+    if (fields.length === 0) return null
+
+    const query = `
       UPDATE projects
-      SET type = $1, title = $2, description = $3, imagen = $4, indice = $5, link = $6
-      WHERE id = $7
-      RETURNING *`,
-    [data.type, data.title, data.description, data.imagen, data.indice, data.link, id]
-    )
+      SET ${fields.join(', ')}
+      WHERE id = $${index}
+      RETURNING *`
+
+    values.push(id)
+
+    const result = await pool.query(query, values)
 
     if (result.rows.length === 0) return null
 
