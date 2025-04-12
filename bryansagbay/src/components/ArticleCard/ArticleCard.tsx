@@ -1,16 +1,20 @@
 import React from 'react';
-import { Article } from '../../data/Articulos';
 import './ArticleCard.css';
+import { ResearchArticle } from '../../types/Research';
 
-interface ArticleCardProps {
-  article: Article;
-  isSelected: boolean;
+interface ResearchCardProps {
+  article: ResearchArticle;
+  isSelected?: boolean;
   onClick: () => void;
 }
 
-const ArticleCard: React.FC<ArticleCardProps> = ({ article, isSelected, onClick }) => {
-  const { title, description, date, readTime, isComingSoon } = article;
-
+const ResearchCard: React.FC<ResearchCardProps> = ({ 
+  article,
+  isSelected = false, 
+  onClick 
+}) => {
+  const { title, description, date, timeread, link, comingsoon } = article;
+  
   return (
     <div 
       className={`article-card ${isSelected ? 'selected' : ''}`} 
@@ -18,27 +22,34 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, isSelected, onClick 
     >
       <div className="date-container">
         <div className="date-line"></div>
-        <span className="date">{isComingSoon ? 'Coming soon...' : date}</span>
+        <span className="date">{comingsoon ? 'Coming soon...' : date}</span>
       </div>
       
-      <h2 className="title">{title || 'Artículo sin título'}</h2>
+      <h2 className="title">{title || 'Sin título'}</h2>
       
-      {!isComingSoon && description && (
+      {!comingsoon && description && (
         <p className="description">{description}</p>
       )}
       
       <div className="card-footer">
-        <button className="read-link">
-          {isComingSoon ? 'Read more' : 'Read article'}
-          <span className="arrow">›</span>
-        </button>
+        {link && !comingsoon ? (
+          <a href={link} target="_blank" rel="noopener noreferrer" className="read-link">
+            Read more
+            <span className="arrow">›</span>
+          </a>
+        ) : (
+          <button className="read-link">
+            {comingsoon ? 'Read more' : 'Read'}
+            <span className="arrow">›</span>
+          </button>
+        )}
         
-        {readTime && (
-          <span className="read-time">{readTime}</span>
+        {timeread && (
+          <span className="read-time">{timeread}</span>
         )}
       </div>
     </div>
   );
 };
 
-export default ArticleCard;
+export default ResearchCard;
