@@ -3,7 +3,7 @@ import './Projects.css';
 import { CiMobile3 } from 'react-icons/ci';
 import { SlScreenDesktop } from 'react-icons/sl';
 import ProyectoCardModern from '../../components/CardModern/CardModern';
-import { Proyecto } from '../../data/Proyectos';
+import { Proyecto } from '../../types/Proyectos';
 import api from '../../services/Portfolio';
 
 interface ApiProyecto {
