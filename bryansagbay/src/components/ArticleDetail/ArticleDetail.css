@@ -15,6 +15,8 @@
   
   .article-detail.fade-in {
     animation: fadeIn 0.5s forwards;
+    background: linear-gradient(135deg, #6b1d56, #331c54);
+
   }
   
   .article-detail.fade-out {
