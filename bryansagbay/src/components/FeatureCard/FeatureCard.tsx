@@ -1,15 +1,14 @@
 import React from 'react';
 import './FeatureCard.css';
-import { Article } from '../../data/Articulos';
-import { motion } from 'framer-motion';
-import { AnimatePresence } from 'framer-motion';
+import { ResearchArticle } from '../../types/Research';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface FeatureCardProps {
-  article: Article;
+  article: ResearchArticle;
 }
 
 const FeatureCard: React.FC<FeatureCardProps> = ({ article }) => {
-  const { title, description, date, readTime } = article;
+  const { title, description, date, timeread, link } = article;
 
   return (
     <AnimatePresence mode="wait">
@@ -30,11 +29,16 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ article }) => {
           <h2 className="title">{title}</h2>
           <p className="description">{description}</p>
           <div className="card-footer">
-            <button className="read-link">
-              Read article
-              <span className="arrow">›</span>
-            </button>
-            {readTime && <span className="read-time">{readTime}</span>}
+            {link ? (
+              <a href={link} target="_blank" rel="noopener noreferrer" className="read-link">
+                Read article <span className="arrow">›</span>
+              </a>
+            ) : (
+              <button className="read-link" disabled>
+                Read article <span className="arrow">›</span>
+              </button>
+            )}
+            {timeread && <span className="read-time">{timeread}</span>}
           </div>
         </div>
       </motion.div>
