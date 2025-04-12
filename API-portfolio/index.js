@@ -1,10 +1,9 @@
 import express from 'express'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import helmet from 'helmet'
-import path from 'path'
-import { fileURLToPath } from 'url'
-
 import { PORT } from './config.js'
 import authRoutes from './src/routes/authRoutes.js'
 import researchRoutes from './src/routes/researchRoutes.js'
@@ -14,10 +13,16 @@ import experienceRoutes from './src/routes/experienceRoutes.js'
 import aboutRoutes from './src/routes/aboutRoutes.js'
 import { testConnection, initDatabase } from './src/databases/db.js'
 
-// Cargar variables de entorno
 dotenv.config()
 
 const app = express()
+
+// Obtener el directorio actual de la manera correcta en ES6
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+// Servir archivos estáticos desde 'uploads'
+app.use('/uploads', express.static(join(__dirname, 'uploads')))
 
 // Seguridad y middlewares
 app.use(cors())
@@ -25,13 +30,7 @@ app.use(helmet())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
-// Middleware para archivos estáticos (imágenes, GIFs, etc.)
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
-
-// Rutas de la API
+// Rutas
 app.use('/api/about', aboutRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/research', researchRoutes)

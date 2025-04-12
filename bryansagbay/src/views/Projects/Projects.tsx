@@ -36,10 +36,11 @@ const ProyectosScroll: React.FC = () => {
 
         const adaptados: Proyecto[] = data.map((item) => ({
           id: item.id,
-          tipo: item.type === 'Backend' ? 'pc' : 'movil', // Ajusta según lógica
+          tipo: item.type === 'pc' ? 'pc' : 'movil',
           titulo: item.title,
           descripcion: item.description,
-          imagenProyecto: item.imagen,
+          // Completamos la URL de la imagen con el dominio del backend
+          imagenProyecto: `http://localhost:3000${item.imagen}`,
           link: item.link,
         }));
 
@@ -146,7 +147,7 @@ const ProyectosScroll: React.FC = () => {
                 tipo={proyecto.tipo}
                 titulo={proyecto.titulo}
                 descripcion={proyecto.descripcion}
-                imagenProyecto={proyecto.imagenProyecto}
+                imagenProyecto={proyecto.imagenProyecto} // Pasamos la URL completa de la imagen
                 indice={index}
                 link={proyecto.link}
               />
