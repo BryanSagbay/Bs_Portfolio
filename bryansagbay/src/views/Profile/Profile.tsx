@@ -198,7 +198,7 @@ const PortfolioLayout: React.FC = () => {
                       </div>
                       <div className='position-container'>
                         <div className="position-header">
-                          <span className="code-icon">role</span>
+                          <span className="code-icon">ROLE</span>
                           <h4 className="position-title">{experiences[currentExperienceIndex].position}</h4>
                         </div>
                       </div>
