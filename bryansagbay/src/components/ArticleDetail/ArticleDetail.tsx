@@ -24,7 +24,7 @@ const ArticleDetail: React.FC = () => {
     return <div className="article-detail-empty">Selecciona un artículo</div>;
   }
 
-  const { title, description, date, readTime, isFeatured, link } = displayedArticle;
+  const { title, date, readTime, isFeatured, link, article } = displayedArticle;
 
   return (
     <div className={`article-detail ${isFeatured ? 'featured' : ''} ${animating ? 'fade-out' : 'fade-in'}`}>
@@ -36,11 +36,8 @@ const ArticleDetail: React.FC = () => {
 
         <h2 className="title">{title}</h2>
 
-        <p className="description">{description}</p>
-
         <div className="article-body">
-          {/* Contenido de ejemplo */}
-          <p>Este es el contenido completo del artículo...</p>
+          {article}
         </div>
 
         <div className="card-footer">
