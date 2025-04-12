@@ -13,7 +13,10 @@ export class Research {
   }
 
   static async findAll () {
-    const result = await pool.query('SELECT * FROM research ORDER BY id DESC')
+    const result = await pool.query(`
+      SELECT * FROM research
+      ORDER BY comingsoon ASC, date DESC
+    `)
     return result.rows.map(r => new Research(
       r.id,
       r.title,
@@ -34,24 +37,36 @@ export class Research {
   }
 
   static async create ({ title, description, date, timeread, article, link, comingsoon }) {
+    if (typeof comingsoon !== 'boolean') {
+      throw new Error('El campo "comingsoon" debe ser de tipo boolean.')
+    }
+
     const result = await pool.query(
       `INSERT INTO research (title, description, date, timeread, article, comingsoon, link)
        VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING *`,
       [title, description, date, timeread, article, comingsoon, link]
     )
+
     const r = result.rows[0]
     return new Research(r.id, r.title, r.description, r.date, r.timeread, r.article, r.link, r.comingsoon)
   }
 
   static async update (id, data) {
+    if (typeof data.comingsoon !== 'boolean') {
+      throw new Error('El campo "comingsoon" debe ser de tipo boolean.')
+    }
+
     const result = await pool.query(
       `UPDATE research
        SET title = $1, description = $2, date = $3, timeread = $4, article = $5, comingsoon = $6, link = $7
-       WHERE id = $8 RETURNING *`,
-      [data.title, data.description, data.date, data.timeread, data.article, data.link, data.comingsoon, id]
+       WHERE id = $8
+       RETURNING *`,
+      [data.title, data.description, data.date, data.timeread, data.article, data.comingsoon, data.link, id]
     )
+
     if (result.rows.length === 0) return null
+
     const r = result.rows[0]
     return new Research(r.id, r.title, r.description, r.date, r.timeread, r.article, r.link, r.comingsoon)
   }
