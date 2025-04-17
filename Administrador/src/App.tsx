@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useState, useEffect } from 'react';
 import LoginForm from './view/Login/Login';
 import Dashboard from './view/Dashboard/Dashboard';
-import NotFound from './view/NotFound/NotFound';
-
+import NotFound404 from './view/NotFound/NotFound';
+import "./App.css"
 
 // Componente para rutas protegidas
 interface ProtectedRouteProps {
@@ -58,7 +58,7 @@ function App() {
         } />
         
         <Route path="/" element={<Navigate to="/home" replace />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFound404 />} />
       </Routes>
     </Router>
   );
