@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-// Definimos las interfaces para tipar nuestros datos
+// Definimos las interfaces directamente en el archivo
 interface LoginCredentials {
   username: string;
   password: string;
@@ -18,7 +19,12 @@ interface LoginResponse {
   user: User;
 }
 
-const LoginForm = () => {
+interface LoginFormProps {
+  onLoginSuccess: () => void;
+}
+
+const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
+  const navigate = useNavigate();
   const [credentials, setCredentials] = useState<LoginCredentials>({
     username: '',
     password: ''
@@ -28,7 +34,7 @@ const LoginForm = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setCredentials(prev => ({
+    setCredentials((prev: LoginCredentials) => ({  // Agregando tipado explícito aquí
       ...prev,
       [name]: value
     }));
@@ -61,11 +67,11 @@ const LoginForm = () => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       
-      // Aquí podrías redirigir al usuario a otra página o actualizar el estado global
-      console.log('Login exitoso:', data);
+      // Llamamos a la función de éxito de login
+      onLoginSuccess();
       
-      // Si usas React Router, podrías redirigir así:
-      // navigate('/dashboard');
+      // Redireccionamos a la página principal
+      navigate('/home');
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Ocurrió un error inesperado');
@@ -105,7 +111,7 @@ const LoginForm = () => {
           />
         </div>
         
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading} className="login-button">
           {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
         </button>
       </form>
