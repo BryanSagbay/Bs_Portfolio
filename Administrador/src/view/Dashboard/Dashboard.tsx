@@ -1,6 +1,13 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
+import {
+  FiMenu, FiUser, FiHome, FiSettings, FiBarChart2, FiFolder, FiLogOut, FiBell
+} from 'react-icons/fi';
+import './Dashboard.css';
+import { DashboardContent } from './DashboardContent';
+import { AnalyticsContent } from './AnalyticsContent';
+import { ProjectsContent } from './ProjectsContent';
+import { SettingsContent } from './SettingsContent';
 
-// Definimos la interfaz User aquí
 interface User {
   id: number;
   username: string;
@@ -11,34 +18,84 @@ interface DashboardPageProps {
   onLogout: () => void;
 }
 
+export type DashboardSection = 'dashboard' | 'analytics' | 'projects' | 'settings';
+
 const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
-  // Recuperar información del usuario del localStorage
   const userJSON = localStorage.getItem('user');
   const user: User | null = userJSON ? JSON.parse(userJSON) : null;
-  
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<DashboardSection>('dashboard');
+
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+  const changeSection = (section: DashboardSection) => {
+    setActiveSection(section);
+    if (window.innerWidth <= 992) setSidebarOpen(false);
+  };
+
+  const renderContent = () => {
+    switch (activeSection) {
+      case 'dashboard': return <DashboardContent user={user} />;
+      case 'analytics': return <AnalyticsContent />;
+      case 'projects': return <ProjectsContent />;
+      case 'settings': return <SettingsContent user={user} />;
+      default: return <DashboardContent user={user} />;
+    }
+  };
+
   return (
-    <div className="home-page">
-      <header>
-        <h1>Página Principal</h1>
-        <button onClick={onLogout}>Cerrar sesión</button>
-      </header>
-      
-      <main>
-        {user ? (
-          <div className="welcome-section">
-            <h2>Bienvenido, {user.username}!</h2>
-            <p>Email: {user.email}</p>
-          </div>
-        ) : (
-          <p>Cargando información del usuario...</p>
-        )}
-        
-        {/* Aquí puedes agregar más contenido de la página principal */}
-        <div className="dashboard-content">
-          <h3>Panel de Control</h3>
-          <p>Contenido del panel de control aquí...</p>
+    <div className="dashboard-container">
+      <nav className="navbar">
+        <div className="navbar-left">
+          <button className="menu-toggle" onClick={toggleSidebar}><FiMenu /></button>
+          <h1 className="navbar-title">Panel de Control</h1>
         </div>
-      </main>
+        <div className="navbar-right">
+          <div className="notification-icon">
+            <FiBell />
+            <span className="notification-badge">3</span>
+          </div>
+          <div className="user-profile">
+            <span className="user-name">{user?.username || 'Usuario'}</span>
+            <div className="user-avatar"><FiUser /></div>
+          </div>
+        </div>
+      </nav>
+
+      <div className="main-container">
+        <aside className={`sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
+          <div className="sidebar-header"><h2>MI APLICACIÓN</h2></div>
+          <div className="sidebar-user">
+            <div className="sidebar-avatar"><FiUser /></div>
+            <div className="sidebar-user-info">
+              <p className="sidebar-username">{user?.username || 'Usuario'}</p>
+              <p className="sidebar-email">{user?.email || 'correo@ejemplo.com'}</p>
+            </div>
+          </div>
+          <nav className="sidebar-nav">
+            <ul>
+              <li className={activeSection === 'dashboard' ? 'active' : ''}>
+                <button onClick={() => changeSection('dashboard')}><FiHome /> Inicio</button>
+              </li>
+              <li className={activeSection === 'analytics' ? 'active' : ''}>
+                <button onClick={() => changeSection('analytics')}><FiBarChart2 /> Estadísticas</button>
+              </li>
+              <li className={activeSection === 'projects' ? 'active' : ''}>
+                <button onClick={() => changeSection('projects')}><FiFolder /> Proyectos</button>
+              </li>
+              <li className={activeSection === 'settings' ? 'active' : ''}>
+                <button onClick={() => changeSection('settings')}><FiSettings /> Configuración</button>
+              </li>
+              <li className="logout">
+                <button onClick={onLogout}><FiLogOut /> Cerrar sesión</button>
+              </li>
+            </ul>
+          </nav>
+        </aside>
+
+        <main className="main-content">
+          {renderContent()}
+        </main>
+      </div>
     </div>
   );
 };
