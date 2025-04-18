@@ -101,7 +101,7 @@ const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
             <Route path="research" element={<Research />} />
             <Route path="about" element={<About />} />
             <Route path="settings" element={<Settings />} />
-            <Route path="*" element={<Settings />} />
+            <Route path="*" element={<Home/>} />
           </Routes>
         </main>
       </div>
