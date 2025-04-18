@@ -50,12 +50,11 @@ function App() {
             <LoginForm onLoginSuccess={handleLoginSuccess} />
         } />
 
-        <Route path="/inicio*" element={
+        <Route path="/inicio/*" element={
           <ProtectedRoute>
             <Dashboard onLogout={handleLogout} />
           </ProtectedRoute>
         } />
-
 
         <Route path="/" element={<Navigate to="/inicio" replace />} />
         <Route path="*" element={<NotFound404 />} />

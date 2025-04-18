@@ -5,11 +5,11 @@ import {
 import { LuUserSearch } from "react-icons/lu";
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import './Dashboard.css';
-import Home from '../../components/Home/Home';
 import Projects from '../../components/Projects/Projects';
 import Research from '../../components/Research/Research';
 import About from '../../components/About/About';
 import Settings from '../Settings/Settings';
+import Home from '../Home/Home';
 
 interface User {
   id: number;
