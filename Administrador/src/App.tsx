@@ -12,51 +12,52 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const isAuthenticated = localStorage.getItem('token') !== null;
-  
+
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
-  
+
   return <>{children}</>;
 };
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  
+
   useEffect(() => {
     // Verificar si existe un token al cargar la aplicación
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
   }, []);
-  
+
   // Función para manejar el login exitoso
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
   };
-  
+
   // Función para manejar el logout
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setIsLoggedIn(false);
   };
-  
+
   return (
     <Router>
       <Routes>
         <Route path="/login" element={
-          isLoggedIn ? 
-            <Navigate to="/home" replace /> : 
+          isLoggedIn ?
+            <Navigate to="/inicio" replace /> :
             <LoginForm onLoginSuccess={handleLoginSuccess} />
         } />
-        
-        <Route path="/home" element={
+
+        <Route path="/inicio*" element={
           <ProtectedRoute>
             <Dashboard onLogout={handleLogout} />
           </ProtectedRoute>
         } />
-        
-        <Route path="/" element={<Navigate to="/home" replace />} />
+
+
+        <Route path="/" element={<Navigate to="/inicio" replace />} />
         <Route path="*" element={<NotFound404 />} />
       </Routes>
     </Router>

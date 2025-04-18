@@ -1,14 +1,14 @@
 import { FC, useState } from 'react';
 import {
-  FiMenu, FiUser, FiHome, FiSettings, FiBarChart2, FiFolder, FiLogOut, FiBell
+  FiMenu, FiUser, FiHome, FiSettings, FiBarChart2, FiFolder, FiLogOut
 } from 'react-icons/fi';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import './Dashboard.css';
 import Home from '../../components/Home/Home';
 import Projects from '../../components/Projects/Projects';
 import Research from '../../components/Research/Research';
 import About from '../../components/About/About';
 import Settings from '../Settings/Settings';
-
 
 interface User {
   id: number;
@@ -20,28 +20,29 @@ interface DashboardPageProps {
   onLogout: () => void;
 }
 
-export type DashboardSection = 'dashboard' | 'analytics' | 'projects' | 'settings';
-
 const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
   const userJSON = localStorage.getItem('user');
   const user: User | null = userJSON ? JSON.parse(userJSON) : null;
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<DashboardSection>('dashboard');
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
-  const changeSection = (section: DashboardSection) => {
-    setActiveSection(section);
-    if (window.innerWidth <= 992) setSidebarOpen(false);
+
+  const getActiveSection = () => {
+    const path = location.pathname;
+    if (path.includes('/analytics')) return 'analytics';
+    if (path.includes('/projects')) return 'projects';
+    if (path.includes('/settings')) return 'settings';
+    return 'dashboard';
   };
 
-  const renderContent = () => {
-    switch (activeSection) {
-      case 'dashboard': return <Home />;
-      case 'analytics': return <Projects />;
-      case 'projects': return <Research />;
-      case 'settings': return <About  />;
-      default: return <Settings />;
-    }
+  const activeSection = getActiveSection();
+
+  const changeSection = (section: string) => {
+    navigate(`/inicio/${section === 'dashboard' ? '' : section}`);
+    if (window.innerWidth <= 992) setSidebarOpen(false);
   };
 
   return (
@@ -52,22 +53,13 @@ const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
           <h1 className="navbar-title">Panel de Control</h1>
         </div>
         <div className="navbar-right">
-          <div className="notification-icon">
-            <FiBell />
-            <span className="notification-badge">3</span>
-          </div>
-          <div className="user-profile">
-            <span className="user-name">{user?.username || 'Usuario'}</span>
-            <div className="user-avatar"><FiUser /></div>
-          </div>
         </div>
       </nav>
 
       <div className="main-container">
         <aside className={`sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
-          <div className="sidebar-header"><h2>MI APLICACIÓN</h2></div>
           <div className="sidebar-user">
-            <div className="sidebar-avatar"><FiUser /></div>
+            <div className="sidebar-avatar"><FiUser size={32} /></div>
             <div className="sidebar-user-info">
               <p className="sidebar-username">{user?.username || 'Usuario'}</p>
               <p className="sidebar-email">{user?.email || 'correo@ejemplo.com'}</p>
@@ -93,9 +85,17 @@ const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
             </ul>
           </nav>
         </aside>
-
+        {sidebarOpen && window.innerWidth <= 992 && (
+          <div className="overlay" onClick={toggleSidebar}></div>
+        )}
         <main className="main-content">
-          {renderContent()}
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="analytics" element={<Projects />} />
+            <Route path="projects" element={<Research />} />
+            <Route path="settings" element={<About />} />
+            <Route path="*" element={<Settings />} />
+          </Routes>
         </main>
       </div>
     </div>
