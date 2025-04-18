@@ -1,23 +1,9 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-// Definimos las interfaces directamente en el archivo
-interface LoginCredentials {
-  username: string;
-  password: string;
-}
-
-interface User {
-  id: number;
-  username: string;
-  email: string;
-}
-
-interface LoginResponse {
-  message: string;
-  token: string;
-  user: User;
-}
+import { LoginCredentials } from '../../model/auth';
+import { login } from '../../services/authService';
+import './LoginForm.css';
 
 interface LoginFormProps {
   onLoginSuccess: () => void;
@@ -34,45 +20,22 @@ const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setCredentials((prev: LoginCredentials) => ({  // Agregando tipado explícito aquí
-      ...prev,
-      [name]: value
-    }));
+    setCredentials(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    
+
     try {
-      // Reemplaza 'YOUR_API_URL' con la URL real de tu API
-      const response = await fetch('http://localhost:3000/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(credentials)
-      });
-      
-      if (!response.ok) {
-        // Si el servidor responde con un código de error
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Error al iniciar sesión');
-      }
-      
-      const data: LoginResponse = await response.json();
-      
-      // Almacenamos el token en localStorage para usarlo en futuras peticiones
+      const data = await login(credentials);
+
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-      
-      // Llamamos a la función de éxito de login
+
       onLoginSuccess();
-      
-      // Redireccionamos a la página principal
       navigate('/home');
-      
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Ocurrió un error inesperado');
       console.error('Error de login:', err);
@@ -85,7 +48,7 @@ const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
     <div className="login-container">
       <h2>Iniciar Sesión</h2>
       {error && <div className="error-message">{error}</div>}
-      
+
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="username">Usuario:</label>
@@ -98,7 +61,7 @@ const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
             required
           />
         </div>
-        
+
         <div className="form-group">
           <label htmlFor="password">Contraseña:</label>
           <input
@@ -110,7 +73,7 @@ const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
             required
           />
         </div>
-        
+
         <button type="submit" disabled={loading} className="login-button">
           {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
         </button>
