@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import {
   FiMenu, FiUser, FiHome, FiSettings, FiBarChart2, FiFolder, FiLogOut
 } from 'react-icons/fi';
+import { LuUserSearch } from "react-icons/lu";
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import './Dashboard.css';
 import Home from '../../components/Home/Home';
@@ -32,8 +33,10 @@ const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
 
   const getActiveSection = () => {
     const path = location.pathname;
-    if (path.includes('/analytics')) return 'analytics';
+    if (path.includes('/home')) return 'home';
     if (path.includes('/projects')) return 'projects';
+    if (path.includes('/research')) return 'research';
+    if (path.includes('/about')) return 'about';
     if (path.includes('/settings')) return 'settings';
     return 'dashboard';
   };
@@ -67,17 +70,20 @@ const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
           </div>
           <nav className="sidebar-nav">
             <ul>
-              <li className={activeSection === 'dashboard' ? 'active' : ''}>
-                <button onClick={() => changeSection('dashboard')}><FiHome /> Inicio</button>
-              </li>
-              <li className={activeSection === 'analytics' ? 'active' : ''}>
-                <button onClick={() => changeSection('analytics')}><FiBarChart2 /> Estadísticas</button>
+              <li className={activeSection === 'home' ? 'active' : ''}>
+                <button onClick={() => changeSection('home')}><FiHome /> Home</button>
               </li>
               <li className={activeSection === 'projects' ? 'active' : ''}>
-                <button onClick={() => changeSection('projects')}><FiFolder /> Proyectos</button>
+                <button onClick={() => changeSection('projects')}><FiBarChart2 /> Proyectos </button>
+              </li>
+              <li className={activeSection === 'research' ? 'active' : ''}>
+                <button onClick={() => changeSection('research')}><FiFolder /> Articulos </button>
+              </li>
+              <li className={activeSection === 'about' ? 'active' : ''}>
+                <button onClick={() => changeSection('about')}><LuUserSearch/> Sobre Mi</button>
               </li>
               <li className={activeSection === 'settings' ? 'active' : ''}>
-                <button onClick={() => changeSection('settings')}><FiSettings /> Configuración</button>
+                <button onClick={() => changeSection('settings')}><FiSettings /> Configracion</button>
               </li>
               <li className="logout">
                 <button onClick={onLogout}><FiLogOut /> Cerrar sesión</button>
@@ -90,10 +96,11 @@ const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
         )}
         <main className="main-content">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="analytics" element={<Projects />} />
-            <Route path="projects" element={<Research />} />
-            <Route path="settings" element={<About />} />
+            <Route path="home" element={<Home />} />
+            <Route path="projects" element={<Projects />} />
+            <Route path="research" element={<Research />} />
+            <Route path="about" element={<About />} />
+            <Route path="settings" element={<Settings />} />
             <Route path="*" element={<Settings />} />
           </Routes>
         </main>
