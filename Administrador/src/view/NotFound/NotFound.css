@@ -2,3 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .not-found {
+    @apply flex flex-col items-center justify-center h-screen bg-gray-100;
+  }
+
+  .not-found h1 {
+    @apply text-6xl font-bold text-gray-800;
+  }
+
+  .not-found p {
+    @apply text-lg text-gray-600;
+  }
+
+  .not-found a {
+    @apply mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600;
+  }
+}
