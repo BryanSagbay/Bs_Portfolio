@@ -3,10 +3,12 @@ import {
   FiMenu, FiUser, FiHome, FiSettings, FiBarChart2, FiFolder, FiLogOut, FiBell
 } from 'react-icons/fi';
 import './Dashboard.css';
-import { DashboardContent } from './DashboardContent';
-import { AnalyticsContent } from './AnalyticsContent';
-import { ProjectsContent } from './ProjectsContent';
-import { SettingsContent } from './SettingsContent';
+import Home from '../../components/Home/Home';
+import Projects from '../../components/Projects/Projects';
+import Research from '../../components/Research/Research';
+import About from '../../components/About/About';
+import Settings from '../Settings/Settings';
+
 
 interface User {
   id: number;
@@ -34,11 +36,11 @@ const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
 
   const renderContent = () => {
     switch (activeSection) {
-      case 'dashboard': return <DashboardContent user={user} />;
-      case 'analytics': return <AnalyticsContent />;
-      case 'projects': return <ProjectsContent />;
-      case 'settings': return <SettingsContent user={user} />;
-      default: return <DashboardContent user={user} />;
+      case 'dashboard': return <Home />;
+      case 'analytics': return <Projects />;
+      case 'projects': return <Research />;
+      case 'settings': return <About  />;
+      default: return <Settings />;
     }
   };
 
