@@ -5,11 +5,11 @@ import {
 import { LuUserSearch } from "react-icons/lu";
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import './Dashboard.css';
-import Research from '../../components/Research/Research';
 import About from '../../components/About/About';
 import Settings from '../Settings/Settings';
 import Home from '../Home/Home';
 import ProjectList from '../../components/Projects/Projects';
+import ResearchList from '../../components/Research/Research';
 
 interface User {
   id: number;
@@ -98,7 +98,7 @@ const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
           <Routes>
             <Route path="home" element={<Home />} />
             <Route path="projects" element={<ProjectList />} />
-            <Route path="research" element={<Research />} />
+            <Route path="research" element={<ResearchList />} />
             <Route path="about" element={<About />} />
             <Route path="settings" element={<Settings />} />
             <Route path="*" element={<Home/>} />
