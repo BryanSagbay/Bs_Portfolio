@@ -2,12 +2,13 @@ import { useEffect, useState } from "react"
 import { About as AboutModel } from "../../model/about"
 import { getAllAbout, updateAbout } from "../../services/aboutService"
 import "./About.css"
+import { toast, ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const About = () => {
   const [about, setAbout] = useState<AboutModel | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
-  const [message, setMessage] = useState<{type: 'success' | 'error', text: string} | null>(null)
 
   useEffect(() => {
     const fetchAbout = async () => {
@@ -15,7 +16,8 @@ const About = () => {
         const data = await getAllAbout()
         if (data.length > 0) setAbout(data[0])
       } catch (error) {
-        console.error("Error al cargar el perfil:", error)
+        console.error("Error loading profile:", error)
+        toast.error("Error loading profile data.")
       } finally {
         setLoading(false)
       }
@@ -42,19 +44,19 @@ const About = () => {
   const handleSave = async () => {
     if (!about) return
     setSaving(true)
-    setMessage(null)
     try {
       const updated = await updateAbout(about.id, about)
       setAbout(updated)
-      setMessage({type: 'success', text: 'Perfil actualizado correctamente'})
-      // Smooth scroll to message
+      toast.success("Profile updated successfully!")
+
+      // Smooth scroll to toast area
       setTimeout(() => {
-        const alertElement = document.querySelector('.alert')
-        alertElement?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        const toastContainer = document.querySelector('.Toastify__toast-container')
+        toastContainer?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       }, 100)
     } catch (error) {
-      console.error("Error al guardar:", error)
-      setMessage({type: 'error', text: 'Hubo un error al guardar'})
+      console.error("Error saving profile:", error)
+      toast.error("An error occurred while saving.")
     } finally {
       setSaving(false)
     }
@@ -62,116 +64,118 @@ const About = () => {
 
   if (loading) return (
     <div className="about-container">
-      <div className="loader">Cargando perfil</div>
+      <div className="loader">Loading profile...</div>
     </div>
   )
-  
+
   if (!about) return (
     <div className="about-container">
-      <div className="loader">No se encontró información del perfil</div>
+      <div className="loader">Profile information not found</div>
     </div>
   )
 
   return (
     <div className="about-container">
+      <ToastContainer />
+
       <div className="about-card">
         <div className="card-header">
-          <h1>Información de Perfil</h1>
+          <h1>Profile Information</h1>
         </div>
-        
+
         <div className="card-body">
           <div className="about-photo-container">
             <img src={about.photo} alt={about.name} className="about-photo" />
             <div className="form-group">
-              <label htmlFor="photo">URL de la foto</label>
+              <label htmlFor="photo">Photo URL</label>
               <input
                 type="text"
                 id="photo"
                 name="photo"
                 value={about.photo}
                 onChange={handleChange}
-                placeholder="URL de la foto"
+                placeholder="Photo URL"
               />
             </div>
           </div>
 
           <div className="form-content">
             <div className="form-section">
-              <h2 className="section-title">Datos personales</h2>
-              
+              <h2 className="section-title">Personal Information</h2>
+
               <div className="form-group">
-                <label htmlFor="name">Nombre</label>
+                <label htmlFor="name">Name</label>
                 <input
                   type="text"
                   id="name"
                   name="name"
                   value={about.name}
                   onChange={handleChange}
-                  placeholder="Nombre"
+                  placeholder="Full name"
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="title">Título</label>
+                <label htmlFor="title">Title</label>
                 <input
                   type="text"
                   id="title"
                   name="title"
                   value={about.title}
                   onChange={handleChange}
-                  placeholder="Título profesional"
+                  placeholder="Professional title"
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="location">Ubicación</label>
+                <label htmlFor="location">Location</label>
                 <input
                   type="text"
                   id="location"
                   name="location"
                   value={about.location}
                   onChange={handleChange}
-                  placeholder="Ciudad, País"
+                  placeholder="City, Country"
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="phone">Teléfono</label>
+                <label htmlFor="phone">Phone</label>
                 <input
                   type="text"
                   id="phone"
                   name="phone"
                   value={about.phone}
                   onChange={handleChange}
-                  placeholder="Número de teléfono"
+                  placeholder="Phone number"
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="mail">Correo electrónico</label>
+                <label htmlFor="mail">Email</label>
                 <input
                   type="email"
                   id="mail"
                   name="mail"
                   value={about.mail}
                   onChange={handleChange}
-                  placeholder="ejemplo@correo.com"
+                  placeholder="example@email.com"
                 />
               </div>
             </div>
 
             <div className="form-section">
-              <h2 className="section-title">Frases destacadas</h2>
+              <h2 className="section-title">Highlighted Phrases</h2>
               <div className="phrases-container">
                 {about.phrases.map((phrase, index) => (
                   <div className="form-group" key={index}>
-                    <label htmlFor={`phrase-${index}`}>Frase {index + 1}</label>
+                    <label htmlFor={`phrase-${index}`}>Phrase {index + 1}</label>
                     <input
                       id={`phrase-${index}`}
                       type="text"
                       value={phrase}
                       onChange={(e) => handlePhrasesChange(index, e.target.value)}
-                      placeholder={`Frase destacada ${index + 1}`}
+                      placeholder={`Highlighted phrase ${index + 1}`}
                     />
                   </div>
                 ))}
@@ -179,46 +183,39 @@ const About = () => {
             </div>
 
             <div className="form-section">
-              <h2 className="section-title">Descripción personal</h2>
+              <h2 className="section-title">About Me</h2>
               <div className="form-group">
-                <label htmlFor="about-text">Sobre mí</label>
+                <label htmlFor="about-text">Short Description</label>
                 <textarea
                   id="about-text"
                   name="about"
                   value={about.about}
                   onChange={handleChange}
-                  placeholder="Breve descripción sobre ti"
+                  placeholder="Brief description about yourself"
                   rows={4}
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="description">Descripción extendida</label>
+                <label htmlFor="description">Extended Description</label>
                 <textarea
                   id="description"
                   name="description"
                   value={about.description}
                   onChange={handleChange}
-                  placeholder="Descripción más detallada de tu perfil profesional"
+                  placeholder="Detailed professional profile description"
                   rows={6}
                 />
               </div>
             </div>
 
-            {message && (
-              <div className={`alert alert-${message.type}`}>
-                <span>{message.type === 'success' ? '✓' : '✕'}</span>
-                {message.text}
-              </div>
-            )}
-
             <div className="save-button-container">
-              <button 
+              <button
                 className={`save-button ${saving ? 'saving-pulse' : ''}`}
-                onClick={handleSave} 
+                onClick={handleSave}
                 disabled={saving}
               >
-                {saving ? "Guardando..." : "Guardar cambios"}
+                {saving ? "Saving..." : "Save Changes"}
               </button>
             </div>
           </div>
