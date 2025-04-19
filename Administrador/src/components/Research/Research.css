@@ -467,3 +467,99 @@ body {
 .research-item {
   animation: fadeIn 0.5s ease forwards;
 }
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .research-container {
+    padding: 1.5rem;
+  }
+
+  .top-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .modal-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .research-title {
+    font-size: 1.75rem;
+  }
+
+  .search-input {
+    font-size: 0.95rem;
+    padding: 0.65rem 0.9rem;
+  }
+
+  .new-research-button {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.9rem;
+  }
+
+  .form-input,
+  .form-textarea {
+    font-size: 0.95rem;
+    padding: 0.65rem 0.9rem;
+  }
+
+  .pagination-button,
+  .page-info {
+    font-size: 0.85rem;
+  }
+
+  .modal-title {
+    font-size: 1.25rem;
+  }
+
+  .edit-button,
+  .delete-button {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .research-title {
+    font-size: 1.5rem;
+  }
+
+  .research-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .action-buttons {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .form-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cancel-button,
+  .submit-button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .modal-content {
+    width: 95%;
+    max-height: 90vh;
+  }
+
+  .research-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}
