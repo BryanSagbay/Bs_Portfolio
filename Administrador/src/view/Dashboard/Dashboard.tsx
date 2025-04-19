@@ -5,11 +5,11 @@ import {
 import { LuUserSearch } from "react-icons/lu";
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import './Dashboard.css';
-import Projects from '../../components/Projects/Projects';
 import Research from '../../components/Research/Research';
 import About from '../../components/About/About';
 import Settings from '../Settings/Settings';
 import Home from '../Home/Home';
+import ProjectList from '../../components/Projects/Projects';
 
 interface User {
   id: number;
@@ -74,19 +74,19 @@ const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
                 <button onClick={() => changeSection('home')}><FiHome /> Home</button>
               </li>
               <li className={activeSection === 'projects' ? 'active' : ''}>
-                <button onClick={() => changeSection('projects')}><FiBarChart2 /> Proyectos </button>
+                <button onClick={() => changeSection('projects')}><FiBarChart2 /> Projects </button>
               </li>
               <li className={activeSection === 'research' ? 'active' : ''}>
-                <button onClick={() => changeSection('research')}><FiFolder /> Articulos </button>
+                <button onClick={() => changeSection('research')}><FiFolder /> Research </button>
               </li>
               <li className={activeSection === 'about' ? 'active' : ''}>
-                <button onClick={() => changeSection('about')}><LuUserSearch/> Sobre Mi</button>
+                <button onClick={() => changeSection('about')}><LuUserSearch/> About</button>
               </li>
               <li className={activeSection === 'settings' ? 'active' : ''}>
-                <button onClick={() => changeSection('settings')}><FiSettings /> Configracion</button>
+                <button onClick={() => changeSection('settings')}><FiSettings /> Settings</button>
               </li>
               <li className="logout">
-                <button onClick={onLogout}><FiLogOut /> Cerrar sesión</button>
+                <button onClick={onLogout}><FiLogOut /> Logout </button>
               </li>
             </ul>
           </nav>
@@ -97,7 +97,7 @@ const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
         <main className="main-content">
           <Routes>
             <Route path="home" element={<Home />} />
-            <Route path="projects" element={<Projects />} />
+            <Route path="projects" element={<ProjectList />} />
             <Route path="research" element={<Research />} />
             <Route path="about" element={<About />} />
             <Route path="settings" element={<Settings />} />
