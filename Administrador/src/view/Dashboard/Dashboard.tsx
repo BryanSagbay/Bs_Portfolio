@@ -5,7 +5,7 @@ import {
 import { LuUserSearch } from "react-icons/lu";
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import './Dashboard.css';
-import About from '../../components/About/About';
+import About from '../About/About';
 import Settings from '../Settings/Settings';
 import Home from '../Home/Home';
 import ProjectList from '../../components/Projects/Projects';
