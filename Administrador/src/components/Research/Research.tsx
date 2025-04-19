@@ -1,7 +1,7 @@
 import { useEffect, useState, ChangeEvent, FormEvent } from 'react'
 import { Research } from '../../model/research'
 import { createResearch, deleteResearch, getAllResearch, updateResearch } from '../../services/researchService'
-
+import "./Research.css"
 
 const ITEMS_PER_PAGE = 5
 
@@ -14,6 +14,7 @@ export default function ResearchList() {
   const [currentPage, setCurrentPage] = useState(1)
 
   const [editing, setEditing] = useState<Research | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [form, setForm] = useState<Omit<Research, 'id'>>({
     title: '',
     description: '',
@@ -66,7 +67,6 @@ export default function ResearchList() {
     }))
   }
   
-  
   const handleEdit = (item: Research) => {
     setEditing(item)
     setForm({
@@ -78,6 +78,7 @@ export default function ResearchList() {
       link: item.link,
       comingsoon: item.comingsoon
     })
+    openModal()
   }
 
   const handleDelete = async (id: number) => {
@@ -97,50 +98,98 @@ export default function ResearchList() {
     }
     const updated = await getAllResearch()
     setResearchList(updated)
-    setEditing(null)
-    setForm({ title: '', description: '', date: '', timeread: '', article: '', link: '', comingsoon: false })
+    resetForm()
+    closeModal()
   }
 
-  if (loading) return <p>Cargando investigaciones...</p>
-  if (error) return <p className="text-red-600">{error}</p>
+  const openModal = () => {
+    setIsModalOpen(true)
+    // Prevenir el scroll del body cuando el modal está abierto
+    document.body.style.overflow = 'hidden'
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+    document.body.style.overflow = 'auto'
+  }
+
+  const resetForm = () => {
+    setEditing(null)
+    setForm({
+      title: '',
+      description: '',
+      date: '',
+      timeread: '',
+      article: '',
+      link: '',
+      comingsoon: false
+    })
+  }
+
+  const handleNewResearch = () => {
+    resetForm()
+    openModal()
+  }
+
+  const handleCancelForm = () => {
+    closeModal()
+    resetForm()
+  }
+
+  if (loading) return <p className="loading">Cargando investigaciones...</p>
+  if (error) return <p className="error">{error}</p>
 
   return (
-    <div className="p-4 max-w-5xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Investigaciones</h1>
+    <div className="research-container">
+      <div className="research-header">
+        <h1 className="research-title">Investigaciones</h1>
 
-      <input
-        type="text"
-        placeholder="Buscar investigación..."
-        className="w-full border p-2 rounded mb-4"
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-      />
+        <div className="top-bar">
+          <div className="search-container">
+            <input
+              type="text"
+              placeholder="Buscar investigación..."
+              className="search-input"
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+            />
+          </div>
+          <button 
+            className="new-research-button"
+            onClick={handleNewResearch}
+          >
+            Nueva investigación
+          </button>
+        </div>
+      </div>
 
       {currentItems.length === 0 ? (
-        <p>No se encontraron investigaciones.</p>
+        <p className="no-results">No se encontraron investigaciones.</p>
       ) : (
-        <ul className="grid gap-4">
+        <ul className="research-list">
           {currentItems.map((r) => (
-            <li key={r.id} className="border rounded-lg p-4 shadow-sm bg-white">
-              <h2 className="text-xl font-semibold text-blue-700 mb-1">
+            <li key={r.id} className="research-item">
+              <h2 className="research-item-title">
                 {r.title}
               </h2>
-              <p className="text-sm text-gray-500 mb-2">
-                {new Date(r.date).toLocaleDateString()} • {r.timeread} {r.comingsoon && <span className="text-orange-600 font-semibold ml-2">Próximamente</span>}
-              </p>
-              <p className="text-gray-700 mb-2">{r.description}</p>
-              <div className="flex justify-between items-center">
+              <div className="research-meta">
+                <span className="research-date">{new Date(r.date).toLocaleDateString()}</span>
+                <span className="research-time">{r.timeread}</span>
+                {r.comingsoon && <span className="coming-soon-badge">Próximamente</span>}
+              </div>
+              <p className="research-description">{r.description}</p>
+              <div className="research-footer">
                 <a
                   href={r.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline text-sm"
+                  className="article-link"
                 >
-                  Leer artículo completo ↗
+                  Leer artículo completo
                 </a>
-                <div className="flex gap-2">
-                  <button onClick={() => handleEdit(r)} className="text-sm text-yellow-600 hover:underline">Editar</button>
-                  <button onClick={() => handleDelete(r.id)} className="text-sm text-red-600 hover:underline">Eliminar</button>
+                <div className="action-buttons">
+                  <button onClick={() => handleEdit(r)} className="edit-button">Editar</button>
+                  <button onClick={() => handleDelete(r.id)} className="delete-button">Eliminar</button>
                 </div>
               </div>
             </li>
@@ -149,47 +198,115 @@ export default function ResearchList() {
       )}
 
       {/* Paginación */}
-      <div className="flex justify-center mt-6 gap-2">
+      <div className="pagination">
         <button
           disabled={currentPage === 1}
           onClick={() => setCurrentPage(prev => prev - 1)}
-          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+          className="pagination-button"
         >
           ← Anterior
         </button>
-        <span className="px-4 py-2">Página {currentPage} de {totalPages}</span>
+        <span className="page-info">Página {currentPage} de {totalPages || 1}</span>
         <button
-          disabled={currentPage === totalPages}
+          disabled={currentPage === totalPages || totalPages === 0}
           onClick={() => setCurrentPage(prev => prev + 1)}
-          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+          className="pagination-button"
         >
           Siguiente →
         </button>
       </div>
 
-      {/* Formulario */}
-      <form onSubmit={handleSubmit} className="mt-10 grid gap-4 border-t pt-6">
-        <h2 className="text-xl font-semibold">{editing ? 'Editar Investigación' : 'Nueva Investigación'}</h2>
+      {/* Modal para crear/editar investigación */}
+      <div className={`modal-overlay ${isModalOpen ? 'active' : ''}`}>
+        <div className="modal-content">
+          <div className="modal-header">
+            <h2 className="modal-title">
+              {editing ? 'Editar Investigación' : 'Nueva Investigación'}
+            </h2>
+            <button className="modal-close" onClick={closeModal}>×</button>
+          </div>
+          
+          <form onSubmit={handleSubmit} className="form-grid">
+            <input 
+              name="title" 
+              value={form.title} 
+              onChange={handleChange} 
+              placeholder="Título" 
+              className="form-input" 
+              required 
+            />
+            
+            <textarea 
+              name="description" 
+              value={form.description} 
+              onChange={handleChange} 
+              placeholder="Descripción" 
+              className="form-textarea" 
+              required 
+            />
+            
+            <input 
+              name="date" 
+              type="date" 
+              value={form.date} 
+              onChange={handleChange} 
+              className="form-input" 
+              required 
+            />
+            
+            <input 
+              name="timeread" 
+              value={form.timeread} 
+              onChange={handleChange} 
+              placeholder="Tiempo de lectura" 
+              className="form-input" 
+              required 
+            />
+            
+            <textarea 
+              name="article" 
+              value={form.article} 
+              onChange={handleChange} 
+              placeholder="Artículo completo" 
+              className="form-textarea" 
+              required 
+            />
+            
+            <input 
+              name="link" 
+              value={form.link} 
+              onChange={handleChange} 
+              placeholder="Enlace externo" 
+              className="form-input" 
+              required 
+            />
+            
+            <label className="checkbox-label">
+              <input 
+                type="checkbox" 
+                name="comingsoon" 
+                checked={form.comingsoon} 
+                onChange={handleChange} 
+                className="form-checkbox"
+              /> 
+              Próximamente
+            </label>
 
-        <input name="title" value={form.title} onChange={handleChange} placeholder="Título" className="border p-2 rounded" required />
-        <textarea name="description" value={form.description} onChange={handleChange} placeholder="Descripción" className="border p-2 rounded" required />
-        <input name="date" type="date" value={form.date} onChange={handleChange} className="border p-2 rounded" required />
-        <input name="timeread" value={form.timeread} onChange={handleChange} placeholder="Tiempo de lectura" className="border p-2 rounded" required />
-        <textarea name="article" value={form.article} onChange={handleChange} placeholder="Artículo completo" className="border p-2 rounded" required />
-        <input name="link" value={form.link} onChange={handleChange} placeholder="Enlace externo" className="border p-2 rounded" required />
-        <label className="flex items-center gap-2">
-          <input type="checkbox" name="comingsoon" checked={form.comingsoon} onChange={handleChange} /> Próximamente
-        </label>
-
-        <div className="flex justify-end gap-4">
-          {editing && (
-            <button type="button" onClick={() => setEditing(null)} className="text-gray-600">Cancelar</button>
-          )}
-          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-            {editing ? 'Actualizar' : 'Crear'}
-          </button>
+            <div className="form-buttons">
+              <button 
+                type="button" 
+                onClick={handleCancelForm} 
+                className="cancel-button"
+              >
+                Cancelar
+              </button>
+              <button type="submit" className="submit-button">
+                {editing ? 'Actualizar' : 'Crear'}
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
   )
 }
