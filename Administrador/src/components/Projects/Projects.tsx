@@ -157,20 +157,25 @@ export default function ProjectList() {
       <div className="project-list">
         {currentItems.map((p) => (
           <div key={p.id} className="project-card">
-            <div className="project-image">
-              <img src={`http://localhost:3000${p.imagen}`} alt={p.title} />
-            </div>
             <div className="project-info">
               <span className="project-type">{p.type}</span>
               <h3>{p.title}</h3>
               <p>{p.description}</p>
-              <a className="project-link" href={p.link} target="_blank" rel="noreferrer">See more</a>
-            </div>
-            <div className='projects-footer'>
-              <div className="project-actions">
-                <button className="btn-edit" onClick={() => handleEdit(p)}>Edit</button>
-                <button className="btn-delete" onClick={() => handleDelete(p.id)}>Delete</button>
+              <a className="project-link" href={p.link} target="_blank" rel="noreferrer">
+                See more
+              </a>
+              <div className="projects-footer">
+                <div className="project-actions">
+                  <button className="btn-edit" onClick={() => handleEdit(p)}>Edit</button>
+                  <button className="btn-delete" onClick={() => handleDelete(p.id)}>Delete</button>
+                </div>
               </div>
+            </div>
+            <div className="project-image">
+              <img
+                src={`${import.meta.env.VITE_API_IMAGES}${p.imagen}`}
+                alt={p.title}
+              />
             </div>
           </div>
         ))}
@@ -214,22 +219,34 @@ export default function ProjectList() {
               </div>
               <div className="form-group">
                 <label>Image</label>
-                <input type="file" accept="image/*" onChange={(e) => {
-                  const file = e.target.files?.[0]
-                  if (file) {
-                    setImageFile(file)
-                    setPreviewUrl(URL.createObjectURL(file))
-                  }
-                }} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (file) {
+                      setImageFile(file)
+                      setPreviewUrl(URL.createObjectURL(file))
+                    }
+                  }}
+                />
               </div>
               {(previewUrl || currentProject.imagen) && (
                 <div className="image-preview">
-                  <img src={previewUrl || `http://localhost:3000${currentProject.imagen}`} alt="Preview" />
+                  <img
+                    src={previewUrl || `${import.meta.env.VITE_API_IMAGES}${currentProject.imagen}`}
+                    alt="Preview"
+                  />
                 </div>
               )}
               <div className="form-group">
                 <label>Index</label>
-                <input name="indice" type="number" value={currentProject.indice || 0} onChange={handleChange} />
+                <input
+                  name="indice"
+                  type="number"
+                  value={currentProject.indice || 0}
+                  onChange={handleChange}
+                />
               </div>
               <div className="form-group">
                 <label>Link</label>

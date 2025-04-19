@@ -45,7 +45,7 @@ function App() {
       <Routes>
         <Route path="/login" element={
           isLoggedIn ?
-            <Navigate to="/inicio" replace /> :
+            <Navigate to="/inicio/home" replace /> :
             <LoginForm onLoginSuccess={handleLoginSuccess} />
         } />
 
@@ -55,7 +55,7 @@ function App() {
           </ProtectedRoute>
         } />
 
-        <Route path="/" element={<Navigate to="/inicio" replace />} />
+        <Route path="/" element={<Navigate to="/inicio/home" replace />} />
       </Routes>
     </Router>
   );

@@ -4,7 +4,7 @@ import {
 } from 'react-icons/fi';
 import { MdOutlineGrade } from "react-icons/md";
 import { LuUserSearch } from "react-icons/lu";
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import './Dashboard.css';
 import About from '../About/About';
 import Home from '../Home/Home';
@@ -102,8 +102,8 @@ const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
             <Route path="research" element={<ResearchList />} />
             <Route path="about" element={<About />} />
             <Route path="experience" element={<ExperienceList />} />
-            <Route path="*" element={<Home/>} />
-          </Routes>
+            <Route path="*" element={<Navigate to="home" replace />} />
+            </Routes>
         </main>
       </div>
     </div>
