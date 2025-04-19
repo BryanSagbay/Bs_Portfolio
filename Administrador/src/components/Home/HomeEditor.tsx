@@ -84,11 +84,11 @@ const HomeEditor = () => {
   return (
     <form className="home-editor-form" onSubmit={handleSubmit}>
       <div className="form-header">
-        <h2>Editar Información de Home</h2>
+        <h2>Edit Home Information</h2>
         {success && (
           <div className="success-message">
             <span className="success-icon">✓</span>
-            Datos actualizados correctamente
+            Data updated correctly
           </div>
         )}
       </div>
@@ -124,7 +124,6 @@ const HomeEditor = () => {
           );
         })}
         
-        {/* Campo de descripción a ancho completo */}
         <div className="form-group description-group">
           <label htmlFor="description">{formatLabel('description')}</label>
           <textarea
