@@ -1,6 +1,5 @@
 import { LoginCredentials, LoginResponse } from "../model/auth";
 
-
 const API_URL = import.meta.env.VITE_API_AUTH;
 
 export const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
@@ -13,8 +12,13 @@ export const login = async (credentials: LoginCredentials): Promise<LoginRespons
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || 'Error al iniciar sesión');
+    const errorText = await response.text();
+    try {
+      const errorData = JSON.parse(errorText);
+      throw new Error(errorData.message || 'Error al iniciar sesión');
+    } catch {
+      throw new Error(errorText || 'Error al iniciar sesión');
+    }
   }
 
   const data: LoginResponse = await response.json();
