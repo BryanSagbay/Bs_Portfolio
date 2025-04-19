@@ -1,7 +1,7 @@
 import { LoginCredentials, LoginResponse } from "../model/auth";
 
 
-const API_URL = 'http://localhost:3000/api'; // Puedes mover esto a una variable de entorno si quieres
+const API_URL = import.meta.env.VITE_API_AUTH;
 
 export const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
   const response = await fetch(`${API_URL}/auth/login`, {

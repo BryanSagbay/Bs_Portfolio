@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { ProjectData } from '../model/projects'
 
-const API_URL = 'http://localhost:3000/api/projects'
+const API_URL = import.meta.env.VITE_API_PROJECTS;
 
 export const getProjects = async (): Promise<ProjectData[]> => {
   const res = await axios.get<ProjectData[]>(API_URL)

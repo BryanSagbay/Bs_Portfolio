@@ -1,6 +1,6 @@
 import { HomeData } from '../model/home';
 
-const API_URL = 'http://localhost:3000/api/home';
+const API_URL = import.meta.env.VITE_API_HOME;
 
 const getAuthHeaders = (): HeadersInit => {
   const token = localStorage.getItem('token');

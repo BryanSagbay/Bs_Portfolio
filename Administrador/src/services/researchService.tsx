@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Research } from '../model/research'
 
-const API_URL = 'http://localhost:3000/api/research' // ajusta si usas .env
+const API_URL = import.meta.env.VITE_API_RESEARCH;
 
 export const getAllResearch = async (): Promise<Research[]> => {
   const res = await axios.get(API_URL)

@@ -1,6 +1,6 @@
 import { Experience } from "../model/experience"
 
-const API_URL = "http://localhost:3000/api/experience"
+const API_URL = import.meta.env.VITE_API_EXPERIENCE;
 
 const getAuthHeaders = (): HeadersInit => {
   const token = localStorage.getItem("token")
