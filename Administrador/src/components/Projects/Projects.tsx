@@ -13,6 +13,8 @@ import {
 } from '../../services/projectService'
 import './Projects.css'
 import { ProjectData } from '../../model/projects'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const ITEMS_PER_PAGE = 5
 
@@ -96,22 +98,35 @@ export default function ProjectList() {
       link: currentProject.link!
     }
 
-    if (isEditing && currentProject.id !== undefined) {
-      await updateProject(currentProject.id, projectData, imageFile!)
-    } else {
-      await createProject(projectData, imageFile!)
-    }
+    try {
+      if (isEditing && currentProject.id !== undefined) {
+        await updateProject(currentProject.id, projectData, imageFile!)
+        toast.success('Project updated successfully!')
+      } else {
+        await createProject(projectData, imageFile!)
+        toast.success('Project created successfully!')
+      }
 
-    setModalOpen(false)
-    setImageFile(null)
-    setPreviewUrl(null)
-    loadProjects()
+      setModalOpen(false)
+      setImageFile(null)
+      setPreviewUrl(null)
+      loadProjects()
+    } catch (error) {
+      console.error('Error saving project:', error)
+      toast.error('Error saving the project. Please try again.')
+    }
   }
 
   const handleDelete = async (id: number) => {
-    if (confirm('¿Estás seguro que deseas eliminar este proyecto?')) {
-      await deleteProject(id)
-      loadProjects()
+    if (confirm('Are you sure you want to delete this project?')) {
+      try {
+        await deleteProject(id)
+        toast.success('Project deleted successfully!')
+        loadProjects()
+      } catch (error) {
+        console.error('Error deleting project:', error)
+        toast.error('Error deleting the project.')
+      }
     }
   }
 
@@ -122,17 +137,19 @@ export default function ProjectList() {
 
   return (
     <div className="project-list-container">
+      <ToastContainer />
+
       <div className="project-header">
-        <h1>Proyectos</h1>
+        <h1>Projects</h1>
         <div className="search-container">
           <input
             type="text"
-            placeholder="Buscar por título..."
+            placeholder="Search by title..."
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
           />
           <button className="btn-primary" onClick={handleAdd}>
-            Agregar Proyecto
+            Add Project
           </button>
         </div>
       </div>
@@ -147,11 +164,13 @@ export default function ProjectList() {
               <span className="project-type">{p.type}</span>
               <h3>{p.title}</h3>
               <p>{p.description}</p>
-              <a className="project-link" href={p.link} target="_blank">Ver más</a>
+              <a className="project-link" href={p.link} target="_blank" rel="noreferrer">See more</a>
             </div>
-            <div className="project-actions">
-              <button className="btn-edit" onClick={() => handleEdit(p)}>Editar</button>
-              <button className="btn-delete" onClick={() => handleDelete(p.id)}>Eliminar</button>
+            <div className='projects-footer'>
+              <div className="project-actions">
+                <button className="btn-edit" onClick={() => handleEdit(p)}>Edit</button>
+                <button className="btn-delete" onClick={() => handleDelete(p.id)}>Delete</button>
+              </div>
             </div>
           </div>
         ))}
@@ -163,15 +182,15 @@ export default function ProjectList() {
           disabled={currentPage === 1}
           onClick={() => setCurrentPage((prev) => prev - 1)}
         >
-          ← Anterior
+          ← Back
         </button>
-        <span className="page-info">Página {currentPage} de {totalPages}</span>
+        <span className="page-info">Page {currentPage} of {totalPages}</span>
         <button
           className="btn-page"
           disabled={currentPage === totalPages}
           onClick={() => setCurrentPage((prev) => prev + 1)}
         >
-          Siguiente →
+          Next →
         </button>
       </div>
 
@@ -179,22 +198,22 @@ export default function ProjectList() {
         <div className="modal-backdrop">
           <div className="modal-container">
             <form onSubmit={handleSubmit} className="project-form">
-              <h2>{isEditing ? 'Editar Proyecto' : 'Nuevo Proyecto'}</h2>
+              <h2>{isEditing ? 'Edit Project' : 'New Project'}</h2>
 
               <div className="form-group">
-                <label>Título</label>
+                <label>Title</label>
                 <input name="title" value={currentProject.title || ''} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <label>Tipo</label>
+                <label>Type</label>
                 <input name="type" value={currentProject.type || ''} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <label>Descripción</label>
+                <label>Description</label>
                 <input name="description" value={currentProject.description || ''} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <label>Imagen</label>
+                <label>Image</label>
                 <input type="file" accept="image/*" onChange={(e) => {
                   const file = e.target.files?.[0]
                   if (file) {
@@ -209,7 +228,7 @@ export default function ProjectList() {
                 </div>
               )}
               <div className="form-group">
-                <label>Índice</label>
+                <label>Index</label>
                 <input name="indice" type="number" value={currentProject.indice || 0} onChange={handleChange} />
               </div>
               <div className="form-group">
@@ -218,9 +237,9 @@ export default function ProjectList() {
               </div>
 
               <div className="form-actions">
-                <button type="button" className="btn-cancel" onClick={() => setModalOpen(false)}>Cancelar</button>
+                <button type="button" className="btn-cancel" onClick={() => setModalOpen(false)}>Cancel</button>
                 <button type="submit" className="btn-submit">
-                  {isEditing ? 'Actualizar' : 'Guardar'}
+                  {isEditing ? 'Update' : 'Save'}
                 </button>
               </div>
             </form>

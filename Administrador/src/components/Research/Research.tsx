@@ -34,7 +34,7 @@ export default function ResearchList() {
         setResearchList(data)
         setFilteredList(data)
       } catch (err) {
-        setError('Error al cargar investigaciones')
+        setError('Error loading research')
         console.error(err)
       } finally {
         setLoading(false)
@@ -82,7 +82,7 @@ export default function ResearchList() {
   }
 
   const handleDelete = async (id: number) => {
-    if (confirm('¿Deseas eliminar esta investigación?')) {
+    if (confirm('Do you want to delete this query?')) {
       await deleteResearch(id, token)
       const updated = await getAllResearch()
       setResearchList(updated)
@@ -136,19 +136,19 @@ export default function ResearchList() {
     resetForm()
   }
 
-  if (loading) return <p className="loading">Cargando investigaciones...</p>
+  if (loading) return <p className="loading">Loading research...</p>
   if (error) return <p className="error">{error}</p>
 
   return (
     <div className="research-container">
       <div className="research-header">
-        <h1 className="research-title">Investigaciones</h1>
+        <h1 className="research-title">Research</h1>
 
         <div className="top-bar">
           <div className="search-container">
             <input
               type="text"
-              placeholder="Buscar investigación..."
+              placeholder="Search for research..."
               className="search-input"
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
@@ -158,13 +158,13 @@ export default function ResearchList() {
             className="new-research-button"
             onClick={handleNewResearch}
           >
-            Nueva investigación
+            New research
           </button>
         </div>
       </div>
 
       {currentItems.length === 0 ? (
-        <p className="no-results">No se encontraron investigaciones.</p>
+        <p className="no-results">No research was found.</p>
       ) : (
         <ul className="research-list">
           {currentItems.map((r) => (
@@ -175,7 +175,7 @@ export default function ResearchList() {
               <div className="research-meta">
                 <span className="research-date">{new Date(r.date).toLocaleDateString()}</span>
                 <span className="research-time">{r.timeread}</span>
-                {r.comingsoon && <span className="coming-soon-badge">Próximamente</span>}
+                {r.comingsoon && <span className="coming-soon-badge">Coming soon</span>}
               </div>
               <p className="research-description">{r.description}</p>
               <div className="research-footer">
@@ -185,11 +185,11 @@ export default function ResearchList() {
                   rel="noopener noreferrer"
                   className="article-link"
                 >
-                  Leer artículo completo
+                  Read complete article
                 </a>
                 <div className="action-buttons">
-                  <button onClick={() => handleEdit(r)} className="edit-button">Editar</button>
-                  <button onClick={() => handleDelete(r.id)} className="delete-button">Eliminar</button>
+                  <button onClick={() => handleEdit(r)} className="edit-button">Edit</button>
+                  <button onClick={() => handleDelete(r.id)} className="delete-button">Delete</button>
                 </div>
               </div>
             </li>
@@ -204,15 +204,15 @@ export default function ResearchList() {
           onClick={() => setCurrentPage(prev => prev - 1)}
           className="pagination-button"
         >
-          ← Anterior
+          ← Back
         </button>
-        <span className="page-info">Página {currentPage} de {totalPages || 1}</span>
+        <span className="page-info">Page {currentPage} of {totalPages || 1}</span>
         <button
           disabled={currentPage === totalPages || totalPages === 0}
           onClick={() => setCurrentPage(prev => prev + 1)}
           className="pagination-button"
         >
-          Siguiente →
+          Next →
         </button>
       </div>
 
@@ -231,7 +231,7 @@ export default function ResearchList() {
               name="title" 
               value={form.title} 
               onChange={handleChange} 
-              placeholder="Título" 
+              placeholder="Title" 
               className="form-input" 
               required 
             />
@@ -240,7 +240,7 @@ export default function ResearchList() {
               name="description" 
               value={form.description} 
               onChange={handleChange} 
-              placeholder="Descripción" 
+              placeholder="Description" 
               className="form-textarea" 
               required 
             />
@@ -258,7 +258,7 @@ export default function ResearchList() {
               name="timeread" 
               value={form.timeread} 
               onChange={handleChange} 
-              placeholder="Tiempo de lectura" 
+              placeholder="Reading time" 
               className="form-input" 
               required 
             />
@@ -267,7 +267,7 @@ export default function ResearchList() {
               name="article" 
               value={form.article} 
               onChange={handleChange} 
-              placeholder="Artículo completo" 
+              placeholder="Article" 
               className="form-textarea" 
               required 
             />
@@ -276,7 +276,7 @@ export default function ResearchList() {
               name="link" 
               value={form.link} 
               onChange={handleChange} 
-              placeholder="Enlace externo" 
+              placeholder="Link" 
               className="form-input" 
               required 
             />
@@ -289,7 +289,7 @@ export default function ResearchList() {
                 onChange={handleChange} 
                 className="form-checkbox"
               /> 
-              Próximamente
+              Coming soon
             </label>
 
             <div className="form-buttons">
@@ -298,10 +298,10 @@ export default function ResearchList() {
                 onClick={handleCancelForm} 
                 className="cancel-button"
               >
-                Cancelar
+                Cancel
               </button>
               <button type="submit" className="submit-button">
-                {editing ? 'Actualizar' : 'Crear'}
+                {editing ? 'Update' : 'Create'}
               </button>
             </div>
           </form>
