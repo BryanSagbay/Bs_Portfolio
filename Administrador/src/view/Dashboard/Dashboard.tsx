@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import {
   FiMenu, FiUser, FiHome, FiBarChart2, FiFolder, FiLogOut
 } from 'react-icons/fi';
-import { MdGrade } from "react-icons/md";
+import { MdOutlineGrade } from "react-icons/md";
 import { LuUserSearch } from "react-icons/lu";
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import './Dashboard.css';
@@ -84,7 +84,7 @@ const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
                 <button onClick={() => changeSection('about')}><LuUserSearch/> About</button>
               </li>
               <li className={activeSection === 'experience' ? 'active' : ''}>
-                <button onClick={() => changeSection('experience')}><MdGrade/> Experience</button>
+                <button onClick={() => changeSection('experience')}><MdOutlineGrade/> Experience</button>
               </li>
               <li className="logout">
                 <button onClick={onLogout}><FiLogOut /> Logout </button>
