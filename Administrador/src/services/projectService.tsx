@@ -8,19 +8,47 @@ export const getProjects = async (): Promise<ProjectData[]> => {
   return res.data
 }
 
-export const createProject = async (project: Omit<ProjectData, 'id'>) => {
-  const res = await axios.post<ProjectData>(API_URL, project, {
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+export const createProject = async (data: Omit<ProjectData, 'id'>, file?: File) => {
+  const formData = new FormData()
+
+  // Agrega campos uno por uno
+  for (const [key, value] of Object.entries(data)) {
+    formData.append(key, String(value))
+  }
+
+  if (file) {
+    formData.append('imagen', file)
+  }
+
+  const res = await axios.post(API_URL, formData, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'multipart/form-data'
+    }
   })
+
   return res.data
 }
 
-export const updateProject = async (id: number, project: ProjectData) => {
-  const res = await axios.put<ProjectData>(`${API_URL}/${id}`, project, {
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+export const updateProject = async (id: number, data: Partial<ProjectData>, file?: File) => {
+  const formData = new FormData()
+
+  for (const [key, value] of Object.entries(data)) {
+    if (value !== undefined) formData.append(key, String(value))
+  }
+
+  if (file) {
+    formData.append('imagen', file)
+  }
+
+  const res = await axios.put(`${API_URL}/${id}`, formData, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'multipart/form-data'
+    }
   })
+
   return res.data
-  
 }
 
 export const deleteProject = async (id: number) => {
@@ -29,4 +57,3 @@ export const deleteProject = async (id: number) => {
   })
   return res.data
 }
-
