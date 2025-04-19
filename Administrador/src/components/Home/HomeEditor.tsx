@@ -2,14 +2,15 @@ import { useEffect, useState } from 'react';
 import { getAllHomes, updateHome } from '../../services/homeService';
 import { HomeData } from '../../model/home';
 import './HomeEditor.css';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const HomeEditor = () => {
   const [formData, setFormData] = useState<Omit<HomeData, 'id'> | null>(null);
   const [recordId, setRecordId] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState<boolean>(false);
-  const [success, setSuccess] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,11 +21,11 @@ const HomeEditor = () => {
           setRecordId(id);
           setFormData(rest);
         } else {
-          setError('No hay datos disponibles');
+          setError('No data available');
         }
       } catch (err) {
-        setError('Error al cargar los datos');
-        console.log(err);
+        console.error('Error loading data:', err);
+        setError('Error loading data');
       } finally {
         setLoading(false);
       }
@@ -51,11 +52,10 @@ const HomeEditor = () => {
     setError(null);
     try {
       await updateHome(recordId, formData);
-      setSuccess(true);
-      setTimeout(() => setSuccess(false), 3000);
+      toast.success('Home data updated successfully!');
     } catch (err) {
-      setError('Error al guardar los cambios');
-      console.log(err);
+      console.error('Error saving changes:', err);
+      toast.error('Error saving changes. Please try again.');
     } finally {
       setSaving(false);
     }
@@ -65,7 +65,7 @@ const HomeEditor = () => {
     return (
       <div className="loading-container">
         <div className="button-icon">⟳</div>
-        <p>Cargando datos...</p>
+        <p>Loading data...</p>
       </div>
     );
   }
@@ -76,28 +76,22 @@ const HomeEditor = () => {
 
   if (!formData) return null;
 
-  // Función para formatear las etiquetas de los campos
   const formatLabel = (key: string) => {
-    return key.replace(/_/g, ' ');
+    return key.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
   };
 
   return (
     <form className="home-editor-form" onSubmit={handleSubmit}>
+      <ToastContainer />
+
       <div className="form-header">
         <h2>Edit Home Information</h2>
-        {success && (
-          <div className="success-message">
-            <span className="success-icon">✓</span>
-            Data updated correctly
-          </div>
-        )}
       </div>
 
       <div className="form-grid">
         {Object.entries(formData).map(([key, value]) => {
-          // Manejamos el campo de descripción separado
           if (key === 'description') return null;
-          
+
           return (
             <div className="form-group" key={key}>
               <label htmlFor={key}>{formatLabel(key)}</label>
@@ -123,7 +117,7 @@ const HomeEditor = () => {
             </div>
           );
         })}
-        
+
         <div className="form-group description-group">
           <label htmlFor="description">{formatLabel('description')}</label>
           <textarea
@@ -134,15 +128,15 @@ const HomeEditor = () => {
             required
           />
         </div>
-        
+
         <div className="button-container">
-          <button 
-            type="submit" 
-            className="submit-button" 
+          <button
+            type="submit"
+            className="submit-button"
             disabled={saving}
           >
             {saving && <span className="button-icon">⟳</span>}
-            {saving ? 'Guardando...' : 'Guardar Cambios'}
+            {saving ? 'Saving...' : 'Save Changes'}
           </button>
         </div>
       </div>

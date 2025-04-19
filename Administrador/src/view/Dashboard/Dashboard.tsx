@@ -1,12 +1,12 @@
 import { FC, useState } from 'react';
 import {
-  FiMenu, FiUser, FiHome, FiSettings, FiBarChart2, FiFolder, FiLogOut
+  FiMenu, FiUser, FiHome, FiBarChart2, FiFolder, FiLogOut
 } from 'react-icons/fi';
+import { MdGrade } from "react-icons/md";
 import { LuUserSearch } from "react-icons/lu";
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import './Dashboard.css';
 import About from '../About/About';
-import Settings from '../Settings/Settings';
 import Home from '../Home/Home';
 import ProjectList from '../../components/Projects/Projects';
 import ResearchList from '../../components/Research/Research';
@@ -39,7 +39,6 @@ const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
     if (path.includes('/research')) return 'research';
     if (path.includes('/about')) return 'about';
     if (path.includes('/experience')) return 'experience';
-    if (path.includes('/settings')) return 'settings';
     return 'dashboard';
   };
 
@@ -85,10 +84,7 @@ const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
                 <button onClick={() => changeSection('about')}><LuUserSearch/> About</button>
               </li>
               <li className={activeSection === 'experience' ? 'active' : ''}>
-                <button onClick={() => changeSection('experience')}><LuUserSearch/> Experience</button>
-              </li>
-              <li className={activeSection === 'settings' ? 'active' : ''}>
-                <button onClick={() => changeSection('settings')}><FiSettings /> Settings</button>
+                <button onClick={() => changeSection('experience')}><MdGrade/> Experience</button>
               </li>
               <li className="logout">
                 <button onClick={onLogout}><FiLogOut /> Logout </button>
@@ -106,7 +102,6 @@ const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
             <Route path="research" element={<ResearchList />} />
             <Route path="about" element={<About />} />
             <Route path="experience" element={<ExperienceList />} />
-            <Route path="settings" element={<Settings />} />
             <Route path="*" element={<Home/>} />
           </Routes>
         </main>

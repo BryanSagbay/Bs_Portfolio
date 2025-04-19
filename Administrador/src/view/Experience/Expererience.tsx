@@ -13,6 +13,8 @@ import {
 } from '../../services/experienceService'
 import './Experience.css'
 import { Experience } from '../../model/experience'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const emptyExperience: Omit<Experience, 'id'> = {
     company: '',
@@ -63,8 +65,12 @@ export default function ExperienceList() {
     }, [filtered, currentPage])
 
     const loadExperiences = async () => {
-        const data = await getAllExperiences()
-        setExperiences(data)
+        try {
+            const data = await getAllExperiences()
+            setExperiences(data)
+        } catch (error) {
+            toast.error("Failed to load experiences.")
+        }
     }
 
     const handleEdit = (exp: Experience) => {
@@ -80,15 +86,13 @@ export default function ExperienceList() {
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value, type } = e.target;
-      
-        // Verifica si el elemento es un checkbox
+        const { name, value, type } = e.target
         const parsedValue = type === 'checkbox' && e.target instanceof HTMLInputElement
-          ? e.target.checked
-          : value;
-      
-        setCurrentExperience((prev) => ({ ...prev, [name]: parsedValue }));
-    };
+            ? e.target.checked
+            : value
+
+        setCurrentExperience((prev) => ({ ...prev, [name]: parsedValue }))
+    }
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
@@ -103,36 +107,49 @@ export default function ExperienceList() {
             technologies_used: currentExperience.technologies_used || []
         }
 
-        if (isEditing && currentExperience.id !== undefined) {
-            await updateExperience(currentExperience.id, data)
-        } else {
-            await createExperience(data)
-        }
+        try {
+            if (isEditing && currentExperience.id !== undefined) {
+                await updateExperience(currentExperience.id, data)
+                toast.success('Experience updated successfully!')
+            } else {
+                await createExperience(data)
+                toast.success('Experience created successfully!')
+            }
 
-        setModalOpen(false)
-        loadExperiences()
+            setModalOpen(false)
+            loadExperiences()
+        } catch (error) {
+            toast.error('There was an error saving the experience.')
+        }
     }
 
     const handleDelete = async (id: number) => {
-        if (confirm('¿Deseas eliminar esta experiencia?')) {
-            await deleteExperience(id)
-            loadExperiences()
+        if (confirm('Are you sure you want to delete this experience?')) {
+            try {
+                await deleteExperience(id)
+                toast.success('Experience deleted successfully!')
+                loadExperiences()
+            } catch (error) {
+                toast.error('Error deleting experience.')
+            }
         }
     }
 
     return (
         <div className="experience-container">
+            <ToastContainer />
+
             <div className="experience-header">
-                <h1>Experiencia Laboral</h1>
+                <h1>Work Experience</h1>
                 <div className="search-bar">
                     <input
                         type="text"
-                        placeholder="Buscar por empresa..."
+                        placeholder="Search by company..."
                         value={filterText}
                         onChange={(e) => setFilterText(e.target.value)}
                     />
                     <button className="btn-primary" onClick={handleAdd}>
-                        Agregar Experiencia
+                        Add Experience
                     </button>
                 </div>
             </div>
@@ -143,13 +160,13 @@ export default function ExperienceList() {
                         <div className="experience-content">
                             <h3>{exp.company}</h3>
                             <span className={`status ${exp.active ? 'active' : 'inactive'}`}>
-                                {exp.active ? 'Actual' : 'Finalizado'}
+                                {exp.active ? 'Current' : 'Ended'}
                             </span>
-                            <p><strong>Puesto:</strong> {exp.position}</p>
-                            <p><strong>Periodo:</strong> {exp.period}</p>
-                            <p><strong>Horario:</strong> {exp.schedule}</p>
-                            <p><strong>Tecnologías:</strong> {exp.technologies_used.join(', ')}</p>
-                            <p><strong>Proyectos:</strong></p>
+                            <p><strong>Position:</strong> {exp.position}</p>
+                            <p><strong>Period:</strong> {exp.period}</p>
+                            <p><strong>Schedule:</strong> {exp.schedule}</p>
+                            <p><strong>Technologies:</strong> {exp.technologies_used.join(', ')}</p>
+                            <p><strong>Projects:</strong></p>
                             <ul>
                                 {exp.projects.map((p, idx) => (
                                     <li key={idx}>
@@ -164,8 +181,8 @@ export default function ExperienceList() {
                             </ul>
                         </div>
                         <div className="experience-actions">
-                            <button className="btn-edit" onClick={() => handleEdit(exp)}>Editar</button>
-                            <button className="btn-delete" onClick={() => handleDelete(exp.id)}>Eliminar</button>
+                            <button className="btn-edit" onClick={() => handleEdit(exp)}>Edit</button>
+                            <button className="btn-delete" onClick={() => handleDelete(exp.id)}>Delete</button>
                         </div>
                     </div>
                 ))}
@@ -178,17 +195,17 @@ export default function ExperienceList() {
                         disabled={currentPage === 1}
                         onClick={() => setCurrentPage((prev) => prev - 1)}
                     >
-                        ← Anterior
+                        ← Previous
                     </button>
                     <span className="page-info">
-                        Página {currentPage} de {totalPages}
+                        Page {currentPage} of {totalPages}
                     </span>
                     <button
                         className="btn-page"
                         disabled={currentPage === totalPages}
                         onClick={() => setCurrentPage((prev) => prev + 1)}
                     >
-                        Siguiente →
+                        Next →
                     </button>
                 </div>
             )}
@@ -197,30 +214,30 @@ export default function ExperienceList() {
                 <div className="modal-backdrop">
                     <div className="modal-container">
                         <form onSubmit={handleSubmit} className="modal-form">
-                            <h2>{isEditing ? 'Editar Experiencia' : 'Nueva Experiencia'}</h2>
+                            <h2>{isEditing ? 'Edit Experience' : 'New Experience'}</h2>
 
                             <div className="form-group">
-                                <label>Empresa</label>
+                                <label>Company</label>
                                 <input name="company" value={currentExperience.company || ''} onChange={handleChange} />
                             </div>
 
                             <div className="form-group">
-                                <label>Puesto</label>
+                                <label>Position</label>
                                 <input name="position" value={currentExperience.position || ''} onChange={handleChange} />
                             </div>
 
                             <div className="form-group">
-                                <label>Periodo</label>
+                                <label>Period</label>
                                 <input name="period" value={currentExperience.period || ''} onChange={handleChange} />
                             </div>
 
                             <div className="form-group">
-                                <label>Horario</label>
+                                <label>Schedule</label>
                                 <input name="schedule" value={currentExperience.schedule || ''} onChange={handleChange} />
                             </div>
 
                             <div className="form-group">
-                                <label>¿Está activo?</label>
+                                <label>Active?</label>
                                 <input
                                     type="checkbox"
                                     name="active"
@@ -229,14 +246,14 @@ export default function ExperienceList() {
                                 />
                             </div>
 
-                            {/* Proyectos */}
+                            {/* Projects */}
                             <div className="form-group dynamic-list">
-                                <label>Proyectos</label>
+                                <label>Projects</label>
                                 {currentExperience.projects?.map((project, index) => (
                                     <div key={index} className="subgroup">
                                         <input
                                             type="text"
-                                            placeholder="Nombre del proyecto"
+                                            placeholder="Project name"
                                             value={project.name}
                                             onChange={(e) => {
                                                 const newProjects = [...(currentExperience.projects || [])]
@@ -247,7 +264,7 @@ export default function ExperienceList() {
                                         {project.details.map((detail, i) => (
                                             <textarea
                                                 key={i}
-                                                placeholder="Detalle"
+                                                placeholder="Detail"
                                                 value={detail}
                                                 onChange={(e) => {
                                                     const newProjects = [...(currentExperience.projects || [])]
@@ -265,7 +282,7 @@ export default function ExperienceList() {
                                                 setCurrentExperience({ ...currentExperience, projects: newProjects })
                                             }}
                                         >
-                                            + Detalle
+                                            + Detail
                                         </button>
                                         <button
                                             type="button"
@@ -276,7 +293,7 @@ export default function ExperienceList() {
                                                 setCurrentExperience({ ...currentExperience, projects: newProjects })
                                             }}
                                         >
-                                            Eliminar proyecto
+                                            Remove project
                                         </button>
                                     </div>
                                 ))}
@@ -288,13 +305,13 @@ export default function ExperienceList() {
                                         setCurrentExperience({ ...currentExperience, projects: newProjects })
                                     }}
                                 >
-                                    + Proyecto
+                                    + Project
                                 </button>
                             </div>
 
-                            {/* Tecnologías */}
+                            {/* Technologies */}
                             <div className="form-group dynamic-list">
-                                <label>Tecnologías utilizadas</label>
+                                <label>Technologies Used</label>
                                 {currentExperience.technologies_used?.map((tech, index) => (
                                     <div key={index} className="subgroup">
                                         <input
@@ -315,7 +332,7 @@ export default function ExperienceList() {
                                                 setCurrentExperience({ ...currentExperience, technologies_used: newTechs })
                                             }}
                                         >
-                                            Eliminar
+                                            Remove
                                         </button>
                                     </div>
                                 ))}
@@ -327,14 +344,14 @@ export default function ExperienceList() {
                                         setCurrentExperience({ ...currentExperience, technologies_used: newTechs })
                                     }}
                                 >
-                                    + Tecnología
+                                    + Technology
                                 </button>
                             </div>
 
                             <div className="form-actions">
-                                <button type="button" className="btn-cancel" onClick={() => setModalOpen(false)}>Cancelar</button>
+                                <button type="button" className="btn-cancel" onClick={() => setModalOpen(false)}>Cancel</button>
                                 <button type="submit" className="btn-submit">
-                                    {isEditing ? 'Actualizar' : 'Guardar'}
+                                    {isEditing ? 'Update' : 'Save'}
                                 </button>
                             </div>
                         </form>
