@@ -10,6 +10,7 @@ import Settings from '../Settings/Settings';
 import Home from '../Home/Home';
 import ProjectList from '../../components/Projects/Projects';
 import ResearchList from '../../components/Research/Research';
+import ExperienceList from '../Experience/Expererience';
 
 interface User {
   id: number;
@@ -37,6 +38,7 @@ const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
     if (path.includes('/projects')) return 'projects';
     if (path.includes('/research')) return 'research';
     if (path.includes('/about')) return 'about';
+    if (path.includes('/experience')) return 'experience';
     if (path.includes('/settings')) return 'settings';
     return 'dashboard';
   };
@@ -82,6 +84,9 @@ const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
               <li className={activeSection === 'about' ? 'active' : ''}>
                 <button onClick={() => changeSection('about')}><LuUserSearch/> About</button>
               </li>
+              <li className={activeSection === 'experience' ? 'active' : ''}>
+                <button onClick={() => changeSection('experience')}><LuUserSearch/> Experience</button>
+              </li>
               <li className={activeSection === 'settings' ? 'active' : ''}>
                 <button onClick={() => changeSection('settings')}><FiSettings /> Settings</button>
               </li>
@@ -100,6 +105,7 @@ const Dashboard: FC<DashboardPageProps> = ({ onLogout }) => {
             <Route path="projects" element={<ProjectList />} />
             <Route path="research" element={<ResearchList />} />
             <Route path="about" element={<About />} />
+            <Route path="experience" element={<ExperienceList />} />
             <Route path="settings" element={<Settings />} />
             <Route path="*" element={<Home/>} />
           </Routes>
