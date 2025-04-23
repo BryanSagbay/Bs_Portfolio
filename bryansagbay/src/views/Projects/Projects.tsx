@@ -27,7 +27,14 @@ const ProyectosScroll: React.FC = () => {
   const lastSectionRef = useRef<HTMLDivElement | null>(null);
   const hideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Fetch desde API
+  // ✅ Función segura para construir URL de imagen desde env
+  const getFullImageUrl = (path: string) => {
+    const base = import.meta.env.VITE_API_IMAGES?.replace(/\/$/, '') || '';
+    const finalPath = path.startsWith('/') ? path : `/${path}`;
+    return `${base}${finalPath}`;
+  };
+
+  // 📡 Fetch desde API
   useEffect(() => {
     const fetchProyectos = async () => {
       try {
@@ -39,8 +46,7 @@ const ProyectosScroll: React.FC = () => {
           tipo: item.type === 'pc' ? 'pc' : 'movil',
           titulo: item.title,
           descripcion: item.description,
-          // Completamos la URL de la imagen con el dominio del backend
-          imagenProyecto: `http://localhost:3000${item.imagen}`,
+          imagenProyecto: getFullImageUrl(item.imagen),
           link: item.link,
         }));
 
@@ -53,7 +59,6 @@ const ProyectosScroll: React.FC = () => {
     fetchProyectos();
   }, []);
 
-  // Actualizar refs dinámicamente según cantidad de proyectos
   useEffect(() => {
     sectionRefs.current = sectionRefs.current.slice(0, proyectos.length);
     while (sectionRefs.current.length < proyectos.length) {
@@ -61,7 +66,6 @@ const ProyectosScroll: React.FC = () => {
     }
   }, [proyectos]);
 
-  // Observar la sección visible
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -86,7 +90,6 @@ const ProyectosScroll: React.FC = () => {
     return () => observer.disconnect();
   }, [proyectos]);
 
-  // Barra de scroll
   const handleScroll = () => {
     const el = containerRef.current;
     if (!el) return;

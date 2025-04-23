@@ -15,12 +15,12 @@ const Research: React.FC = () => {
       .then((res) => {
         setArticles(res.data);
       })
-      .catch((err) => console.error('Error al obtener investigaciones:', err))
+      .catch((err) => console.error('Error in obtaining research:', err))
       .finally(() => setLoading(false));
   }, []);
 
   if (loading) {
-    return <div className="research-container">Cargando investigaciones...</div>;
+    return <div className="research-container">Loading research...</div>;
   }
 
   return (
