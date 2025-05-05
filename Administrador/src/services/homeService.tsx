@@ -2,6 +2,7 @@ import { HomeData } from '../model/home';
 
 const API_URL = import.meta.env.VITE_API_HOME;
 
+//ss
 const getAuthHeaders = (): HeadersInit => {
   const token = localStorage.getItem('token');
   return {
