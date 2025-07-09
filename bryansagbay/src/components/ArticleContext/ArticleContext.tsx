@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
-import { Article } from '../../data/Articulos';
+import { Article } from '../../type/Articulos';
 
 interface ArticleContextType {
   articles: Article[];

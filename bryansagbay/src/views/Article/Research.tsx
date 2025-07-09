@@ -3,7 +3,7 @@ import './Research.css';
 import LatestArticles from '../../components/LatestArticles/LatestArticles';
 import { ArticleProvider } from '../../components/ArticleContext/ArticleContext';
 import ArticleDetail from '../../components/ArticleDetail/ArticleDetail';
-import { ResearchArticle } from '../../types/Research';
+import { ResearchArticle } from '../../type/Research';
 import api from '../../services/Portfolio';
 
 const Research: React.FC = () => {

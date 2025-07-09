@@ -1,6 +1,6 @@
 import React from 'react';
 import './ArticleCard.css';
-import { ResearchArticle } from '../../types/Research';
+import { ResearchArticle } from '../../type/Research';
 
 interface ResearchCardProps {
   article: ResearchArticle;

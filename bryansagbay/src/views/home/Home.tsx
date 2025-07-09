@@ -3,7 +3,7 @@ import './Home.css';
 import { FaGithub, FaLinkedin, FaInstagram, FaDownload } from 'react-icons/fa';
 import { AiOutlineX } from "react-icons/ai";
 import CursorLineal from '../../components/Cursor/CursorLineal';
-import { HomeData } from '../../types/Home';
+import { HomeData } from '../../type/Home';
 import api from '../../services/Portfolio';
 import { Typewriter } from 'react-simple-typewriter';
 

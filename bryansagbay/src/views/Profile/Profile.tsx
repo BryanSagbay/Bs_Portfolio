@@ -16,8 +16,8 @@ import { DiRedis } from "react-icons/di";
 import { VscAzure } from "react-icons/vsc";
 import { FcLinux } from "react-icons/fc";
 import api from '../../services/Portfolio';
-import { ExperienceData } from '../../types/Experience';
-import { AboutData } from '../../types/About';
+import { ExperienceData } from '../../type/Experience';
+import { AboutData } from '../../type/About';
 
 const PortfolioLayout: React.FC = () => {
   const firstRowRef = useRef<HTMLDivElement>(null);

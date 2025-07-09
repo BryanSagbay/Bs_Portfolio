@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { TabItem } from '../../types/types';
+import type { TabItem } from '../../type/types';
 import VerticalNavbar from '../Navbar/Navbar';
 import './Layout.css';
 

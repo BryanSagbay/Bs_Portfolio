@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { TabItem } from './types/types';
-import Home from './views/Home/Home';
+
 import Projects from './views/Projects/Projects';
 import Profile from './views/Profile/Profile';
 import Research from './views/Article/Research';
 import Layout from './components/Layout/Layout';
 import SplashScreen from './components/SplashScreen/SplashScreen';
+import { TabItem } from './type/types';
+import Home from './views/Home/Home';
 
 const App: React.FC = () => {
   const [showSplash, setShowSplash] = useState(true);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TabItem } from '../../types/types';
+import { TabItem } from '../../type/types';
 import './Navbar.css';
 import NavItem from '../NavItem/NavItem';
 import { FaGithub, FaLinkedin, FaInstagram } from 'react-icons/fa'
